@@ -3,18 +3,18 @@ project:
   output-dir: docs
 
 website:
-  title: "dimaggic"
+  title: "Curriculum for Urban Injury Research and Epidemiology (CURE)"
   navbar:
     left:
       - href: index.qmd
         text: Home
       - about.qmd
+      - bayes.qmd
 
 format:
   html:
     theme:
-      - cosmo
-      - brand
+      - pulse
     css: styles.css
     toc: true
 
