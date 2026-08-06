@@ -1,0 +1,18 @@
+model{for(i in 1:Nobs) {
+	thm[i] ~ dnorm(theta[zone[i]], tau.e)    # likelihood for observed data
+}
+for(z in 1:Nzone) {
+	theta[z] ~ dnorm(mu, tau.z)     # zone-specific means (random effects)
+}
+ 
+# priors on random effects mean and variance
+mu ~ dnorm(0, 0.000001)
+tau.z ~ dgamma(0.001, 0.001)
+sigma2.z <- 1/tau.z   # random effects variance (between-zone variance of mean THM)
+
+tau.e ~ dgamma(0.001, 0.001)   
+sigma2.e <- 1/tau.e  # residual error variance
+
+vpc <- sigma2.z / (sigma2.z + sigma2.e)   # variance partition coefficient
+
+}

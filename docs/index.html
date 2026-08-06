@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Curriculum for Urban Injury Research and Epidemiology (CURE)</title>
+<title>Curriculum for Urban Injury Research and Epidemiology (CUIRE) – CUIRE</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -37,12 +37,11 @@ ul.task-list li input[type="checkbox"] {
 <script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="site_libs/quarto-html/anchor.min.js"></script>
 <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="site_libs/quarto-html/quarto-syntax-highlighting-49e51e44f424ea8c7044b429bdbbbfe2.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-158031087360bce0ff56dc785ce39e06.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-9767d147d9da4196aea41de9d5c46390.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -75,7 +74,7 @@ ul.task-list li input[type="checkbox"] {
 <link rel="stylesheet" href="styles.css">
 </head>
 
-<body class="nav-fixed quarto-light">
+<body class="nav-fixed fullcontent quarto-light">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
@@ -83,7 +82,7 @@ ul.task-list li input[type="checkbox"] {
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
     <a class="navbar-brand" href="./index.html">
-    <span class="navbar-title">Curriculum for Urban Injury Research and Epidemiology (CURE)</span>
+    <span class="navbar-title">CUIRE</span>
     </a>
   </div>
             <div id="quarto-search" class="" title="Search"></div>
@@ -93,17 +92,37 @@ ul.task-list li input[type="checkbox"] {
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link active" href="./index.html" aria-current="page"> 
-<span class="menu-text">Home</span></a>
+    <a class="nav-link active" href="./index.html" aria-current="page"> <i class="bi bi-house-door-fill" role="img">
+</i> 
+<span class="menu-text"> </span></a>
   </li>  
-  <li class="nav-item">
-    <a class="nav-link" href="./about.html"> 
-<span class="menu-text">About</span></a>
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-bayes" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Bayes</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-bayes">    
+        <li>
+    <a class="dropdown-item" href="./bayes/bayes1/bayes1.html">
+ <span class="dropdown-text">Intro to Bayes</span></a>
   </li>  
-  <li class="nav-item">
-    <a class="nav-link" href="./bayes.html"> 
-<span class="menu-text">Bayes</span></a>
+        <li>
+    <a class="dropdown-item" href="./bayes/bayes2/bayes2.html">
+ <span class="dropdown-text">MCMC</span></a>
   </li>  
+        <li>
+    <a class="dropdown-item" href="./bayes/bayes3/bayes3.html">
+ <span class="dropdown-text">Bayes Regression</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./bayes/bayes4/bayes4.html">
+ <span class="dropdown-text">Bayes Meta-Analysis</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./bayes/bayes5/bayes5.html">
+ <span class="dropdown-text">More Bayes</span></a>
+  </li>  
+    </ul>
+  </li>
 </ul>
           </div> <!-- /navcollapse -->
             <div class="quarto-navbar-tools">
@@ -115,45 +134,53 @@ ul.task-list li input[type="checkbox"] {
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
-        
-    </div>
+    
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default">
+
+
+
+<center>
+A site for students, public health practitioners and others interested in epidemiological methods related to injuries and surgical research.
+</center>
+<div class="quarto-about-jolla">
+  <img src="resources/bellevue.jpg" class="about-image
+  round " style="height: 15em; width: 15em;">
+ <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Curriculum for Urban Injury Research and Epidemiology (CURE)</h1>
+<h1 class="title">Curriculum for Urban Injury Research and Epidemiology (CUIRE)</h1>
+</div>
+<div class="quarto-title-meta">
+  </div>
+</header><div id="ppc">
+<p><em>Welcome to CUIRE, Curriculum for Urban Injury Research and Epidemiology.</em></p>
+<p>Injuries exact an enormous toll on population health and well-being. Clinicians and epidemiologists can contribute to controlling and preventing the physical and social consequences of injuries by collecting, analyzing and interpreting data to help guide control and preparedness efforts. As public health practitioners we are challenged to more broadly define injuries to include behavioral and mental health outcomes, utilize non-traditional and forward-thinking research methods, and structure innovative control and treatment programs based on evidence. This site contributes to this by presenting injury-related background material, methods, data sets, injury-related studies, presentations and lectures, descriptions of and links to related sites and epidemiological tools. You will also find a material for workshops I teach on epidemiology and related methods.</p>
+</div> 
+  <hr class="about-sep">
+   <div class="about-links">
+  <a href="mailto:Charles.DiMaggio@nyulangone.org" class="about-link" rel="" target="">
+    <i class="bi bi-envelope"></i>
+     <span class="about-link-text">Email</span>
+  </a>
+  <a href="https://www.youtube.com/watch?v=ABb0m3EA3m4" class="about-link" rel="" target="">
+    <i class="bi bi-youtube"></i>
+     <span class="about-link-text">YouTube</span>
+  </a>
+  <a href="https://github.com/dandolo2020" class="about-link" rel="" target="">
+    <i class="bi bi-github"></i>
+     <span class="about-link-text">GitHub</span>
+  </a>
+</div>
 </div>
 
 
-
-<div class="quarto-title-meta">
-
-    
-  
-    
-  </div>
-  
-
-
-</header>
-
-
-<p>A site for students, public health practitioners and others interested in epidemiological methods related to injuries and surgical research.</p>
 
 
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
-    const icon = "";
-    const anchorJS = new window.AnchorJS();
-    anchorJS.options = {
-      placement: 'right',
-      icon: icon
-    };
-    anchorJS.add('.anchored');
     const isCodeAnnotation = (el) => {
       for (const clz of el.classList) {
         if (clz.startsWith('code-annotation-')) {                     

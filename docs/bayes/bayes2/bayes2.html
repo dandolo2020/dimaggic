@@ -1,0 +1,1493 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.28">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>MCMC – CUIRE</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-49e51e44f424ea8c7044b429bdbbbfe2.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-9767d147d9da4196aea41de9d5c46390.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="../../styles.css">
+</head>
+
+<body class="nav-sidebar docked nav-fixed quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">CUIRE</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../index.html"> <i class="bi bi-house-door-fill" role="img">
+</i> 
+<span class="menu-text"> </span></a>
+  </li>  
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-bayes" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Bayes</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-bayes">    
+        <li>
+    <a class="dropdown-item" href="../../bayes/bayes1/bayes1.html">
+ <span class="dropdown-text">Intro to Bayes</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../bayes/bayes2/bayes2.html">
+ <span class="dropdown-text">MCMC</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../bayes/bayes3/bayes3.html">
+ <span class="dropdown-text">Bayes Regression</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../bayes/bayes4/bayes4.html">
+ <span class="dropdown-text">Bayes Meta-Analysis</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../bayes/bayes5/bayes5.html">
+ <span class="dropdown-text">More Bayes</span></a>
+  </li>  
+    </ul>
+  </li>
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../bayes/bayes2/bayes2.html">MCMC</a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../bayes/bayes1/bayes1.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Intro to Bayes</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../bayes/bayes2/bayes2.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">MCMC</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../bayes/bayes3/bayes3.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Bayes Regression</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../bayes/bayes4/bayes4.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Bayes Meta-Analysis</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../bayes/bayes5/bayes5.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">More Bayes</span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#bayesian-analysis-for-epidemiologists-ii-markov-chain-monte-carlo" id="toc-bayesian-analysis-for-epidemiologists-ii-markov-chain-monte-carlo" class="nav-link active" data-scroll-target="#bayesian-analysis-for-epidemiologists-ii-markov-chain-monte-carlo">Bayesian Analysis for Epidemiologists II: Markov Chain Monte Carlo</a></li>
+  <li><a href="#acknowledgements" id="toc-acknowledgements" class="nav-link" data-scroll-target="#acknowledgements">Acknowledgements</a></li>
+  <li><a href="#grid-sampling" id="toc-grid-sampling" class="nav-link" data-scroll-target="#grid-sampling">Grid Sampling</a>
+  <ul class="collapse">
+  <li><a href="#the-multi-parameter-normal-model" id="toc-the-multi-parameter-normal-model" class="nav-link" data-scroll-target="#the-multi-parameter-normal-model">The Multi-Parameter Normal Model</a>
+  <ul class="collapse">
+  <li><a href="#random-sampling-from-a-standard-distribution" id="toc-random-sampling-from-a-standard-distribution" class="nav-link" data-scroll-target="#random-sampling-from-a-standard-distribution">Random Sampling From a Standard Distribution</a></li>
+  </ul></li>
+  <li><a href="#grid-sampling-from-a-non-standard-distribution" id="toc-grid-sampling-from-a-non-standard-distribution" class="nav-link" data-scroll-target="#grid-sampling-from-a-non-standard-distribution">Grid Sampling From a Non-Standard Distribution</a></li>
+  <li><a href="#grid-sampling-for-airline-crash-example" id="toc-grid-sampling-for-airline-crash-example" class="nav-link" data-scroll-target="#grid-sampling-for-airline-crash-example">Grid Sampling for Airline Crash Example</a></li>
+  </ul></li>
+  <li><a href="#mcmc" id="toc-mcmc" class="nav-link" data-scroll-target="#mcmc">MCMC</a>
+  <ul class="collapse">
+  <li><a href="#introduction-to-monte-carlo" id="toc-introduction-to-monte-carlo" class="nav-link" data-scroll-target="#introduction-to-monte-carlo">Introduction to Monte Carlo</a>
+  <ul class="collapse">
+  <li><a href="#monte-carlo-calculation-of-pi" id="toc-monte-carlo-calculation-of-pi" class="nav-link" data-scroll-target="#monte-carlo-calculation-of-pi">Monte Carlo Calculation of Pi</a></li>
+  </ul></li>
+  <li><a href="#introduction-to-markov-chain-monte-carlo" id="toc-introduction-to-markov-chain-monte-carlo" class="nav-link" data-scroll-target="#introduction-to-markov-chain-monte-carlo">Introduction to Markov Chain Monte Carlo</a>
+  <ul class="collapse">
+  <li><a href="#the-metropolis-algorithm" id="toc-the-metropolis-algorithm" class="nav-link" data-scroll-target="#the-metropolis-algorithm">The Metropolis Algorithm</a></li>
+  <li><a href="#from-discrete-metropolis-algorithm-to-continuous" id="toc-from-discrete-metropolis-algorithm-to-continuous" class="nav-link" data-scroll-target="#from-discrete-metropolis-algorithm-to-continuous">From discrete Metropolis algorithm to continuous</a></li>
+  <li><a href="#metropolis-algorithm-with-two-parameters" id="toc-metropolis-algorithm-with-two-parameters" class="nav-link" data-scroll-target="#metropolis-algorithm-with-two-parameters">Metropolis algorithm with two parameters</a></li>
+  <li><a href="#gibbs-sampling" id="toc-gibbs-sampling" class="nav-link" data-scroll-target="#gibbs-sampling">Gibbs Sampling</a></li>
+  <li><a href="#implementing-a-gibbs-sampler" id="toc-implementing-a-gibbs-sampler" class="nav-link" data-scroll-target="#implementing-a-gibbs-sampler">Implementing a Gibbs Sampler</a></li>
+  <li><a href="#gibbs-vs.-metropolis" id="toc-gibbs-vs.-metropolis" class="nav-link" data-scroll-target="#gibbs-vs.-metropolis">Gibbs vs.&nbsp;Metropolis</a></li>
+  </ul></li>
+  <li><a href="#assessing-mcmc-runs" id="toc-assessing-mcmc-runs" class="nav-link" data-scroll-target="#assessing-mcmc-runs">Assessing MCMC Runs</a>
+  <ul class="collapse">
+  <li><a href="#convergence" id="toc-convergence" class="nav-link" data-scroll-target="#convergence">Convergence</a></li>
+  <li><a href="#efficiency" id="toc-efficiency" class="nav-link" data-scroll-target="#efficiency">Efficiency</a></li>
+  <li><a href="#autocorrelation" id="toc-autocorrelation" class="nav-link" data-scroll-target="#autocorrelation">Autocorrelation</a></li>
+  </ul></li>
+  <li><a href="#running-mcmc-in-bugs" id="toc-running-mcmc-in-bugs" class="nav-link" data-scroll-target="#running-mcmc-in-bugs">Running MCMC in BUGS</a>
+  <ul class="collapse">
+  <li><a href="#the-bugs-program-3" id="toc-the-bugs-program-3" class="nav-link" data-scroll-target="#the-bugs-program-3">The BUGS Program ##3</a></li>
+  <li><a href="#specifying-a-model" id="toc-specifying-a-model" class="nav-link" data-scroll-target="#specifying-a-model">Specifying a Model</a></li>
+  <li><a href="#the-bugs-language" id="toc-the-bugs-language" class="nav-link" data-scroll-target="#the-bugs-language">The BUGS Language:</a></li>
+  <li><a href="#complex-functions-as-parameters" id="toc-complex-functions-as-parameters" class="nav-link" data-scroll-target="#complex-functions-as-parameters">complex functions as parameters</a></li>
+  </ul></li>
+  <li><a href="#airline-fatality-data-example" id="toc-airline-fatality-data-example" class="nav-link" data-scroll-target="#airline-fatality-data-example">Airline fatality data example</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">MCMC</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="bayesian-analysis-for-epidemiologists-ii-markov-chain-monte-carlo" class="level1">
+<h1>Bayesian Analysis for Epidemiologists II: Markov Chain Monte Carlo</h1>
+</section>
+<section id="acknowledgements" class="level1">
+<h1>Acknowledgements</h1>
+<p>I am indebted to the following individuals upon who’s work the material in these pages has been (extensively) based. For the material on grid sampling, I leaned particularly heavily on material presented by <a href="http://www-stat.wharton.upenn.edu/~stjensen/">Shane Jensen</a> as part of a <a href="http://www.statisticalhorizons.com/">Statistical Horizons</a> course. If you want to pursue this in any real way, you should very much attend that course.</p>
+<p><a href="http://bayes.bgsu.edu/bcwr/">Jim Albert</a><br>
+<a href="http://www.statslab.cam.ac.uk/Dept/People/Spiegelhalter/davids.html">David Spiegelhalter</a><br>
+<a href="http://www1.imperial.ac.uk/medicine/people/n.best/publications/">Nicky Best</a><br>
+<a href="http://andrewgelman.com/">Andrew Gelman</a><br>
+<a href="http://bendixcarstensen.com/">Bendix Carstensen</a><br>
+<a href="http://pgh.unimelb.edu.au/about/contact/allstaff/gurrin">Lyle Guerrin</a><br>
+<a href="http://www-stat.wharton.upenn.edu/~stjensen/">Shane Jensen</a> and <a href="http://www.statisticalhorizons.com/">Statistical Horizons</a></p>
+<p>#Sections</p>
+<p><a href="#grid-sampling">I. Grid Sampling</a><br>
+<a href="##the-multi-parameter-normal-model">1. The Multi-Parameter Normal Model</a><br>
+<a href="##random-sampling-from-a-standard-distribution">2. Random Sampling From a Standard Distribution</a><br>
+<a href="##Grid-sampling-from-a-non-standard-distribution">3. Grid Sampling From a Non-Standard Distribution</a><br>
+<a href="##grid-sampling-for-airline-crash-example">4. Grid Sampling for Airline Crash Example</a></p>
+<p><a href="#MCMC">II. MCMC</a><br>
+<a href="##introduction-to-monte-carlo">1. Introduction to Monte Carlo</a><br>
+<a href="##introduction-to-markov-chain-monte-carlo">2. Introduction to Markov Chain Monte Carlo</a><br>
+<a href="###the-metropolis-algorithm">3. The Metropolis Algorithm</a><br>
+<a href="###gibbs-sampling">4. Gibbs Sampling</a><br>
+<a href="##running-mcmc-in-bugs">5. Running MCMC in BUGS</a></p>
+</section>
+<section id="grid-sampling" class="level1">
+<h1>Grid Sampling</h1>
+<p>In the <a href="http://www.columbia.edu/~cjd11/charles_dimaggio/DIRE/styled-4/styled-11/code-4/">first part</a> of this discussion, we considered relatively simple one-parameter models and conjugate analysis. Before we move on to the kinds of Markov Chain Monte Carlo methods in common use for more complex problems, we’ll take some first steps toward realistic problems that require computational methods. The first such method is called grid sampling, which we present in the setting of both normal and Poisson models.</p>
+<section id="the-multi-parameter-normal-model" class="level2">
+<h2 class="anchored" data-anchor-id="the-multi-parameter-normal-model">The Multi-Parameter Normal Model</h2>
+<p>In our <a href="lhttp://www.columbia.edu/~cjd11/charles_dimaggio/DIRE/styled-4/styled-11/code-4/">introduction</a> to the single-parameter normal model, we assumed (somewhat unrealistically) that we didn’t know the mean, but somehow did know the variance. We now take the more real-world stance that both the mean and the variance are unknown. So now, <span class="math inline">\(\sigma^2\)</span> doesn’t drop out of the model specification, making the Bayesian calculations more complicated. You may begin to appreciate that even for this relatively simple model, the simple analytic approaches we’ve seen in the previous conjugate analyses become increasingly more difficult to apply, and we begin to see the need for computational approaches.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a></p>
+<p>The maximum likelihood estimates for both parameters are fairly straightforward: <span class="math inline">\(\mu_{MLE} = \bar{y}\)</span> and <span class="math inline">\(\sigma^2_{MLE} = \Sigma(y-\bar{y})^2/n\)</span>. But, for a Bayesian approach to the normal likelihood (<span class="math inline">\(y_i \sim Normal(\mu, \sigma^2)\)</span>), we’ll need conjugate priors for <em>both</em> parameters. This complicates matters somewhat. A fully conjugate prior for the mean (<span class="math inline">\(\mu|\sigma^2 \sim Nl(\mu_0, \sigma^2/\kappa_0)\)</span>) and the standard deviation (<span class="math inline">\(\sigma^2 \sim Inverse Gamma (...)\)</span> <a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>) will require us to look at the joint distribution of the two parameters simultaneously. Even in this relatively simple setting, this is not necessarily a simple thing to do, and it only gets more complex when we start to consider semi-conjugate and non-informative priors.</p>
+<p>As a first approach, we can break the joint distribution for the mean and standard deviation into two easier components. Start with the marginal posterior distribution for <span class="math inline">\(\sigma^2\)</span>, <span class="math inline">\(p(\sigma^2|y)\)</span>, then move to the conditional posterior for <span class="math inline">\(\mu\)</span>, <span class="math inline">\(p(\mu|\sigma^2, y)\)</span>. The difficult bit is <span class="math inline">\(p(\sigma^2|y)\)</span>, the formula for which is appropriately gnarly:</p>
+<p><img src="bayes/bayes2/gnarly1.jpg" class="img-fluid"></p>
+<p>But when we have the prior distribution for <span class="math inline">\(\sigma_{2}\)</span>, it becomes a one-parameter problem, with the notable caveat that in this fully conjugate specification, <span class="math inline">\(\mu\)</span> is dependent on <span class="math inline">\(\sigma^2\)</span>.</p>
+<section id="random-sampling-from-a-standard-distribution" class="level3">
+<h3 class="anchored" data-anchor-id="random-sampling-from-a-standard-distribution">Random Sampling From a Standard Distribution</h3>
+<p>We are often interested in a minimally or <strong>non-informative prior</strong>. In the setting of a multi-parameter normal model this would be: <span class="math inline">\(p(\sigma^2|y) \sim InvGamma(n/2, \Sigma(y-\bar{y})^2/2)\)</span>. The approach is to first sample from <span class="math inline">\(p(\sigma^2|y)\)</span>, then plug those values into a simulation for <span class="math inline">\(\mu\)</span>. To sample from the inverse Gamma, we sample from the Gamma, then inverse it.</p>
+<p>In the following code, we first load and plot data for 60 observations of average yearly temperatures in New Haven, Connecticut in the US. We then loop through the two-step sampling scheme for <span class="math inline">\(\mu\)</span> and <span class="math inline">\(\sigma^2\)</span> and then compare the raw data to the posterior sample using a histogram.<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a></p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode numberSource r numberLines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a>  <span class="do">### Observed Data: Average Yearly Temperatures in New Haven over 60 years</span></span>
+<span id="cb1-2"><a href="#cb1-2"></a></span>
+<span id="cb1-3"><a href="#cb1-3"></a>  <span class="fu">data</span>(nhtemp)</span>
+<span id="cb1-4"><a href="#cb1-4"></a>  y <span class="ot">&lt;-</span> nhtemp</span>
+<span id="cb1-5"><a href="#cb1-5"></a></span>
+<span id="cb1-6"><a href="#cb1-6"></a>  <span class="do">### Plotting Observed Data</span></span>
+<span id="cb1-7"><a href="#cb1-7"></a></span>
+<span id="cb1-8"><a href="#cb1-8"></a>  <span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">1</span>))</span>
+<span id="cb1-9"><a href="#cb1-9"></a>  <span class="fu">hist</span>(y,<span class="at">col=</span><span class="st">"gray"</span>)</span>
+<span id="cb1-10"><a href="#cb1-10"></a></span>
+<span id="cb1-11"><a href="#cb1-11"></a>  <span class="do">### Summary Statistics</span></span>
+<span id="cb1-12"><a href="#cb1-12"></a></span>
+<span id="cb1-13"><a href="#cb1-13"></a>  n <span class="ot">&lt;-</span> <span class="fu">length</span>(y)</span>
+<span id="cb1-14"><a href="#cb1-14"></a>  y.bar <span class="ot">&lt;-</span> <span class="fu">mean</span>(y)</span>
+<span id="cb1-15"><a href="#cb1-15"></a>  y.ss <span class="ot">&lt;-</span> <span class="fu">sum</span>((y<span class="sc">-</span>y.bar)<span class="sc">^</span><span class="dv">2</span>)</span>
+<span id="cb1-16"><a href="#cb1-16"></a></span>
+<span id="cb1-17"><a href="#cb1-17"></a>  <span class="co"># (run through the 2-step sampling scheme)</span></span>
+<span id="cb1-18"><a href="#cb1-18"></a>  <span class="do">### Posterior Samples of mu and sigma^2 with non-informative prior</span></span>
+<span id="cb1-19"><a href="#cb1-19"></a></span>
+<span id="cb1-20"><a href="#cb1-20"></a>  mu.samp <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="cn">NA</span>,<span class="dv">10000</span>) <span class="co"># vectors to store values</span></span>
+<span id="cb1-21"><a href="#cb1-21"></a>  sigsq.samp <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="cn">NA</span>,<span class="dv">10000</span>)</span>
+<span id="cb1-22"><a href="#cb1-22"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">10000</span>){</span>
+<span id="cb1-23"><a href="#cb1-23"></a>     x <span class="ot">&lt;-</span> <span class="fu">rgamma</span>(<span class="dv">1</span>,<span class="at">shape=</span>n<span class="sc">/</span><span class="dv">2</span>,<span class="at">rate=</span>y.ss<span class="sc">/</span><span class="dv">2</span>)</span>
+<span id="cb1-24"><a href="#cb1-24"></a>     sigsq.samp[i] <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">/</span>x <span class="co"># inverse the gamma</span></span>
+<span id="cb1-25"><a href="#cb1-25"></a>     mu.var <span class="ot">&lt;-</span> sigsq.samp[i]<span class="sc">/</span>n</span>
+<span id="cb1-26"><a href="#cb1-26"></a>     mu.mean <span class="ot">&lt;-</span> y.bar    </span>
+<span id="cb1-27"><a href="#cb1-27"></a>     mu.samp[i] <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="dv">1</span>,<span class="at">mean=</span>mu.mean,<span class="at">sd=</span><span class="fu">sqrt</span>(mu.var)) <span class="co"># use value of sigma.sq to sample for mu</span></span>
+<span id="cb1-28"><a href="#cb1-28"></a>  }</span>
+<span id="cb1-29"><a href="#cb1-29"></a></span>
+<span id="cb1-30"><a href="#cb1-30"></a>  <span class="do">### Plotting Posterior Samples of mu and sigmasq</span></span>
+<span id="cb1-31"><a href="#cb1-31"></a></span>
+<span id="cb1-32"><a href="#cb1-32"></a>  <span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">1</span>))</span>
+<span id="cb1-33"><a href="#cb1-33"></a>  <span class="fu">hist</span>(sigsq.samp,<span class="at">col=</span><span class="st">"gray"</span>,<span class="at">main=</span><span class="st">"Posterior Distribution of Sigsq"</span>)</span>
+<span id="cb1-34"><a href="#cb1-34"></a>  <span class="fu">hist</span>(mu.samp,<span class="at">col=</span><span class="st">"gray"</span>,<span class="at">main=</span><span class="st">"Posterior Distribution of mu"</span>)</span>
+<span id="cb1-35"><a href="#cb1-35"></a></span>
+<span id="cb1-36"><a href="#cb1-36"></a>  <span class="do">### Comparing Posterior Samples of mu to raw data</span></span>
+<span id="cb1-37"><a href="#cb1-37"></a></span>
+<span id="cb1-38"><a href="#cb1-38"></a>  mintemp <span class="ot">&lt;-</span> <span class="fu">min</span>(y)</span>
+<span id="cb1-39"><a href="#cb1-39"></a>  maxtemp <span class="ot">&lt;-</span> <span class="fu">max</span>(y)</span>
+<span id="cb1-40"><a href="#cb1-40"></a>  <span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">1</span>))</span>
+<span id="cb1-41"><a href="#cb1-41"></a>  <span class="fu">hist</span>(y,<span class="at">col=</span><span class="st">"gray"</span>,<span class="at">main=</span><span class="st">"Distribution of Data"</span>,<span class="at">xlim=</span><span class="fu">c</span>(mintemp,maxtemp))</span>
+<span id="cb1-42"><a href="#cb1-42"></a>  <span class="fu">hist</span>(mu.samp,<span class="at">col=</span><span class="st">"gray"</span>,<span class="at">main=</span><span class="st">"Posterior Distribution of mu"</span>,<span class="at">xlim=</span><span class="fu">c</span>(mintemp,maxtemp))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+</section>
+<section id="grid-sampling-from-a-non-standard-distribution" class="level2">
+<h2 class="anchored" data-anchor-id="grid-sampling-from-a-non-standard-distribution">Grid Sampling From a Non-Standard Distribution</h2>
+<p>For a more reasonable approach to a normally distributed variables, we will want to remove the dependency between <span class="math inline">\(\mu\)</span> and <span class="math inline">\(\sigma^2\)</span>. A <strong>semi-conjugate prior</strong> will help us accomplish this, but will complicate the algebra enough to push us to computational approaches. Up to now, we could get at <span class="math inline">\(p(\sigma^2|y)\)</span> through an Inverse Gamma, which as we’ve seen is intimidating looking, but still standard. To remove the dependency between <span class="math inline">\(\mu\)</span> and <span class="math inline">\(\sigma^2\)</span> we will have to sample from a non-standard distribution:</p>
+<p><strong>Grid sampling</strong> is a way to sample from any non-standard distribution, which opens up the possibilities for more realistic, more complicated analyses.<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a></p>
+<p>In grid sampling we plug a series of values into a formula, such as the the formula for the non-standard posterior for <span class="math inline">\(\sigma^2\)</span> above, get back probabilities for each of those values, and then sample those values over and over again relative to those probabilities. The difficult bit is coming up with a grid of values to plug into the formula that adequately and reasonably explores the posterior probability space.<a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a> There is something of an art to finding a good grid of values that adequately explores the posterior distribution space. Grid sampling generally involves a manual approach to selecting candidate values. There are, though, automated schemes to search the sample space, which we will talk about soon.</p>
+<p>Let’s apply the grid sampling approach with a semi-conjugate prior to the yearly temperature example. After reading in and plotting the raw data and setting a couple of statistics, we define values for the hyperparameters. Next, we write the function to enter values into the formula for the non-standard posterior distribution for <span class="math inline">\(\sigma^2\)</span>. After that, we use the <em>pppoints()</em> function to create a grid of 100 points between 0 and 6. This step is not trivial. Determining the limits of 0 and 6 in this example is is the result of a tedious and time consuming <a href="#fn6" class="footnote-ref" id="fnref6" role="doc-noteref"><sup>6</sup></a> process of trial and error explorations and iterations to arrive at values that optimally explore the probability space.</p>
+<p>At this point we have a grid of values and relative probabilities for <span class="math inline">\(\sigma^2\)</span>. The next step is to draw 1,000 samples for <span class="math inline">\(\sigma^2\)</span> proportional to those probabilities. This establishes the posterior distribution of <span class="math inline">\(\sigma^2\)</span>, which we then use to sample the second parameter in the normal distribution, <span class="math inline">\(\mu\)</span>, and finally arrive at the posterior distribution for <span class="math inline">\(\mu\)</span> itself.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode numberSource r numberLines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a> <span class="do">### Data: Average Yearly Temperatures in New Haven over 60 years</span></span>
+<span id="cb2-2"><a href="#cb2-2"></a></span>
+<span id="cb2-3"><a href="#cb2-3"></a><span class="fu">data</span>(nhtemp)</span>
+<span id="cb2-4"><a href="#cb2-4"></a>y <span class="ot">&lt;-</span> nhtemp</span>
+<span id="cb2-5"><a href="#cb2-5"></a></span>
+<span id="cb2-6"><a href="#cb2-6"></a> <span class="do">### Plot Observed Data</span></span>
+<span id="cb2-7"><a href="#cb2-7"></a></span>
+<span id="cb2-8"><a href="#cb2-8"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">1</span>))</span>
+<span id="cb2-9"><a href="#cb2-9"></a><span class="fu">hist</span>(y,<span class="at">col=</span><span class="st">"gray"</span>)</span>
+<span id="cb2-10"><a href="#cb2-10"></a></span>
+<span id="cb2-11"><a href="#cb2-11"></a> <span class="do">### set up some stats</span></span>
+<span id="cb2-12"><a href="#cb2-12"></a></span>
+<span id="cb2-13"><a href="#cb2-13"></a>n <span class="ot">&lt;-</span> <span class="fu">length</span>(y)</span>
+<span id="cb2-14"><a href="#cb2-14"></a>y.bar <span class="ot">&lt;-</span> <span class="fu">mean</span>(y)</span>
+<span id="cb2-15"><a href="#cb2-15"></a>y.ss <span class="ot">&lt;-</span> <span class="fu">sum</span>((y<span class="sc">-</span>y.bar)<span class="sc">^</span><span class="dv">2</span>)</span>
+<span id="cb2-16"><a href="#cb2-16"></a></span>
+<span id="cb2-17"><a href="#cb2-17"></a> <span class="do">## set hyperparameter values for prior </span></span>
+<span id="cb2-18"><a href="#cb2-18"></a></span>
+<span id="cb2-19"><a href="#cb2-19"></a>tausq0 <span class="ot">&lt;-</span> <span class="dv">5</span></span>
+<span id="cb2-20"><a href="#cb2-20"></a>sigsq0 <span class="ot">&lt;-</span> <span class="dv">5</span></span>
+<span id="cb2-21"><a href="#cb2-21"></a>nu0 <span class="ot">&lt;-</span> <span class="dv">1</span></span>
+<span id="cb2-22"><a href="#cb2-22"></a>mu0 <span class="ot">&lt;-</span> <span class="dv">50</span></span>
+<span id="cb2-23"><a href="#cb2-23"></a></span>
+<span id="cb2-24"><a href="#cb2-24"></a> <span class="do">## write function to evaluate posterior distribution of sigsq over a grid</span></span>
+<span id="cb2-25"><a href="#cb2-25"></a> <span class="co"># (this is that gnarly function into which we plug in the grid of values)</span></span>
+<span id="cb2-26"><a href="#cb2-26"></a> </span>
+<span id="cb2-27"><a href="#cb2-27"></a>evaluatepostsigsq <span class="ot">&lt;-</span> <span class="cf">function</span>(sigsqgrid,y,mu0,nu0,tausq0,sigsq0){</span>
+<span id="cb2-28"><a href="#cb2-28"></a>    logvals <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="dv">0</span>,<span class="fu">length</span>(sigsqgrid))</span>
+<span id="cb2-29"><a href="#cb2-29"></a>    <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(sigsqgrid)){</span>
+<span id="cb2-30"><a href="#cb2-30"></a>        cursigsq <span class="ot">&lt;-</span> sigsqgrid[i]</span>
+<span id="cb2-31"><a href="#cb2-31"></a>        postmean  <span class="ot">&lt;-</span> (n<span class="sc">*</span>y.bar<span class="sc">/</span>cursigsq <span class="sc">+</span> mu0<span class="sc">/</span>tausq0)<span class="sc">/</span>(n<span class="sc">/</span>cursigsq <span class="sc">+</span> <span class="dv">1</span><span class="sc">/</span>tausq0)</span>
+<span id="cb2-32"><a href="#cb2-32"></a>        <span class="cf">for</span> (j <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>n){</span>
+<span id="cb2-33"><a href="#cb2-33"></a>            logvals[i] <span class="ot">&lt;-</span> logvals[i] <span class="sc">+</span> <span class="fu">dnorm</span>(y[j],<span class="at">mean=</span>postmean,<span class="at">sd=</span><span class="fu">sqrt</span>(cursigsq))</span>
+<span id="cb2-34"><a href="#cb2-34"></a>        }</span>
+<span id="cb2-35"><a href="#cb2-35"></a>        logvals[i] <span class="ot">&lt;-</span> logvals[i] <span class="sc">-</span> <span class="fl">0.5</span><span class="sc">*</span><span class="fu">log</span>(n<span class="sc">/</span>cursigsq <span class="sc">+</span> <span class="dv">1</span><span class="sc">/</span>tausq0)</span>
+<span id="cb2-36"><a href="#cb2-36"></a>        logvals[i] <span class="ot">&lt;-</span> logvals[i] <span class="sc">-</span> (<span class="fl">0.5</span><span class="sc">*</span>nu0<span class="sc">+</span><span class="dv">1</span>)<span class="sc">*</span><span class="fu">log</span>(cursigsq) <span class="sc">-</span> nu0<span class="sc">*</span>sigsq0<span class="sc">/</span>cursigsq</span>
+<span id="cb2-37"><a href="#cb2-37"></a>        <span class="fu">print</span> (i)</span>
+<span id="cb2-38"><a href="#cb2-38"></a>    }</span>
+<span id="cb2-39"><a href="#cb2-39"></a>    out <span class="ot">&lt;-</span> <span class="fu">exp</span>(logvals<span class="sc">-</span><span class="fu">max</span>(logvals))</span>
+<span id="cb2-40"><a href="#cb2-40"></a>    out</span>
+<span id="cb2-41"><a href="#cb2-41"></a>}</span>
+<span id="cb2-42"><a href="#cb2-42"></a></span>
+<span id="cb2-43"><a href="#cb2-43"></a> <span class="co"># create grid of values to plug into the function (the tough part...)</span></span>
+<span id="cb2-44"><a href="#cb2-44"></a></span>
+<span id="cb2-45"><a href="#cb2-45"></a></span>
+<span id="cb2-46"><a href="#cb2-46"></a>sigsqgrid <span class="ot">&lt;-</span> <span class="fu">ppoints</span>(<span class="dv">100</span>)<span class="sc">*</span><span class="dv">6</span>  <span class="do">## grid of 100 points between 0 and 6</span></span>
+<span id="cb2-47"><a href="#cb2-47"></a></span>
+<span id="cb2-48"><a href="#cb2-48"></a> <span class="co"># feed the grid of probabilities to the function for the formula</span></span>
+<span id="cb2-49"><a href="#cb2-49"></a>sigsqprobs <span class="ot">&lt;-</span> <span class="fu">evaluatepostsigsq</span>(sigsqgrid,y,mu0,nu0,tausq0,sigsq0)</span>
+<span id="cb2-50"><a href="#cb2-50"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">1</span>))</span>
+<span id="cb2-51"><a href="#cb2-51"></a><span class="fu">plot</span>(sigsqgrid,sigsqprobs,<span class="at">type=</span><span class="st">"l"</span>,<span class="at">main=</span><span class="st">"Posterior Dist. of Sigsq (Semi-Conjugate Prior)"</span>)</span>
+<span id="cb2-52"><a href="#cb2-52"></a></span>
+<span id="cb2-53"><a href="#cb2-53"></a></span>
+<span id="cb2-54"><a href="#cb2-54"></a> <span class="do">## grid sampling: sample 1000 values sigsq proportional to sigsqprobs</span></span>
+<span id="cb2-55"><a href="#cb2-55"></a></span>
+<span id="cb2-56"><a href="#cb2-56"></a>sigsqprobs <span class="ot">&lt;-</span> sigsqprobs<span class="sc">/</span><span class="fu">sum</span>(sigsqprobs)</span>
+<span id="cb2-57"><a href="#cb2-57"></a>sigsq.samp <span class="ot">&lt;-</span> <span class="fu">sample</span>(sigsqgrid,<span class="at">size=</span><span class="dv">1000</span>,<span class="at">replace=</span>T,<span class="at">prob=</span>sigsqprobs) <span class="co"># use sample() to do multinomial sample from whole vector of probabilities</span></span>
+<span id="cb2-58"><a href="#cb2-58"></a></span>
+<span id="cb2-59"><a href="#cb2-59"></a> <span class="do">## plot posterior distribution sigsq</span></span>
+<span id="cb2-60"><a href="#cb2-60"></a></span>
+<span id="cb2-61"><a href="#cb2-61"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">1</span>))</span>
+<span id="cb2-62"><a href="#cb2-62"></a><span class="fu">plot</span>(sigsqgrid,sigsqprobs,<span class="at">type=</span><span class="st">"l"</span>,<span class="at">main=</span><span class="st">"Posterior Dist. of Sigsq (Semi-Conjugate Prior)"</span>)</span>
+<span id="cb2-63"><a href="#cb2-63"></a><span class="fu">hist</span>(sigsq.samp,<span class="at">prob=</span>T,<span class="at">main=</span><span class="st">"Posterior Samples of Sigsq (Semi-Conjugate Prior)"</span>,<span class="at">col=</span><span class="st">"gray"</span>)</span>
+<span id="cb2-64"><a href="#cb2-64"></a></span>
+<span id="cb2-65"><a href="#cb2-65"></a></span>
+<span id="cb2-66"><a href="#cb2-66"></a> <span class="do">## sample mu, given sampled sigmasq, </span></span>
+<span id="cb2-67"><a href="#cb2-67"></a></span>
+<span id="cb2-68"><a href="#cb2-68"></a>mu.samp.semiconjugate <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="cn">NA</span>,<span class="dv">1000</span>) <span class="co"># create vector to store samples</span></span>
+<span id="cb2-69"><a href="#cb2-69"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">1000</span>){</span>
+<span id="cb2-70"><a href="#cb2-70"></a>    mu.var <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">/</span>(n<span class="sc">/</span>sigsq.samp[i] <span class="sc">+</span> <span class="dv">1</span><span class="sc">/</span>tausq0)</span>
+<span id="cb2-71"><a href="#cb2-71"></a>    mu.mean <span class="ot">&lt;-</span> (n<span class="sc">*</span>y.bar<span class="sc">/</span>sigsq.samp[i] <span class="sc">+</span> mu0<span class="sc">/</span>tausq0)<span class="sc">*</span>mu.var</span>
+<span id="cb2-72"><a href="#cb2-72"></a>    mu.samp.semiconjugate[i] <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="dv">1</span>,<span class="at">mean=</span>mu.mean,<span class="at">sd=</span><span class="fu">sqrt</span>(mu.var))</span>
+<span id="cb2-73"><a href="#cb2-73"></a>}</span>
+<span id="cb2-74"><a href="#cb2-74"></a></span>
+<span id="cb2-75"><a href="#cb2-75"></a> <span class="do">### compare posterior samples of mu to raw data</span></span>
+<span id="cb2-76"><a href="#cb2-76"></a></span>
+<span id="cb2-77"><a href="#cb2-77"></a>mintemp <span class="ot">&lt;-</span> <span class="fu">min</span>(y)</span>
+<span id="cb2-78"><a href="#cb2-78"></a>maxtemp <span class="ot">&lt;-</span> <span class="fu">max</span>(y)</span>
+<span id="cb2-79"><a href="#cb2-79"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">1</span>))</span>
+<span id="cb2-80"><a href="#cb2-80"></a><span class="fu">hist</span>(y,<span class="at">col=</span><span class="st">"gray"</span>,<span class="at">main=</span><span class="st">"Distribution of Data"</span>,<span class="at">xlim=</span><span class="fu">c</span>(mintemp,maxtemp))</span>
+<span id="cb2-81"><a href="#cb2-81"></a><span class="fu">hist</span>(mu.samp.semiconjugate,<span class="at">col=</span><span class="st">"gray"</span>,<span class="at">main=</span><span class="st">"Posterior Distribution of mu (Semi-Conjugate Prior)"</span>,<span class="at">xlim=</span><span class="fu">c</span>(mintemp,maxtemp))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>The benefits of grid sampling are that it is conceptually straightforward and can be used to evaluation most any function of values. The disadvantages are that it requires quite a bit of work to manually tune the sampler.</p>
+</section>
+<section id="grid-sampling-for-airline-crash-example" class="level2">
+<h2 class="anchored" data-anchor-id="grid-sampling-for-airline-crash-example">Grid Sampling for Airline Crash Example</h2>
+<p>In the section on simple conjugate analyses there was an example of a Poisson model for airline crash data that assumed the same underlying rate for all 10 annual realizations of the Poisson processes: <span class="math inline">\(y \sim Poisson(\theta)\)</span>. The prior for <span class="math inline">\(\theta\)</span> was a minimally informative <span class="math inline">\(Gamma(\alpha=0, \beta=0)\)</span>. The posterior was the closed standard distribution <span class="math inline">\(\theta|y \sim Gamma(\Sigma y_i + \alpha, n + \beta)\)</span>.</p>
+<p>When we plot the data, though, it appears crashes were decreasing over time. A more realistic and valid model would account for that time trend. The simplest approach would be to model the trend linearly: <span class="math inline">\(y \sim Poisson(\alpha + \beta * t)\)</span>. But simply plugging <span class="math inline">\((\alpha + \beta * t)\)</span> into the Poisson likelihood, results in a complicated function for which there is no easy derivative. We will have to specify a prior for both <span class="math inline">\(\alpha\)</span> and <span class="math inline">\(\beta\)</span>, which results in non-standard distributions for <span class="math inline">\(\alpha\)</span> and <span class="math inline">\(\beta\)</span>.</p>
+<p>This is more complex than the previous normal distribution example. We now have to <em>sample for 2 unknown variables</em> (<span class="math inline">\(\alpha\)</span> and <span class="math inline">\(\beta\)</span>). One approach utilizes a <em>2-dimensional grid</em> of values, from which samples are drawn to simulate the target distributions. The grid will be quite large. For example, to obtain 100 samples for each of the two parameters, we will need <span class="math inline">\(100^2\)</span> or 10,000 different values. As before, we then have to plug those (10,000) values into the target function and calculate probabilities.</p>
+<p>Operationally, it’s more efficient to break the problem down into 2 steps: first, sample from <span class="math inline">\(\alpha\)</span>, then sample <span class="math inline">\(\beta |\alpha\)</span>. Rather than directly evaluating the joint probability distribution of 10,000 values, we can sample from 100 values of <span class="math inline">\(\alpha\)</span> then sample <span class="math inline">\(\beta\)</span> given <span class="math inline">\(\alpha\)</span>. Think of it in terms of a contingency table. The <span class="math inline">\(\beta\)</span> values are arrayed along the x-axis (columns) and <span class="math inline">\(\alpha\)</span> values along y-axis (rows). The <span class="math inline">\(\alpha\)</span> values are a <em>marginal distribution</em>, or the sum of the <span class="math inline">\(\beta\)</span>’s for that value (row) of alpha. The following code is from Dr.&nbsp;Shane Jensen’s course on applied Bayesian data analysis<a href="#fn7" class="footnote-ref" id="fnref7" role="doc-noteref"><sup>7</sup></a>, and illustrates grid sampling for the airline crash data.</p>
+<p>After setting up the data and looking at a quick plot, write the formula for the posterior as a function. Again, the <em>ppoints()</em> R function returns equally spaced points that we will use to populate the formula for the posterior. And again, the choice of the limits for the grid sampler (between 20 and 40 for alpha and between -3 and 3 for beta) is the result of painstaking trial and error on Dr.&nbsp;Jensen’s part. After defining the grid, plug the values into the formula for the posterior, and use the <em>countour()</em> function to illustrate the probability space. After that, calculate the probabilities for the grid sampler values. First look at the marginal distribution of alpha, then look at beta conditional on alpha. Plot the marginal distribution for alpha, and the conditional distribution for beta. After that, we get to the business of sampling alpha and beta values conditional on their probabilities from the grid sampling and plotting the results. Finally, characterize and plot the posterior predictive distribution for these data using our results.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode numberSource r numberLines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a> <span class="co"># fatal airline crashes over 10 years</span></span>
+<span id="cb3-2"><a href="#cb3-2"></a></span>
+<span id="cb3-3"><a href="#cb3-3"></a> years <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1976</span>,<span class="dv">1977</span>,<span class="dv">1978</span>,<span class="dv">1979</span>,<span class="dv">1980</span>,<span class="dv">1981</span>,<span class="dv">1982</span>,<span class="dv">1983</span>,<span class="dv">1984</span>,<span class="dv">1985</span>)</span>
+<span id="cb3-4"><a href="#cb3-4"></a> crashes <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">24</span>,<span class="dv">25</span>,<span class="dv">31</span>,<span class="dv">31</span>,<span class="dv">22</span>,<span class="dv">21</span>,<span class="dv">26</span>,<span class="dv">20</span>,<span class="dv">16</span>,<span class="dv">22</span>)</span>
+<span id="cb3-5"><a href="#cb3-5"></a> years <span class="ot">&lt;-</span> years<span class="dv">-1976</span></span>
+<span id="cb3-6"><a href="#cb3-6"></a> n <span class="ot">&lt;-</span> <span class="fu">length</span>(years)</span>
+<span id="cb3-7"><a href="#cb3-7"></a></span>
+<span id="cb3-8"><a href="#cb3-8"></a> <span class="co"># plot trend over time</span></span>
+<span id="cb3-9"><a href="#cb3-9"></a></span>
+<span id="cb3-10"><a href="#cb3-10"></a> <span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">1</span>))</span>
+<span id="cb3-11"><a href="#cb3-11"></a> <span class="fu">plot</span>(years,crashes,<span class="at">pch=</span><span class="dv">19</span>)</span>
+<span id="cb3-12"><a href="#cb3-12"></a></span>
+<span id="cb3-13"><a href="#cb3-13"></a> numgrid <span class="ot">&lt;-</span> <span class="dv">100</span></span>
+<span id="cb3-14"><a href="#cb3-14"></a></span>
+<span id="cb3-15"><a href="#cb3-15"></a> <span class="co"># formula to evaluate posterior over range of alpha and beta:</span></span>
+<span id="cb3-16"><a href="#cb3-16"></a></span>
+<span id="cb3-17"><a href="#cb3-17"></a> posteriorplanes <span class="ot">&lt;-</span> <span class="cf">function</span>(alpha,beta){</span>
+<span id="cb3-18"><a href="#cb3-18"></a>   logpost <span class="ot">&lt;-</span> <span class="sc">-</span><span class="cn">Inf</span></span>
+<span id="cb3-19"><a href="#cb3-19"></a>   <span class="cf">if</span> (alpha <span class="sc">+</span> beta<span class="sc">*</span><span class="fu">max</span>(years) <span class="sc">&gt;</span> <span class="dv">0</span>){</span>
+<span id="cb3-20"><a href="#cb3-20"></a>     logpost <span class="ot">&lt;-</span> <span class="dv">0</span></span>
+<span id="cb3-21"><a href="#cb3-21"></a>     <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>n){</span>
+<span id="cb3-22"><a href="#cb3-22"></a>       logpost <span class="ot">&lt;-</span> logpost <span class="sc">+</span> crashes[i]<span class="sc">*</span><span class="fu">log</span>(alpha<span class="sc">+</span>beta<span class="sc">*</span>years[i])</span>
+<span id="cb3-23"><a href="#cb3-23"></a>       logpost <span class="ot">&lt;-</span> logpost <span class="sc">-</span> (alpha<span class="sc">+</span>beta<span class="sc">*</span>years[i])</span>
+<span id="cb3-24"><a href="#cb3-24"></a>     }</span>
+<span id="cb3-25"><a href="#cb3-25"></a>   }</span>
+<span id="cb3-26"><a href="#cb3-26"></a>   logpost</span>
+<span id="cb3-27"><a href="#cb3-27"></a> }</span>
+<span id="cb3-28"><a href="#cb3-28"></a>   </span>
+<span id="cb3-29"><a href="#cb3-29"></a>  <span class="co"># set up grid sampler</span></span>
+<span id="cb3-30"><a href="#cb3-30"></a> alpharange <span class="ot">&lt;-</span> <span class="fu">ppoints</span>(numgrid)<span class="sc">*</span><span class="dv">20</span><span class="sc">+</span><span class="dv">20</span>   <span class="co"># alpha between 20 and 40 </span></span>
+<span id="cb3-31"><a href="#cb3-31"></a> betarange <span class="ot">&lt;-</span> <span class="fu">ppoints</span>(numgrid)<span class="sc">*</span><span class="dv">6-3</span>  <span class="co"># beta between -3 and 3</span></span>
+<span id="cb3-32"><a href="#cb3-32"></a> full <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="cn">NA</span>,<span class="at">nrow=</span>numgrid,<span class="at">ncol=</span>numgrid)</span>
+<span id="cb3-33"><a href="#cb3-33"></a> <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>numgrid){</span>
+<span id="cb3-34"><a href="#cb3-34"></a>   <span class="cf">for</span> (j <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>numgrid){</span>
+<span id="cb3-35"><a href="#cb3-35"></a>     full[i,j] <span class="ot">&lt;-</span> <span class="fu">posteriorplanes</span>(alpharange[i],betarange[j])</span>
+<span id="cb3-36"><a href="#cb3-36"></a>   }</span>
+<span id="cb3-37"><a href="#cb3-37"></a> }</span>
+<span id="cb3-38"><a href="#cb3-38"></a> full <span class="ot">&lt;-</span> <span class="fu">exp</span>(full <span class="sc">-</span> <span class="fu">max</span>(full))</span>
+<span id="cb3-39"><a href="#cb3-39"></a> full <span class="ot">&lt;-</span> full<span class="sc">/</span><span class="fu">sum</span>(full)</span>
+<span id="cb3-40"><a href="#cb3-40"></a> <span class="fu">contour</span>(alpharange,betarange,full,<span class="at">xlab=</span><span class="st">"alpha"</span>,<span class="at">ylab=</span><span class="st">"beta"</span>,<span class="at">drawlabels=</span>F)</span>
+<span id="cb3-41"><a href="#cb3-41"></a></span>
+<span id="cb3-42"><a href="#cb3-42"></a> <span class="do">## calculate probabilities for grid sampler  (alpha first, then beta conditional on alpha)</span></span>
+<span id="cb3-43"><a href="#cb3-43"></a> alphamarginal <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="cn">NA</span>,numgrid)</span>
+<span id="cb3-44"><a href="#cb3-44"></a> <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>numgrid){</span>
+<span id="cb3-45"><a href="#cb3-45"></a>   alphamarginal[i] <span class="ot">&lt;-</span> <span class="fu">sum</span>(full[i,])</span>
+<span id="cb3-46"><a href="#cb3-46"></a> }</span>
+<span id="cb3-47"><a href="#cb3-47"></a> betaconditional <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="cn">NA</span>,<span class="at">nrow=</span>numgrid,<span class="at">ncol=</span>numgrid)</span>
+<span id="cb3-48"><a href="#cb3-48"></a> <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>numgrid){</span>
+<span id="cb3-49"><a href="#cb3-49"></a>   <span class="cf">for</span> (j <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>numgrid){</span>
+<span id="cb3-50"><a href="#cb3-50"></a>     betaconditional[i,j] <span class="ot">&lt;-</span> full[i,j]<span class="sc">/</span><span class="fu">sum</span>(full[i,])</span>
+<span id="cb3-51"><a href="#cb3-51"></a>   }</span>
+<span id="cb3-52"><a href="#cb3-52"></a> }</span>
+<span id="cb3-53"><a href="#cb3-53"></a></span>
+<span id="cb3-54"><a href="#cb3-54"></a> <span class="do">## plot marginal distribution of alpha</span></span>
+<span id="cb3-55"><a href="#cb3-55"></a> <span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">1</span>))</span>
+<span id="cb3-56"><a href="#cb3-56"></a> <span class="fu">plot</span>(alpharange,alphamarginal,<span class="at">type=</span><span class="st">"l"</span>,<span class="at">main=</span><span class="st">"marginal dist. of alpha"</span>)</span>
+<span id="cb3-57"><a href="#cb3-57"></a></span>
+<span id="cb3-58"><a href="#cb3-58"></a> <span class="do">## plot conditional distribution of beta</span></span>
+<span id="cb3-59"><a href="#cb3-59"></a> <span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">3</span>,<span class="dv">1</span>))</span>
+<span id="cb3-60"><a href="#cb3-60"></a> <span class="fu">plot</span>(betarange,betaconditional[<span class="dv">25</span>,],<span class="at">type=</span><span class="st">"l"</span>,<span class="at">main=</span><span class="st">"dist. of beta for alpha = 24.9"</span>)</span>
+<span id="cb3-61"><a href="#cb3-61"></a> <span class="fu">plot</span>(betarange,betaconditional[<span class="dv">50</span>,],<span class="at">type=</span><span class="st">"l"</span>,<span class="at">main=</span><span class="st">"dist. of beta for alpha = 29.9"</span>)</span>
+<span id="cb3-62"><a href="#cb3-62"></a> <span class="fu">plot</span>(betarange,betaconditional[<span class="dv">75</span>,],<span class="at">type=</span><span class="st">"l"</span>,<span class="at">main=</span><span class="st">"dist. of beta for alpha = 34.9"</span>)</span>
+<span id="cb3-63"><a href="#cb3-63"></a></span>
+<span id="cb3-64"><a href="#cb3-64"></a> <span class="do">## sample grid values:</span></span>
+<span id="cb3-65"><a href="#cb3-65"></a> alpha.samp <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="cn">NA</span>,<span class="dv">10000</span>)</span>
+<span id="cb3-66"><a href="#cb3-66"></a> beta.samp <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="cn">NA</span>,<span class="dv">10000</span>)</span>
+<span id="cb3-67"><a href="#cb3-67"></a> <span class="cf">for</span> (m <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">10000</span>){</span>
+<span id="cb3-68"><a href="#cb3-68"></a>   a <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">100</span>,<span class="at">size=</span><span class="dv">1</span>,<span class="at">replace=</span>F,<span class="at">prob=</span>alphamarginal)</span>
+<span id="cb3-69"><a href="#cb3-69"></a>   b <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">100</span>,<span class="at">size=</span><span class="dv">1</span>,<span class="at">replace=</span>F,<span class="at">prob=</span>betaconditional[a,])</span>
+<span id="cb3-70"><a href="#cb3-70"></a>   alpha.samp[m] <span class="ot">&lt;-</span> alpharange[a]</span>
+<span id="cb3-71"><a href="#cb3-71"></a>   beta.samp[m] <span class="ot">&lt;-</span> betarange[b]</span>
+<span id="cb3-72"><a href="#cb3-72"></a> }</span>
+<span id="cb3-73"><a href="#cb3-73"></a></span>
+<span id="cb3-74"><a href="#cb3-74"></a> <span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">1</span>))</span>
+<span id="cb3-75"><a href="#cb3-75"></a> <span class="fu">contour</span>(alpharange,betarange,full,<span class="at">xlab=</span><span class="st">"alpha"</span>,<span class="at">ylab=</span><span class="st">"beta"</span>,<span class="at">drawlabels=</span>F,<span class="at">col=</span><span class="dv">2</span>)</span>
+<span id="cb3-76"><a href="#cb3-76"></a> <span class="fu">points</span>(alpha.samp,beta.samp)</span>
+<span id="cb3-77"><a href="#cb3-77"></a></span>
+<span id="cb3-78"><a href="#cb3-78"></a> <span class="do">## plot posterior samples for alpha and beta</span></span>
+<span id="cb3-79"><a href="#cb3-79"></a> <span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">1</span>))</span>
+<span id="cb3-80"><a href="#cb3-80"></a> <span class="fu">hist</span>(alpha.samp,<span class="at">main=</span><span class="st">"Alpha Samples"</span>,<span class="at">col=</span><span class="st">"gray"</span>)</span>
+<span id="cb3-81"><a href="#cb3-81"></a> <span class="fu">hist</span>(beta.samp,<span class="at">main=</span><span class="st">"Beta Samples"</span>,<span class="at">col=</span><span class="st">"gray"</span>)</span>
+<span id="cb3-82"><a href="#cb3-82"></a></span>
+<span id="cb3-83"><a href="#cb3-83"></a></span>
+<span id="cb3-84"><a href="#cb3-84"></a> <span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">1</span>))</span>
+<span id="cb3-85"><a href="#cb3-85"></a> <span class="fu">plot</span>(years,crashes,<span class="at">pch=</span><span class="dv">19</span>)</span>
+<span id="cb3-86"><a href="#cb3-86"></a> <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">500</span>){</span>
+<span id="cb3-87"><a href="#cb3-87"></a>   <span class="fu">abline</span>(alpha.samp[i],beta.samp[i],<span class="at">col=</span><span class="dv">3</span>)</span>
+<span id="cb3-88"><a href="#cb3-88"></a> }</span>
+<span id="cb3-89"><a href="#cb3-89"></a> <span class="fu">points</span>(years,crashes,<span class="at">pch=</span><span class="dv">19</span>)</span>
+<span id="cb3-90"><a href="#cb3-90"></a></span>
+<span id="cb3-91"><a href="#cb3-91"></a> <span class="do">## plot post pred distn for crashes for 1986 (years = 10)</span></span>
+<span id="cb3-92"><a href="#cb3-92"></a></span>
+<span id="cb3-93"><a href="#cb3-93"></a> pred.rate <span class="ot">&lt;-</span> alpha.samp <span class="sc">+</span> beta.samp<span class="sc">*</span><span class="dv">10</span></span>
+<span id="cb3-94"><a href="#cb3-94"></a></span>
+<span id="cb3-95"><a href="#cb3-95"></a> pred.crashes <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="cn">NA</span>,<span class="dv">10000</span>)</span>
+<span id="cb3-96"><a href="#cb3-96"></a> <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">10000</span>){</span>
+<span id="cb3-97"><a href="#cb3-97"></a>   pred.crashes[i] <span class="ot">&lt;-</span> <span class="fu">rpois</span>(<span class="dv">1</span>,pred.rate[i])</span>
+<span id="cb3-98"><a href="#cb3-98"></a> }</span>
+<span id="cb3-99"><a href="#cb3-99"></a></span>
+<span id="cb3-100"><a href="#cb3-100"></a> <span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">1</span>))</span>
+<span id="cb3-101"><a href="#cb3-101"></a> <span class="fu">hist</span>(crashes,<span class="at">xlim=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">45</span>),<span class="at">main=</span><span class="st">"Observed Data 1976-1985"</span>,<span class="at">col=</span><span class="st">"gray"</span>,<span class="at">breaks=</span><span class="dv">10</span>)</span>
+<span id="cb3-102"><a href="#cb3-102"></a> <span class="fu">hist</span>(pred.crashes,<span class="at">xlim=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">45</span>),<span class="at">main=</span><span class="st">"Posterior Predictive for 1986"</span>,<span class="at">col=</span><span class="st">"gray"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>In the plot of the possible annual trend line, notice that some of the possible slope lines show an <em>increase</em> in the annual trend of airline crashes. There are few of those lines, so such an increase is unlikely. But it is possible, and this might not be immediately apparent in standard statistical approaches. We can quantify the probability of a decreasing trend over time by calculating the proportion of posterior probability for <span class="math inline">\(\beta\)</span> that is less than zero. In this example it is 96%. So the probability that the trend is actually increasing is 4%. This is a direct probability statement. Also notice that allowing the intercept to vary affects the slope. Larger values for the intercept invariably force more negative slopes to fit the data to the points. This correlation between slope and intercept is also not immediately apparent in classical regression. Because the grid approach is finite, we will also see artifactual white spaces in the plots.</p>
+</section>
+</section>
+<section id="mcmc" class="level1">
+<h1>MCMC</h1>
+<p>Up until the late 1980s, Bayesian inference consisted primarily of conjugate models. While the prior and the likelihood could usually be described in closed form, for most reasonably realistic models, the posterior was often not analytically tractable. The introduction of theory and computing power to employ Monte Carlo methods led to a way to get at more complex problems, and has resulted in something of a revolution in Bayesian statistics. Not only can Monte Carlo can be used to simulate values from closed forms of prior and posterior distributions, it is the basis for Markov Chain algorithms to sample from arbitrary (typically high-dimensional) posterior distributions that would otherwise not be amenable to analysis. These Monte Carlo samples allow approximations to the integral of otherwise intractable distributions. The basic concepts of sampling and simulation are the same as simple Monte Carlo, but we sample from non-closed form distributions. Theorems exist which prove convergence to the integral as the sample size approaches infinity, even if the sampling is not independent. Monte Carlo algorithms form the approach of much of modern Bayesian analysis.</p>
+<p>A Markov chain describes a series of possible events where the probability of the next event depends solely on the current place. The term Monte Carlo arose during WWII, when folks like Stanislaw Ulam and Nicholas Metropolis were working on the Manhattan Project, and refers to estimating statistical models with sampling. A major challenge in estimating complex (multi-dimensional) posterior distributions is coming up with a good range of possible values to explore. Algorithms like <a href="http://www.columbia.edu/~cjd11/charles_dimaggio/DIRE/styled-4/styled-11/code-8/">expectation-maximization</a> (EM) algorithm are pretty good at arriving at point estimates, but not very good at fully describing a probability space. Think of a posterior distribution as a series of peaks and valleys of probabilities. When we are interested in evaluating samples from that distribution, rather than march straight up the hill to the most likely value by the quickest route possible, we are better off meandering around a bit and exploring the terrain before eventually ascending to the peak. One of the most popular approaches to conducting this exploration is the Gibbs sampler, which is named after the 19th-century American scientist J. Willard Gibbs, who contributed to the invention of statistical mechanics and vector calculus.</p>
+<section id="introduction-to-monte-carlo" class="level2">
+<h2 class="anchored" data-anchor-id="introduction-to-monte-carlo">Introduction to Monte Carlo</h2>
+<p>BUGS programs (of which WinBUGS, OpenBUGS and JAGS are the most popular) use a Monte Carlo approach to estimating probabilities, summary statistics and tail areas of probability distributions. Monte Carlo itself, is basically simulation. Say you are interested in the probability of 8 or more heads in 10 tosses of a fair coin. We could use the binomial formula to get an exact answer (it is 0.0547). Or you could take a physical approach and toss 10 coins repeatedly into the air, and count up how many times out of how many tosses we get 8 or more heads. Simulation uses a computer to “toss the coins”. Here is some R code that does just that:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode numberSource r numberLines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a>coins<span class="ot">&lt;-</span><span class="fu">rbinom</span>(<span class="dv">10000</span>,<span class="dv">10</span>,.<span class="dv">5</span>)</span>
+<span id="cb4-2"><a href="#cb4-2"></a><span class="fu">length</span>(coin[coin<span class="sc">&gt;</span><span class="dv">7</span>])<span class="sc">/</span><span class="fu">length</span>(coin)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Ten thousand simulations gets close to the exact answer. And a computer will not complain if you ask for a hundred thousand tosses. This is the basis of Monte Carlo approaches: simulate by sampling from some distribution and summarize the results as a probability distribution. You can also calculate a so-called Monte Carlo error on your results, which is the <span class="math inline">\(\frac{\sigma^2_{sample}}{\sqrt{n_{iterations}}}\)</span> The MC error decreases with the number of iterations, and can be used as an estimate of how close your estimate is to an exact estimate.</p>
+<section id="monte-carlo-calculation-of-pi" class="level3">
+<h3 class="anchored" data-anchor-id="monte-carlo-calculation-of-pi">Monte Carlo Calculation of Pi</h3>
+<p>Let’s look at another simple simulation example. <a href="#fn8" class="footnote-ref" id="fnref8" role="doc-noteref"><sup>8</sup></a> Imagine you are throwing darts, but for reasons know only to folks who make up probability examples, you are just interested in hitting the dartboard in the upper right corner. at the following figure.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="bayes/bayes2/bigBayes21.png" class="img-fluid figure-img"></p>
+<figcaption>Dart Board 1</figcaption>
+</figure>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="bayes/bayes2/bigBayes22.png" class="img-fluid figure-img"></p>
+<figcaption>Dart Board 2</figcaption>
+</figure>
+</div>
+<p>Further imagine (for the same obscure reasons) you are a very, very poor dart player. In fact your darts are essentially random tosses. If you throw enough darts, eventually, the <em>number</em> of darts that hit the upper right corner will be proportional to that <em>area</em>. The ratio of the number of darts that hit the shaded area to the total number of darts thrown will, in fact, equal one-fourth the value of pi.</p>
+<p>We can create a “virtual” dart board by generating x and y coordinates values, and calculate the distance from the origin (0,0) using the Pythagorean theorem. If the circle’s radius is 1, then values that are less than 1 fall in the shaded area, and values that are more than one fall outside the area. Do this enough times, and we can get a reasonable approximation of pi.</p>
+<p>Here’s some R code that accomplishes that.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode numberSource r numberLines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a>x<span class="ot">&lt;-</span><span class="fu">runif</span>(<span class="dv">1000</span>)</span>
+<span id="cb5-2"><a href="#cb5-2"></a>y<span class="ot">&lt;-</span><span class="fu">runif</span>(<span class="dv">1000</span>,)</span>
+<span id="cb5-3"><a href="#cb5-3"></a>distance<span class="ot">&lt;-</span><span class="fu">sqrt</span>(x<span class="sc">^</span><span class="dv">2</span><span class="sc">+</span>y<span class="sc">^</span><span class="dv">2</span>)</span>
+<span id="cb5-4"><a href="#cb5-4"></a>hits<span class="ot">&lt;-</span>distance[distance<span class="sc">&lt;</span><span class="dv">1</span>]</span>
+<span id="cb5-5"><a href="#cb5-5"></a>quart.pi<span class="ot">&lt;-</span><span class="fu">length</span>(hits)<span class="sc">/</span><span class="fu">length</span>(distance)</span>
+<span id="cb5-6"><a href="#cb5-6"></a><span class="dv">4</span><span class="sc">*</span>quart.pi</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Run this code and I think you will find that just 1,000 “throws” gets us pretty close. This, then, is the essence of a Monte Carlo simulation.</p>
+</section>
+</section>
+<section id="introduction-to-markov-chain-monte-carlo" class="level2">
+<h2 class="anchored" data-anchor-id="introduction-to-markov-chain-monte-carlo">Introduction to Markov Chain Monte Carlo</h2>
+<p>While we may be able to get a lot of mileage out of the simple conjugate analyses we considered in the first section (and, in fact even the most sophisticated modern software will resort to conjugacy if it applies), we will very likely run out of gas when we try to address more realistic and complex problems. There are a couple of options for when we have a likelihood function and prior distribution that can’t be handled by formal, mathematical (read conjugate) analysis. We could take a so-called “grid” approach by specify a prior with a dense grid of say 1,000 values spanning all possible values of <span class="math inline">\(\theta\)</span>. This may be reasonable when dealing with one parameter, but imagine the case of 6 parameters. We would need <span class="math inline">\(1000^6\)</span> combinations of values. That’s (1,000,000,000,000,000,000 for those of you keeping score.)</p>
+<p>Many of the limitations on the use of Bayesian statistics were solved when theoretical and computing advances allowed the use of sampling algorithms that produce a large number of representative values of most any posterior distribution of <span class="math inline">\(\theta\)</span>. We can then calculate things like means and variances using those representative values. Independent sampling from a joint posterior distribution like <span class="math inline">\(p(\theta | y)\)</span> is difficult, but <em>dependent</em> sampling from a Markov Chain, where each value is conditional on the previous value, is easier. There are several standard ‘recipes’ available for designing Markov chains for a stationary target distribution. The basic version is the Metropolis algorithm (Metropolis et al, 1953), which was generalized by Hastings (1970). Gibbs Sampling is a special case of the Metropolis-Hastings algorithm which generates a Markov chain by sampling from the full set of conditional distributions. Hopefully that will make more sense, soon.</p>
+<p>There are two key ingredients for an MCMC recipe. First, our prior probability must be straightforward enough so that for each value of <span class="math inline">\(\theta\)</span> we can evaluate the <span class="math inline">\(Pr[\theta]\)</span>. Second, we need a likelihood which can be calculated for any data value given <span class="math inline">\(\theta\)</span>. It turn out these two criteria are usually reasonable. And given these two criteria, we can apply the so-called Metropolis algorithm to create a representative sample of the posterior distribution.</p>
+<section id="the-metropolis-algorithm" class="level3">
+<h3 class="anchored" data-anchor-id="the-metropolis-algorithm">The Metropolis Algorithm</h3>
+<p>It can be easy to get caught up in the terminology surrounding “MCMC”. John Kruschke, I think, puts it most simply and clearly. “Any simulation that samples a lot of random values from a distribution is called a … Any process in which each step has no memory for states before the current one is called a Markov process, and a succession of such steps is called a Markov chain. The Metropolis algorithm is an example of a process”</p>
+<p>We can introduce the Metropolis algorithm with a simple, albeit somewhat farfetched, example. <a href="#fn9" class="footnote-ref" id="fnref9" role="doc-noteref"><sup>9</sup></a></p>
+<p>Imagine you are a politician campaigning in seven districts arrayed one adjacent to the other. You want to spend time in each district, but because of limited resources you want to spend the most time in those districts with the most voters. Ideally, the time you spend in a district would be proportional to the number of likely voters, but (again, because of limited resources) <em>you only have information on the number of likely voters in the district you are currently in, and those that are directly adjacent to it on either side.</em> Each day, you must decide whether to campaign in the district in which you find yourself, move to the immediately adjacent eastern district, or move to the immediately adjacent western. So, (like many people, not just politicians) you don’t have the big picture (the “target distribution”). All you know is what is on your immediate horizon. But, good news: the Metropolis algorithm can give you the benefits of knowing the big picture or target distribution, with only local information. On any given day, here’s how you decide whether to move or stay put:</p>
+<ol type="1">
+<li>First, flip a coin. Heads to move east, tails to move west.</li>
+<li>If the district indicated by the coin (east or west) has <em>more</em> likely voters than the district in which you are currently staying, you move there.</li>
+<li>If the district indicated by the coin has <em>fewer</em> likely voters, you make your decision based on a probability calculation:
+<ul>
+<li>calculate the probability of moving as the ratio of the number of likely voters in the proposed district, to the number of voters in the current district:
+<ul>
+<li><span class="math inline">\(Pr[move] = \frac{pop_{proposed}}{pop_{current}}\)</span></li>
+</ul></li>
+<li>Take a random sample between 0 and 1.</li>
+<li>If the value of the random sample is between 0 and the probability of moving, you move. Otherwise, you stay put.</li>
+</ul></li>
+</ol>
+<p>This is basically a “random walk”, and in the long run, the time you spend in each district will be proportional to the number of voters in a district.</p>
+<p>Let’s put some numbers to this example. Say the seven districts have the following relative proportions of likely voters.</p>
+<p><img src="bayes/bayes2/mcmc1.jpg" class="img-fluid"></p>
+<p>The random walk, would look like this:</p>
+<p><img src="bayes/bayes2/mcmc2.jpg" class="img-fluid"></p>
+<ul>
+<li>At time=1, you are in district 4.</li>
+<li>Flip a coin. The proposed move is to district 5.</li>
+<li>Accept the proposed move because the voter population in district 5 is greater than that in district 4.</li>
+<li>New day. Flip a coin. The proposed move is to district 6. Greater population, so you move.</li>
+<li>New day. Flip a coin. The proposed move is to district 7. Greater population, so you move.</li>
+<li>At time=4, you are in district 7. Flip a coin. If the proposal is to move to district 6, you <em>base your decision to move on the probability criterion of 6/7.</em> Draw a random sample between 0 and 1, if the value is between 0 and 6/7, you move. Otherwise you remain in district 7.</li>
+<li>Repeat many, many times.</li>
+</ul>
+<p>Note in the figure above how the density of the moves begins to mirror (upside down) the distribution of voters. This next figure represents the amount of time you spend in any one district.</p>
+<p><img src="bayes/bayes2/mcmc3.jpg" class="img-fluid"></p>
+<p>And the following figure illustrates the evolution of this distribution over time.</p>
+<p>![]bayes/bayes2/(mcmc4.jpg)</p>
+<p>You can see it gradually approaches the target distribution, even though <em>the only information you have is from one step in either direction</em>. Notice, also, the initial “bulge” of probability around the starting value of district 4. This is feature of MCMC, and why you will need to carefully consider initial or starting values for your simulations, and allow adequate “burn in” time.</p>
+<p>The basis of the Metropolis algorithm, then, consists of: (1) <em>proposing</em> a move, and (2) <em>accepting or rejecting</em> that move. Proposing a move involves a <em>proposal distribution</em>. Accepting or rejecting the move involves an <em>acceptance decision</em>.</p>
+<p>The <em>proposal distribution</em> is the range of possible moves. In the simple example with which we’ve been working, the proposal distribution consists of two possible moves: to the east or to the west, each with a probability of 50% based on the flip of a coin.</p>
+<p>The <em>acceptance decision</em> for the proposal distribution is based on a probability. It is really quite clever:</p>
+<p><span class="math display">\[
+Pr[move] = P_{min} (\frac{P_{\theta_{proposal}}}{P_{\theta_{current}}}, 1)
+\]</span></p>
+<p>So, if the population of the proposed district is greater than the current population, the minimum is 1, and you move with 100% certainty. If, on the other hand, the proposed population is less than the current population, you move with a probability equal to that proportion. The process works because the relative transition distributions match the relative values of the target distribution. You can summarize the process, from coin flipping to acceptance probability as</p>
+<p><span class="math display">\[
+0.5*P_{min}(\frac{P_{\theta_{proposal}}}{P_{\theta_{current}}}, 1)
+\]</span>.</p>
+<p>Because we are only interested in the <em>ratio</em> of the proposed to the current values, the final (target or posterior) distribution is <em>not normalized</em>. It does not have to integrate or sum up to 1, The consequence of this is that we are not restricted to closed solutions. We can use this approach to get at any complex posterior distributions or the kind <span class="math inline">\(Pr[data|\theta]*Pr[\theta]\)</span></p>
+</section>
+<section id="from-discrete-metropolis-algorithm-to-continuous" class="level3">
+<h3 class="anchored" data-anchor-id="from-discrete-metropolis-algorithm-to-continuous">From discrete Metropolis algorithm to continuous</h3>
+<p>The Metropolis algorithm can be generalized from the discrete (e.g.&nbsp;“right vs.&nbsp;left move”) case to a continuous multi-dimensional parameter space version while remaining essentially the same. As mentioned earlier, the main criterion is to be able to calculate the <span class="math inline">\(Pr[\theta]\)</span> for any candidate value of <span class="math inline">\(\theta\)</span>. Since it doesn’t have to be normalized, i.e., all we need is the ratio of the proposed to the current , we can use the product of the likelihood and the prior to calculate the of the posterior.</p>
+<p>A normally distributed proposal distribution makes it easier to generate proposal values, and the proposed move will typically be near the current position. The decision to move is based on the same probability as that in the simple discrete version:</p>
+<p><span class="math display">\[
+Pr[move] = P_{min}(\frac{P_{\theta-propose}}{P_{\theta-current}}, 1)
+\]</span></p>
+<p>Some care needs to be taken in specifying a proposal distribution. If the proposal distribution is too narrow, it will take a long time to traverse the entire target distribution, especially if the initial or starting value is off somewhere in the hinterlands of a large multi-dimensional parameter space. That’s one reason that the operationalization of a Metropolis algorithm should involve more than one starting value. Of course, it’s also a potential problem if the proposal distribution is too wide. Then, <span class="math inline">\(\frac{P_{\theta-propose}}{P_{\theta-current}}\)</span> will rarely be large enough to move from the current spot, and your sample will be “stuck” in a localized area of the target distribution.</p>
+</section>
+<section id="metropolis-algorithm-with-two-parameters" class="level3">
+<h3 class="anchored" data-anchor-id="metropolis-algorithm-with-two-parameters">Metropolis algorithm with two parameters</h3>
+<p>Let’s review and extend the Metropolis algorithm to the two-parameter setting. The mechanics of applying the Metropolis algorithm to a two-parameter bivariate normal model proceed similarly to the simple one-parameter setting. As a quick recap, our random walk starts at some arbitrary starting point, hopefully not too far away from the meatiest part of the posterior distribution. We propose a move from our current position using a proposal distribution from which (we assume) it is easy to generate values. We accept the move with certainty if the target or posterior distribution is more dense (of greater value) at the proposed position than at the current position. If the target or posterior distribution is less dense at the proposed vs.&nbsp;the current position, we accept the move with probability set to the ratio of the proposed to the current value.</p>
+<p>The algorithm, then, needs only a few simple tools:</p>
+<ul>
+<li>a value sampled randomly from the proposal distribution</li>
+<li>another value sampled randomly from a <span class="math inline">\(\sim Unif(0,1)\)</span> distribution to accept or reject probabilistic moves</li>
+<li>the ability to calculate the likelihood and prior for any given parameter values
+<ul>
+<li>conveniently, since we are only interested in their ratio, these values don’t have to be normalized</li>
+</ul></li>
+</ul>
+<p>For a two-parameter problem, we can use the product of beta distributions as a prior. As an example (again, from John Kruschke’s text) of a two-parameter setting, we will work with a a bivariate normal proposal distribution. Below, you’ll find the proposal distribution and the R-code used to create it. Then the scatter plot of samples (excluding a burn-in period), where <span class="math inline">\(N_{pro}\)</span> is the number of accepted proposals. Note that for more complex parameter spaces, it may be difficult or impossible to visualize your proposal distribution, but the underlying concepts remain the same.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode numberSource r numberLines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a> <span class="co"># R code to create bivariate figure</span></span>
+<span id="cb6-2"><a href="#cb6-2"></a>mu1<span class="ot">&lt;-</span><span class="dv">0</span> <span class="co"># set mean x1</span></span>
+<span id="cb6-3"><a href="#cb6-3"></a>mu2<span class="ot">&lt;-</span><span class="dv">0</span> <span class="co"># set mean x2</span></span>
+<span id="cb6-4"><a href="#cb6-4"></a>s11<span class="ot">&lt;-</span><span class="dv">10</span> <span class="co"># set variance x1</span></span>
+<span id="cb6-5"><a href="#cb6-5"></a>s22<span class="ot">&lt;-</span><span class="dv">10</span> <span class="co"># set variance x2</span></span>
+<span id="cb6-6"><a href="#cb6-6"></a>s12<span class="ot">&lt;-</span><span class="dv">15</span> <span class="co"># set covariance x1 and x2</span></span>
+<span id="cb6-7"><a href="#cb6-7"></a>rho<span class="ot">&lt;-</span><span class="fl">0.5</span> <span class="co"># set correlation coefficient  x1 and x2</span></span>
+<span id="cb6-8"><a href="#cb6-8"></a>x1<span class="ot">&lt;-</span><span class="fu">seq</span>(<span class="sc">-</span><span class="dv">10</span>,<span class="dv">10</span>,<span class="at">length=</span><span class="dv">41</span>) <span class="co"># generate vector  x1</span></span>
+<span id="cb6-9"><a href="#cb6-9"></a>x2<span class="ot">&lt;-</span>x1 <span class="co"># copy x1 to x2</span></span>
+<span id="cb6-10"><a href="#cb6-10"></a></span>
+<span id="cb6-11"><a href="#cb6-11"></a></span>
+<span id="cb6-12"><a href="#cb6-12"></a>f<span class="ot">&lt;-</span><span class="cf">function</span>(x1,x2) <span class="co"># multivariate function</span></span>
+<span id="cb6-13"><a href="#cb6-13"></a>{</span>
+<span id="cb6-14"><a href="#cb6-14"></a>term1<span class="ot">&lt;-</span><span class="dv">1</span><span class="sc">/</span>(<span class="dv">2</span><span class="sc">*</span>pi<span class="sc">*</span><span class="fu">sqrt</span>(s11<span class="sc">*</span>s22<span class="sc">*</span>(<span class="dv">1</span><span class="sc">-</span>rho<span class="sc">^</span><span class="dv">2</span>)))</span>
+<span id="cb6-15"><a href="#cb6-15"></a>term2<span class="ot">&lt;-</span><span class="sc">-</span><span class="dv">1</span><span class="sc">/</span>(<span class="dv">2</span><span class="sc">*</span>(<span class="dv">1</span><span class="sc">-</span>rho<span class="sc">^</span><span class="dv">2</span>))</span>
+<span id="cb6-16"><a href="#cb6-16"></a>term3<span class="ot">&lt;-</span>(x1<span class="sc">-</span>mu1)<span class="sc">^</span><span class="dv">2</span><span class="sc">/</span>s11</span>
+<span id="cb6-17"><a href="#cb6-17"></a>term4<span class="ot">&lt;-</span>(x2<span class="sc">-</span>mu2)<span class="sc">^</span><span class="dv">2</span><span class="sc">/</span>s22</span>
+<span id="cb6-18"><a href="#cb6-18"></a>term5<span class="ot">&lt;-</span><span class="sc">-</span><span class="dv">2</span><span class="sc">*</span>rho<span class="sc">*</span>((x1<span class="sc">-</span>mu1)<span class="sc">*</span>(x2<span class="sc">-</span>mu2))<span class="sc">/</span>(<span class="fu">sqrt</span>(s11)<span class="sc">*</span><span class="fu">sqrt</span>(s22))</span>
+<span id="cb6-19"><a href="#cb6-19"></a>term1<span class="sc">*</span><span class="fu">exp</span>(term2<span class="sc">*</span>(term3<span class="sc">+</span>term4<span class="sc">-</span>term5))</span>
+<span id="cb6-20"><a href="#cb6-20"></a>} </span>
+<span id="cb6-21"><a href="#cb6-21"></a></span>
+<span id="cb6-22"><a href="#cb6-22"></a>z<span class="ot">&lt;-</span><span class="fu">outer</span>(x1,x2,f) <span class="co"># calculate density values</span></span>
+<span id="cb6-23"><a href="#cb6-23"></a></span>
+<span id="cb6-24"><a href="#cb6-24"></a></span>
+<span id="cb6-25"><a href="#cb6-25"></a><span class="fu">persp</span>(x1, x2, z, <span class="co"># 3-D plot</span></span>
+<span id="cb6-26"><a href="#cb6-26"></a><span class="at">main=</span><span class="st">"Two dimensional Normal Distribution"</span>,</span>
+<span id="cb6-27"><a href="#cb6-27"></a><span class="at">sub=</span><span class="fu">expression</span>(<span class="fu">italic</span>(f)<span class="sc">~</span>(<span class="fu">bold</span>(x))<span class="sc">==</span><span class="fu">frac</span>(<span class="dv">1</span>,<span class="dv">2</span><span class="sc">~</span>pi<span class="sc">~</span><span class="fu">sqrt</span>(sigma[<span class="dv">11</span>]<span class="sc">~</span></span>
+<span id="cb6-28"><a href="#cb6-28"></a>sigma[<span class="dv">22</span>]<span class="sc">~</span>(<span class="dv">1</span><span class="sc">-</span>rho<span class="sc">^</span><span class="dv">2</span>)))<span class="sc">~</span><span class="fu">phantom</span>(<span class="dv">0</span>)<span class="sc">^</span><span class="fu">bold</span>(.)<span class="sc">~</span>exp<span class="sc">~</span><span class="fu">bgroup</span>(<span class="st">"{"</span>,</span>
+<span id="cb6-29"><a href="#cb6-29"></a><span class="fu">list</span>(<span class="sc">-</span><span class="fu">frac</span>(<span class="dv">1</span>,<span class="dv">2</span>(<span class="dv">1</span><span class="sc">-</span>rho<span class="sc">^</span><span class="dv">2</span>)),</span>
+<span id="cb6-30"><a href="#cb6-30"></a><span class="fu">bgroup</span>(<span class="st">"["</span>, <span class="fu">frac</span>((x[<span class="dv">1</span>]<span class="sc">~-</span><span class="er">~</span>mu[<span class="dv">1</span>])<span class="sc">^</span><span class="dv">2</span>, sigma[<span class="dv">11</span>])<span class="sc">~-</span><span class="er">~</span><span class="dv">2</span><span class="sc">~</span>rho<span class="sc">~</span><span class="fu">frac</span>(x[<span class="dv">1</span>]<span class="sc">~-</span><span class="er">~</span>mu[<span class="dv">1</span>],</span>
+<span id="cb6-31"><a href="#cb6-31"></a><span class="fu">sqrt</span>(sigma[<span class="dv">11</span>]))<span class="sc">~</span> <span class="fu">frac</span>(x[<span class="dv">2</span>]<span class="sc">~-</span><span class="er">~</span>mu[<span class="dv">2</span>],<span class="fu">sqrt</span>(sigma[<span class="dv">22</span>]))<span class="sc">~+</span><span class="er">~</span></span>
+<span id="cb6-32"><a href="#cb6-32"></a><span class="fu">frac</span>((x[<span class="dv">2</span>]<span class="sc">~-</span><span class="er">~</span>mu[<span class="dv">2</span>])<span class="sc">^</span><span class="dv">2</span>, sigma[<span class="dv">22</span>]),<span class="st">"]"</span>)),<span class="st">"}"</span>)),</span>
+<span id="cb6-33"><a href="#cb6-33"></a><span class="at">col=</span><span class="st">"lightgreen"</span>,</span>
+<span id="cb6-34"><a href="#cb6-34"></a><span class="at">theta=</span><span class="dv">30</span>, <span class="at">phi=</span><span class="dv">20</span>,</span>
+<span id="cb6-35"><a href="#cb6-35"></a><span class="at">r=</span><span class="dv">50</span>,</span>
+<span id="cb6-36"><a href="#cb6-36"></a><span class="at">d=</span><span class="fl">0.1</span>,</span>
+<span id="cb6-37"><a href="#cb6-37"></a><span class="at">expand=</span><span class="fl">0.5</span>,</span>
+<span id="cb6-38"><a href="#cb6-38"></a><span class="at">ltheta=</span><span class="dv">90</span>, <span class="at">lphi=</span><span class="dv">180</span>,</span>
+<span id="cb6-39"><a href="#cb6-39"></a><span class="at">shade=</span><span class="fl">0.75</span>,</span>
+<span id="cb6-40"><a href="#cb6-40"></a><span class="at">ticktype=</span><span class="st">"detailed"</span>,</span>
+<span id="cb6-41"><a href="#cb6-41"></a><span class="at">nticks=</span><span class="dv">5</span>) </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="bayes/bayes2/2dPlot.jpg" class="img-fluid figure-img"></p>
+<figcaption>bivariate normal proposal distribution</figcaption>
+</figure>
+</div>
+<!-- see the file BernTwoMetropolis.R for code that generated this plot -->
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="bayes/bayes2/metropolisSamples.jpg" class="img-fluid figure-img"></p>
+<figcaption>Metropolis scatter plot</figcaption>
+</figure>
+</div>
+</section>
+<section id="gibbs-sampling" class="level3">
+<h3 class="anchored" data-anchor-id="gibbs-sampling">Gibbs Sampling</h3>
+<p>As we have noted, for the Metropolis sampler to work well, the proposal distribution needs to be “tuned” to the poster distribution. If the proposal distribution is too narrow, too many proposed moves or samples will be rejected. If it is too wide, it can get bogged down in a local region and not move efficiently across the parameter space. Gibb’s sampling (Geman and Geman, 1984) is an alternative algorithm that does not require a separate proposal distribution, so is not dependent on tuning a proposal distribution to the posterior distribution.</p>
+<p>The main difference between Gibbs sampling and Metropolis sampling is how the proposal value is chosen. Instead of choosing a proposed value from a proposal distribution that represents the entire multi-parameter density, the Gibbs sample chooses a random value for a <em>single</em> parameter <em>holding all the other parameters constant</em>. The randomly proposed single parameter is combined with the unchanged values of all the other parameters to calculate the proposed new position in the random walk. The Gibb’s sampler then repeats this process sequentially through all the parameters, calculating a proposal value, and accepting or rejecting it in turn. You can think of it as a special case of the more general Metropolis algorithm, where the proposal distribution is determined, at each step, by the conditioning variables. Note that the process is set up so that the proposal distribution will exactly mirror the posterior probability for a parameter. So, <em>the proposed move is always accepted</em>. This is why the Gibb’s sampler is more efficient than the Metropolis sampler. You may see references to the Metropolis-Hastings algorithm. This is a generalization of the Metropolis algorithm required to prove that the Gibbs sampler “works”.</p>
+<p>To sum up Gibbs sampling:</p>
+<ul>
+<li>Select a parameter</li>
+<li>Choose a random value for that parameter from a conditional distribution based on all the other parameters</li>
+<li>The new point is determined by the values of the other parameters and the proposed value of the parameter conditional on them</li>
+</ul>
+<p>Gibbs sampling is useful when the complete posterior distribution cannot be determined and so cannot be sampled. This may be the case in complex models. The following figure illustrates the concept for the two-parameter bivariate normal model.</p>
+<p><img src="bayes/bayes2/gibbs1.jpg" class="img-fluid"></p>
+<p>The top figure shows a randomly generated value of <span class="math inline">\(\theta_1|\theta_2\)</span>. The dark line is a slice through the posterior at the conditional value of <span class="math inline">\(\theta_2\)</span>. The dot is the value of <span class="math inline">\(\theta_1\)</span> from that conditional distribution. The bottom figure shows the same process for <span class="math inline">\(\theta_2|\theta_1\)</span>. As opposed to the Metropolis algorithm, the Gibbs sampler results in the following scatterplot.</p>
+<p><img src="bayes/bayes2/gibbs2.jpg" class="img-fluid"></p>
+<p>Programs like WinBUGS, OpenBUGS and JAGS, even though they are named for Gibbs sampling, often use Metropolis algorithms, or even conjugate results if available, depending on the model specification. You can override the default behaviors, but will rarely have reason to.</p>
+</section>
+<section id="implementing-a-gibbs-sampler" class="level3">
+<h3 class="anchored" data-anchor-id="implementing-a-gibbs-sampler">Implementing a Gibbs Sampler</h3>
+<p>Gibbs sampling arose to deal with messy joint posterior distributions where it is very difficult to sample from all the parameters in the joint space simultaneously. Rather than sample directly form a joint posterior distribution like <span class="math inline">\(Pr[(\mu_0, \sigma_0,\mu_1, \sigma_1, \alpha) |y]\)</span>, the Gibbs algorithm cycles through the conditional distributions for each parameter, e.g.&nbsp;e.g.&nbsp;<span class="math inline">\(Pr(\alpha | (\mu_0, \sigma_0,\mu_1, \sigma_1, y))\)</span>. So, given values for <span class="math inline">\(\mu_0, \sigma_0,\mu_1, \sigma_1, y\)</span>, we estimate <span class="math inline">\(\alpha\)</span>. Then, given values for <span class="math inline">\(\alpha ,\sigma_0,\mu_1, \sigma_1, y\)</span>, estimate <span class="math inline">\(\mu_0\)</span>. Then similarly cycle through the rest of the parameters, using the estimated value for a parameter for each subsequent step in the cycle, so that we are always using the most updated value. This process is repeated again and again (like an expectation-maximization algorithm) until we arrive or “converge” at a reasonable estimate of the full joint posterior distribution. <a href="#fn10" class="footnote-ref" id="fnref10" role="doc-noteref"><sup>10</sup></a></p>
+<p>You can, if you like, think of Gibbs sampling in terms of an EM algorithm, which are used for <a href="http://www.columbia.edu/~cjd11/charles_dimaggio/DIRE/styled-4/styled-11/code-8/">mixture models</a> to return optimal values for point estimates. For the “expectation” step, rather than “divide” an observation up into parts, with some of the observation in one of the underlying distributions and some in the other underlying distribution, the Gibbs sampler “flips” a coin based on the probability of an observation being in one of the underlying distributions or the other, and “moves” the observation entirely into that distribution. Then, for the “maximization” step, Gibbs uses that choice of the distribution for the estimate of the next parameter, e.g.&nbsp;<span class="math inline">\(p(\alpha|\sigma^2, \mu,  I, y)\)</span>, then plugs that value into the formula to sample the next parameter conditional on the given parameters. In contrast to the EM algorithm, with Gibbs sampling we can explore the entire joint posterior probability space.</p>
+<p>Gibbs sampling is very powerful, but the issue of convergence is critically important, and it is the responsibility of the analyst to diagnose convergence. One popular approach is to run multiple chains to ensure that sampler arrives at the same place regardless of where it starts. Another issue is autocorrelation. Simple sampling implementations in R (e.g.&nbsp;<em>sample()</em>) are independent. Markov Chain produces correlated samples because by definition the probability of subsequent events depends on the current state. We will need to evaluate how correlated the samples are, and perhaps “thin” them by including only every <span class="math inline">\(k^th\)</span> observation in our sample.</p>
+<p>The following R code presents Gibbs sampling for a target bivariate normal distribution. <a href="#fn11" class="footnote-ref" id="fnref11" role="doc-noteref"><sup>11</sup></a> It runs through the process of setting up the sampler, running two chains from two different dispersed starting values, evaluating and addressing convergence (“burn-in”) and autocorrelation. We see the final results are very close to the target distribution, and that we can fully describe the distributions in terms of point estimate and spread.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode numberSource r numberLines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a></span>
+<span id="cb7-2"><a href="#cb7-2"></a>numiters <span class="ot">&lt;-</span> <span class="dv">10000</span></span>
+<span id="cb7-3"><a href="#cb7-3"></a></span>
+<span id="cb7-4"><a href="#cb7-4"></a> <span class="co"># set means and covariances for bivariate normal</span></span>
+<span id="cb7-5"><a href="#cb7-5"></a>mu1 <span class="ot">&lt;-</span> <span class="dv">0</span></span>
+<span id="cb7-6"><a href="#cb7-6"></a>mu2 <span class="ot">&lt;-</span> <span class="dv">0</span></span>
+<span id="cb7-7"><a href="#cb7-7"></a>sigsq1 <span class="ot">&lt;-</span> <span class="dv">1</span></span>
+<span id="cb7-8"><a href="#cb7-8"></a>sigsq2 <span class="ot">&lt;-</span> <span class="dv">1</span></span>
+<span id="cb7-9"><a href="#cb7-9"></a>rho <span class="ot">&lt;-</span> <span class="fl">0.9</span></span>
+<span id="cb7-10"><a href="#cb7-10"></a></span>
+<span id="cb7-11"><a href="#cb7-11"></a> <span class="co"># set sampler to run from starting values theta1=10 and theta2=10</span></span>
+<span id="cb7-12"><a href="#cb7-12"></a>theta1 <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="cn">NA</span>,numiters)</span>
+<span id="cb7-13"><a href="#cb7-13"></a>theta2 <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="cn">NA</span>,numiters)</span>
+<span id="cb7-14"><a href="#cb7-14"></a>theta1[<span class="dv">1</span>] <span class="ot">&lt;-</span> <span class="dv">10</span> <span class="co"># starting points for theta1 and theta2 in first chain</span></span>
+<span id="cb7-15"><a href="#cb7-15"></a>theta2[<span class="dv">1</span>] <span class="ot">&lt;-</span> <span class="dv">10</span></span>
+<span id="cb7-16"><a href="#cb7-16"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">2</span><span class="sc">:</span>numiters){</span>
+<span id="cb7-17"><a href="#cb7-17"></a>  theta1[i] <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="dv">1</span>,rho<span class="sc">*</span>theta2[i<span class="dv">-1</span>],<span class="fu">sqrt</span>(<span class="dv">1</span><span class="sc">-</span>rho<span class="sc">^</span><span class="dv">2</span>)) <span class="co"># sample from conditional distribution</span></span>
+<span id="cb7-18"><a href="#cb7-18"></a>  theta2[i] <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="dv">1</span>,rho<span class="sc">*</span>theta1[i],<span class="fu">sqrt</span>(<span class="dv">1</span><span class="sc">-</span>rho<span class="sc">^</span><span class="dv">2</span>))</span>
+<span id="cb7-19"><a href="#cb7-19"></a>  <span class="fu">print</span>(i)</span>
+<span id="cb7-20"><a href="#cb7-20"></a>}</span>
+<span id="cb7-21"><a href="#cb7-21"></a></span>
+<span id="cb7-22"><a href="#cb7-22"></a></span>
+<span id="cb7-23"><a href="#cb7-23"></a> <span class="do">## set second different starting values theta1=-10 and theta2=-10</span></span>
+<span id="cb7-24"><a href="#cb7-24"></a>theta1.alt <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="cn">NA</span>,numiters)</span>
+<span id="cb7-25"><a href="#cb7-25"></a>theta2.alt <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="cn">NA</span>,numiters)</span>
+<span id="cb7-26"><a href="#cb7-26"></a>theta1.alt[<span class="dv">1</span>] <span class="ot">&lt;-</span> <span class="sc">-</span><span class="dv">10</span> <span class="co"># starting point2 for theta1 and theta2 second chain</span></span>
+<span id="cb7-27"><a href="#cb7-27"></a>theta2.alt[<span class="dv">1</span>] <span class="ot">&lt;-</span> <span class="sc">-</span><span class="dv">10</span></span>
+<span id="cb7-28"><a href="#cb7-28"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">2</span><span class="sc">:</span>numiters){</span>
+<span id="cb7-29"><a href="#cb7-29"></a>  theta1.alt[i] <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="dv">1</span>,rho<span class="sc">*</span>theta2.alt[i<span class="dv">-1</span>],<span class="fu">sqrt</span>(<span class="dv">1</span><span class="sc">-</span>rho<span class="sc">^</span><span class="dv">2</span>))</span>
+<span id="cb7-30"><a href="#cb7-30"></a>  theta2.alt[i] <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="dv">1</span>,rho<span class="sc">*</span>theta1.alt[i],<span class="fu">sqrt</span>(<span class="dv">1</span><span class="sc">-</span>rho<span class="sc">^</span><span class="dv">2</span>))</span>
+<span id="cb7-31"><a href="#cb7-31"></a>  <span class="fu">print</span>(i)</span>
+<span id="cb7-32"><a href="#cb7-32"></a>}</span>
+<span id="cb7-33"><a href="#cb7-33"></a></span>
+<span id="cb7-34"><a href="#cb7-34"></a>mintheta1 <span class="ot">&lt;-</span> <span class="fu">min</span>(theta1,theta1.alt)</span>
+<span id="cb7-35"><a href="#cb7-35"></a>mintheta2 <span class="ot">&lt;-</span> <span class="fu">min</span>(theta2,theta2.alt)</span>
+<span id="cb7-36"><a href="#cb7-36"></a>maxtheta1 <span class="ot">&lt;-</span> <span class="fu">max</span>(theta1,theta1.alt)</span>
+<span id="cb7-37"><a href="#cb7-37"></a>maxtheta2 <span class="ot">&lt;-</span> <span class="fu">max</span>(theta2,theta2.alt)</span>
+<span id="cb7-38"><a href="#cb7-38"></a></span>
+<span id="cb7-39"><a href="#cb7-39"></a> <span class="do">## plot first 100 iterations</span></span>
+<span id="cb7-40"><a href="#cb7-40"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">1</span>))</span>
+<span id="cb7-41"><a href="#cb7-41"></a><span class="fu">plot</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">100</span>,theta1[<span class="dv">1</span><span class="sc">:</span><span class="dv">100</span>],<span class="at">col=</span><span class="dv">1</span>,<span class="at">ylim=</span><span class="fu">c</span>(mintheta1,maxtheta1),<span class="at">type=</span><span class="st">"l"</span>)</span>
+<span id="cb7-42"><a href="#cb7-42"></a><span class="fu">lines</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">100</span>,theta1.alt[<span class="dv">1</span><span class="sc">:</span><span class="dv">100</span>],<span class="at">col=</span><span class="dv">2</span>)</span>
+<span id="cb7-43"><a href="#cb7-43"></a><span class="fu">plot</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">100</span>,theta2[<span class="dv">1</span><span class="sc">:</span><span class="dv">100</span>],<span class="at">col=</span><span class="dv">1</span>,<span class="at">ylim=</span><span class="fu">c</span>(mintheta2,maxtheta2),<span class="at">type=</span><span class="st">"l"</span>)</span>
+<span id="cb7-44"><a href="#cb7-44"></a><span class="fu">lines</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">100</span>,theta2.alt[<span class="dv">1</span><span class="sc">:</span><span class="dv">100</span>],<span class="at">col=</span><span class="dv">2</span>)</span>
+<span id="cb7-45"><a href="#cb7-45"></a></span>
+<span id="cb7-46"><a href="#cb7-46"></a> <span class="do">## plot all 10000 iterations</span></span>
+<span id="cb7-47"><a href="#cb7-47"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">1</span>))</span>
+<span id="cb7-48"><a href="#cb7-48"></a><span class="fu">plot</span>(<span class="dv">1</span><span class="sc">:</span>numiters,theta1,<span class="at">col=</span><span class="dv">1</span>,<span class="at">ylim=</span><span class="fu">c</span>(mintheta1,maxtheta1),<span class="at">type=</span><span class="st">"l"</span>)</span>
+<span id="cb7-49"><a href="#cb7-49"></a><span class="fu">lines</span>(<span class="dv">1</span><span class="sc">:</span>numiters,theta1.alt,<span class="at">col=</span><span class="dv">2</span>)</span>
+<span id="cb7-50"><a href="#cb7-50"></a><span class="fu">plot</span>(<span class="dv">1</span><span class="sc">:</span>numiters,theta2,<span class="at">col=</span><span class="dv">1</span>,<span class="at">ylim=</span><span class="fu">c</span>(mintheta2,maxtheta2),<span class="at">type=</span><span class="st">"l"</span>)</span>
+<span id="cb7-51"><a href="#cb7-51"></a><span class="fu">lines</span>(<span class="dv">1</span><span class="sc">:</span>numiters,theta2.alt,<span class="at">col=</span><span class="dv">2</span>)</span>
+<span id="cb7-52"><a href="#cb7-52"></a></span>
+<span id="cb7-53"><a href="#cb7-53"></a> <span class="do">## throw out first 100 as "burn-in", combine chains</span></span>
+<span id="cb7-54"><a href="#cb7-54"></a></span>
+<span id="cb7-55"><a href="#cb7-55"></a>theta1.new <span class="ot">&lt;-</span> <span class="fu">c</span>(theta1[<span class="dv">101</span><span class="sc">:</span>numiters],theta1.alt[<span class="dv">101</span><span class="sc">:</span>numiters])</span>
+<span id="cb7-56"><a href="#cb7-56"></a>theta2.new <span class="ot">&lt;-</span> <span class="fu">c</span>(theta2[<span class="dv">101</span><span class="sc">:</span>numiters],theta2.alt[<span class="dv">101</span><span class="sc">:</span>numiters])</span>
+<span id="cb7-57"><a href="#cb7-57"></a></span>
+<span id="cb7-58"><a href="#cb7-58"></a>numsamples <span class="ot">&lt;-</span> <span class="fu">length</span>(theta1.new)</span>
+<span id="cb7-59"><a href="#cb7-59"></a></span>
+<span id="cb7-60"><a href="#cb7-60"></a> <span class="co"># plot auto-correlation of each parameter</span></span>
+<span id="cb7-61"><a href="#cb7-61"></a></span>
+<span id="cb7-62"><a href="#cb7-62"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">1</span>))</span>
+<span id="cb7-63"><a href="#cb7-63"></a><span class="fu">acf</span>(theta1.new)  <span class="co"># acf() is R autocorrelation function</span></span>
+<span id="cb7-64"><a href="#cb7-64"></a><span class="fu">acf</span>(theta2.new) </span>
+<span id="cb7-65"><a href="#cb7-65"></a></span>
+<span id="cb7-66"><a href="#cb7-66"></a> <span class="do">## looks like correlation dies off after about 15th sample (see on plot, upright correlation plot falls into the little dashed blue line tick marks at about that number)</span></span>
+<span id="cb7-67"><a href="#cb7-67"></a> <span class="do">## keep independent samples by only taking every 15th sample:</span></span>
+<span id="cb7-68"><a href="#cb7-68"></a></span>
+<span id="cb7-69"><a href="#cb7-69"></a>temp <span class="ot">&lt;-</span> <span class="dv">15</span><span class="sc">*</span><span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span>(numsamples<span class="sc">/</span><span class="dv">15</span>))</span>
+<span id="cb7-70"><a href="#cb7-70"></a>theta1.final <span class="ot">&lt;-</span> theta1.new[temp]</span>
+<span id="cb7-71"><a href="#cb7-71"></a>theta2.final <span class="ot">&lt;-</span> theta2.new[temp]</span>
+<span id="cb7-72"><a href="#cb7-72"></a></span>
+<span id="cb7-73"><a href="#cb7-73"></a> <span class="do">## go from 20,000 samples (two chains of 10,000 each) to about 1,000 samples, but more confident they are independent and converged</span></span>
+<span id="cb7-74"><a href="#cb7-74"></a></span>
+<span id="cb7-75"><a href="#cb7-75"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">1</span>))</span>
+<span id="cb7-76"><a href="#cb7-76"></a><span class="fu">acf</span>(theta1.final)</span>
+<span id="cb7-77"><a href="#cb7-77"></a><span class="fu">acf</span>(theta2.final) </span>
+<span id="cb7-78"><a href="#cb7-78"></a></span>
+<span id="cb7-79"><a href="#cb7-79"></a><span class="fu">mean</span>(theta1.final)</span>
+<span id="cb7-80"><a href="#cb7-80"></a><span class="fu">mean</span>(theta2.final)</span>
+<span id="cb7-81"><a href="#cb7-81"></a><span class="fu">sd</span>(theta1.final)</span>
+<span id="cb7-82"><a href="#cb7-82"></a><span class="fu">sd</span>(theta2.final)</span>
+<span id="cb7-83"><a href="#cb7-83"></a><span class="fu">cor</span>(theta1.final,theta2.final)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="gibbs-vs.-metropolis" class="level3">
+<h3 class="anchored" data-anchor-id="gibbs-vs.-metropolis">Gibbs vs.&nbsp;Metropolis</h3>
+<p>Gibbs sampling is (relatively) conceptually easy to implement because we are able to break up the non-standard joint posterior distributions into standard conditional probability distributions. This may not always be possible. For example, recall plane crash model with time trend for which we used grid sampling. The conditional distributions <span class="math inline">\(p(\alpha|\beta, y)\)</span> and <span class="math inline">\(p(\beta|\alpha, y)\)</span> are themselves non-standard, so we can’t sample directly from them using Gibbs sampling. We can, though, use the Metropolis algorithm.</p>
+<p>In the Metropolis algorithm, instead of using a grid of all possible values, we again take a Markov chain approach and move from a current value to a subsequent value based solely on the current value. As with Gibbs, we start with a current value, but then we “propose” a new next value. If the newly proposed value has a higher posterior probability than the current value, we will be more likely to accept it move to it. If the newly proposed value has a lower posterior probability than the current value, we will be less likely to accept and move to it.</p>
+<p>In practice, we start with a “proposal distribution”, e.g.&nbsp;<span class="math inline">\(\alpha^{proposal} \sim (Nl(\alpha^{current}, 1))\)</span>. We then make a decision to accept or reject a newly proposed value from that distribution based on $ r = $. If <span class="math inline">\(r&gt;1\)</span> we will accept and move to new value with certainty. If <span class="math inline">\(r&lt;1\)</span>, we “flip a coin” with the probability of accepting or moving to the new value move equal to <span class="math inline">\(r\)</span>. If that probability <span class="math inline">\(r\)</span> is very small probability, we will not be very likely to accept and move to the new value, if relatively high, we are more likely to accept and make the move. So, rather than using a grid of possible values to evaluate the posterior space, we are “jumping around” the posterior probability space in a stochastic fashion. We never actually “see” or propose the whole space, but in the end, we will have a good description of it because we will explore it stochastically based on the probability of individually proposed values being in the space.</p>
+<p>The Metropolis algorithm is more flexible than Gibbs, but comes with it’s own issues. There may be more problems with convergence and autocorrelation. It will generally run slower (sometimes <em>much</em> slower) than Gibbs, because of all those rejected values (Gibbs sampling doesn’t reject values, just calculates their probability). Much of the efficiency and speed will depend on our proposal distribution. The proposal distribution is centered on your current position, which is generally a good thing. But if we begin with a poor starting point, there will be many rejections early on, and it may take you a long time to get to more “meaty” areas of the distribution where we are more likely to accept values. (Early on, you will see runs of horizontal lines of “rejections” in convergence plots.) The variance of the convergence distribution also plays an important role in how quickly the sampler will explore the posterior probability space. “Tuning” or adjusting the variance of the proposal distribution may be necessary to get your sampler to converge more quickly.</p>
+</section>
+</section>
+<section id="assessing-mcmc-runs" class="level2">
+<h2 class="anchored" data-anchor-id="assessing-mcmc-runs">Assessing MCMC Runs</h2>
+<p>There are issues to consider with MCMC methods that don’t arise in classical statistical inference. In addition to more familiar aspects of statistical analysis, the process of conducting an MCMC analysis involves assessing graphs and diagnostics for convergence, mixing, acceptance rates or efficiency, and correlation. Specifically, you’ll explore <em>convergence</em> or whether your sample of <span class="math inline">\(\theta\)</span> ’s approaches the posterior distribution of <span class="math inline">\(Pr(\theta | y)\)</span>), “mixing”, i.e.&nbsp;whether the sampler algorithm explored the entire posterior distribution, <em>efficiency</em> or how well <span class="math inline">\(Pr(\theta | y)\)</span> is estimated by the sample of <span class="math inline">\(\theta\)</span> ’s you’ve generated or whether you need a larger sample size, and <em>autocorrelation</em> of the values in your sample.</p>
+<section id="convergence" class="level3">
+<h3 class="anchored" data-anchor-id="convergence">Convergence</h3>
+<p>Convergence in MCM refers to the final, stable set of samples from the target or “stationary” posterior distribution. A series of samples, “converges” to a distribution, not a particular value. The series of samples or iterations that precedes convergence is sometimes referred to as “burn in”. Once convergence is achieved, samples should look like random scatter around a stable mean.</p>
+<p>You have an obligation when conducting MCMC to assess convergence. But, there is no fool-proof means of assuring convergence. Sometimes, all that is needed is a graphical assessment of trace plots by iteration number for multiple chains starting from dispersed initial values. For example, look at two chains on a trace plot for the quick, jerky or spiky overlapping chains indicative that they are both sampled from the same space.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="bayes/bayes2/converge.jpg" class="img-fluid figure-img"></p>
+<figcaption>Convergence</figcaption>
+</figure>
+</div>
+<p>Some statistical tests (available in CODA and BOA R software packages) may help diagnose convergence. One popular test is is the Gelman-Rubin statistic, which compares multiple chains, each with widely differing starting points, by quantifying whether sequences are farther apart than expected based on their internal variability.</p>
+<section id="problems-with-convergence" class="level4">
+<h4 class="anchored" data-anchor-id="problems-with-convergence">Problems with convergence</h4>
+<p>You may find that it takes an inordinately long period of time for your samples to converge to a stable distribution. Or that the samples never converge. This may be due to correlation between variables in your model. On the figure on the left (below) you see small changes in one variable are associated with large changes in the other variable. The MCMC algorithm will have to sample a largely dispersed probability space, and it may not do this quickly or perhaps at all. One possible fix is to “center” the variables, e.g.&nbsp;by subtracting the mean, or standardizing. Centering doesn’t change the relationship between variables, it just moves the intercept, resulting in a situation like that on the right side of the figure. Now, the MCMC algorithm will run and converge more quickly because it has only to sample from a relatively tight probability space.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="bayes/bayes2/nonConverge.jpg" class="img-fluid figure-img"></p>
+<figcaption>NonConverge</figcaption>
+</figure>
+</div>
+</section>
+</section>
+<section id="efficiency" class="level3">
+<h3 class="anchored" data-anchor-id="efficiency">Efficiency</h3>
+<p>After your sampling algorithm has converged to an acceptably stable, stationary posterior distribution, you will need further iterations to obtain samples for posterior inference. The more iterations you sample, the more accurate the posterior estimates. But, since the sample is not independent, you can’t use traditional standard error estimates. Instead, you can assess the efficiency or accuracy of your estimates with a Monte Carlo standard error, which is the standard error associated with the posterior sample mean as a theoretical expectation for a given parameter. As noted above, the MC error is calculated as <span class="math inline">\(\frac{\sigma^2_{sample}}{\sqrt{n_{iterations}}}\)</span>, and depends on:</p>
+<ul>
+<li>the true variance of the posterior distribution,</li>
+<li>the posterior sample size (i.e.&nbsp;the number of MCMC iterations)</li>
+<li>autocorrelation in the MCMC sample.</li>
+</ul>
+<p>As a rule of thumb, you’d like to see an MC error less than 1% to 5% of your posterior standard deviation.</p>
+</section>
+<section id="autocorrelation" class="level3">
+<h3 class="anchored" data-anchor-id="autocorrelation">Autocorrelation</h3>
+<p>Since a sample value at time t is based on the previous value at time t-1 , the samples will invariably be correlated. It is, actually less of a concern than you might expect, because your inferences and summary measures are based on the entire sample taken together, not on the series. Still you’d like the correlation to be small as possible, with a relatively steep drop off as the lag number increases indicating convergence to independent samples. This also increases efficiency because you can explore the entire probability space as efficiently as possible with as small a sample as possible. You can assess correlation in your sample chain with autocorrelation plots (autocorrelation by lag time), with the goal of autocorrelation decreasing to zero in as few steps as possible.</p>
+</section>
+</section>
+<section id="running-mcmc-in-bugs" class="level2">
+<h2 class="anchored" data-anchor-id="running-mcmc-in-bugs">Running MCMC in BUGS</h2>
+<section id="the-bugs-program-3" class="level3">
+<h3 class="anchored" data-anchor-id="the-bugs-program-3">The BUGS Program ##3</h3>
+<p>BUGS stands for Bayesian inference using Gibbs sampling. It’s a language for specifying complex Bayesian models. <a href="http://www.mrc-bsu.cam.ac.uk/bugs/winbugs/contents.shtml">WinBUGS</a> and it’s open-source cousin <a href="http://www.openbugs.info/w/">OpenBUGS</a> are perhaps the first and most well-known implementations, but since I started using a Mac I’ve migrated over to <a href="http://mcmc-jags.sourceforge.net/">JAGS</a> (Just Another Gibbs Sampler) because of it’s cross-platform ease of use. To follow along with the material below you will need to download the software at the links above, and install <em>R2WinBUGS</em>, <em>R2OpenBUGS</em> and/or <em>R2jags</em> packages from CRAN.</p>
+<p>WinBUGS was originally distinguished form other implementations of Gibbs sampling by the use of graphical object-oriented internal representations of models called “Doodles”. The “Doodle Editor” allows you to create models graphically and can be very nice to work with, though I don’t know many folks who use it. Most folks find themselves using the the point-and click-approach built into Win/OpenBUGS. This consists of:</p>
+<ol type="1">
+<li>Specifying a model (We’ll talk about this in a moment)</li>
+<li>Double clicking the word “Model” to select it</li>
+<li>Clicking “Check Model” in the menu (under “Model &gt; Specification…”)</li>
+<li>Look for the message in the lower left hand side of you screen that your “model is syntactically correct”</li>
+<li>Clicking “Compile” (again under under “Model &gt; Specification…”, and again checking the message that your “model compiled”)</li>
+<li>Clicking “load inits” (or “gen inits” if you are allowing WinBUGS to generate initial values for you) under the same menu and looking for the to load or generate initial or starting values for your MCMC algorithm, and again monitoring the response, this time that your “model initialized”</li>
+<li>Loading your data (under the same menu)</li>
+<li>Clicking “Samples” under the “Inference” menu to specify the beginning (“beg”) and ending (“end”) for your the number of iterations or samples on which you want to base your results (here is where you can specify your “burn-in” period)</li>
+<li>Typing the names of the “nodes” (parameters) you want results for in the “Sample Monitor” window, clicking “Set” after entering each node</li>
+<li>Clicking on “Update” in the menu to specify the total number of iterations and begin the MCMC process</li>
+<li>Clicking (again) on “Samples” under the “Inference” menu</li>
+<li>Typing “*” in the “Sample Monitor”and clicking “Stats” to see results</li>
+<li>Typing “*” in the “Sample Monitor”and clicking “Trace” to see sampled values</li>
+<li>Clicking on various diagnostics and tools like “bgr statistic” for the Gelman-Rubin statistic</li>
+<li>Clicking on various plots and graphs to assess convergence and autocorrelation</li>
+</ol>
+<p>If this seems like a lot of pointing and clicking, well, it is. Most folks quickly tire of it. The good news is that you can run the entire process under R with some fairly simple interfaces to your BUGS program of choice. Perhaps the most popular of this syntax-driven approach is to interface BUGS with R using the R2WinBUGS package. Although, as I say above, my preference is the R2jags package.</p>
+</section>
+<section id="specifying-a-model" class="level3">
+<h3 class="anchored" data-anchor-id="specifying-a-model">Specifying a Model</h3>
+<p>Before going over how to specify a model in R, we need to discuss how to specify a model. We’ll begin with a simple example using the point-and-click approach described above. It will allow you to see native BUGS software, and likely convince you that you no longer wish to work with native BUGS software. We’ll recreate the coin toss example from the top of the page that we coded in R. We are interested in the probability of 8 or more heads in 10 tosses of a fair coin. Our outcome, y, is ~Bernoulli(0.5, 10) The model statement for this problem in BUGS is:</p>
+<pre><code>Model{
+Y ~ dbin(0.5, 10)
+P8 &lt;- step(Y-7.5)
+}</code></pre>
+<p>BUGS doesn’t have the capability for “if-then” statements, so we use a <em>step function</em> instead. If the argument is true, it returns a value of 1, otherwise it returns a value of 0. Here we are saying that if Y-7.5 is greater than or equal to zero (i.e.&nbsp;Y is 8 or more) P8 takes on the value 1, otherwise P8 takes on the value 0. We assign the results of the step function to an indicator variable called P8 so we can monitor and get results on it. Cut and paste this model into an new model frame in Win or Open BUGS and go through the the point-and-click approach outlined above. Let WinBUGS generate initial values. And, since this is pure Monte Carlo, you don’t need to load any data. Run 5000 iterations and monitor the results of the P8 variable. When you (finally) click on “stats” in the “sample monitor tool” you should get something like:</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="bayes/bayes2/winbugsScreen.jpg" class="img-fluid figure-img"></p>
+<figcaption>WinBUGS Screen Shot</figcaption>
+</figure>
+</div>
+</section>
+<section id="the-bugs-language" class="level3">
+<h3 class="anchored" data-anchor-id="the-bugs-language">The BUGS Language:</h3>
+<p>In some statistical software programs, you tell the package where the data is and it applies pre-packaged statistical models. Like R, WinBUGS is much more flexible. You can specify just about any model you like, and then apply your own model to the data. The model language itself is similar to R. So, &lt;- represents logical dependence e.g.&nbsp;m &lt;- a+ b<em>x. Unlike R, though, the tilde symbol (~) represents a stochastic or probability dependence, e.g x ~ dunif(a,b). One very important point about specifying probability distributions in BUGS: you </em>define distributions in terms of precision, not variance*, so ~ dnorm(0.0,1.0E-6) means a very small precision, and a very wide (in this case almost uniform) variance.</p>
+<p>Arrays and loops are also similar to R language:</p>
+<pre><code>for (i in 1:n){
+r[i] ~ dbin(p[i], n[i])
+p[i] ~ dunif(0,1)
+}</code></pre>
+<p>BUGS comes with functions, some of which may be familiar, e.g.&nbsp;</p>
+<pre><code>mean(p[])</code></pre>
+<p>returns the the mean of a whole array,</p>
+<pre><code>mean(p[m:n]) </code></pre>
+<p>returns the mean of elements m to n.&nbsp;</p>
+<p>Some (but not all) of functions can appear on the left side of an expression, e.g.</p>
+<pre><code>logit (p[i]) &lt;- a + b*x[i]
+log(m[i]) &lt;- c + d*y</code></pre>
+<p>Here are some useful BUGS functions:</p>
+<pre><code>p&lt;-dnorm(0,1)I(0,) </code></pre>
+<p>Truncates the variable, which means the variable will be restricted to the range 0 to infinity (i.e.&nbsp;only the positive side of a normal distribution). This can be useful when specifying a prior distribution that can not, say, have negative values.</p>
+<pre><code>p&lt;- step(x-1) </code></pre>
+<p>Returns a 1 if x is greater than or equal to 1 (or any number), and a 0 otherwise. Monitoring p and recording it’s mean will give the probability that x is greater than or equal to 1.</p>
+<pre><code>p&lt;- equals(x, .7)</code></pre>
+<p>Does the same thing for x equal to 1.</p>
+<pre><code>tau &lt;- 1/pow(s,2)</code></pre>
+<p>Sets <span class="math inline">\(\tau\)</span> to <span class="math inline">\(\frac{1}{s^2}\)</span></p>
+</section>
+<section id="complex-functions-as-parameters" class="level3">
+<h3 class="anchored" data-anchor-id="complex-functions-as-parameters">complex functions as parameters</h3>
+<p>Since in a Bayesian model both variables and parameters are allowed to vary and are associated with errors, you can construct and calculate errors for even the most complex functions. You just calculate the the function as a node at each iteration and summarize the posterior samples as you would for any node. Practically, this involves adding in extra lines of code to monitor what you’re interested in. For example, suppose you are interested in the the dose of a drug that will provide 95% efficacy (“ED95”). In BUGS you can add a line of code like this:</p>
+<pre><code>ED95 &lt;- (logit(0.95) – alpha) / beta</code></pre>
+<p>Where, alpha is the intercept or baseline response and beta is the change in response per unit dose.</p>
+<p>Similarly, you could enter a missing or predicted value using your model, and monitor results for that. For example, say you model the effect of distance from a disaster (x1), local deaths from that disaster (x2) and median household income (x3) on psychological distress. Your BUGS statement for the model could be:</p>
+<pre><code>y[i] &lt;- beta0 + beta1 * x1[i] + beta2*x2[i]  + beta3*x3[i] </code></pre>
+<p>You can enter and model the results of the effect of 2, 4 and 6 mile distances with a few lines of code, substituting the mean values for the other two variables (x2 and x3), and monitoring and summarizing the new variables y2, y4, y6.</p>
+<pre><code>y2 &lt;- beta0 + beta1 * 2 + beta2*1.26  + beta3*41064 
+y4 &lt;- beta0 + beta1 * 4 + beta2*1.26  + beta3*41064 
+y6 &lt;- beta0 + beta1 * 6 + beta2*1.26  + beta3*41064 </code></pre>
+</section>
+</section>
+<section id="airline-fatality-data-example" class="level2">
+<h2 class="anchored" data-anchor-id="airline-fatality-data-example">Airline fatality data example</h2>
+<p>Now, let’s look at an example of running a Bayesian MCMC analysis by interfacing R to a BUGS program. As I mentioned above, I prefer to use the JAGS program and interface with the R2jags package, but you can do the same thing (and should get the same answers) using WinBUGS with R2WinBUGS, or OpenBUGS with R2OpenBUGS.</p>
+<p>This example comes from <a href="http://bendixcarstensen.com/Bayes/Cph-2012/">Lyle Gurrin and Bendix Cartensen</a> We are going to analyze 26 years worth of airline fatality data using a simple Poisson model that will allow us to compare the exact form of the posterior to the simulated MCMC results.</p>
+<p>Begin by reading in the airline fatality data. which you can find <a href="http://www.columbia.edu/~cjd11/charles_dimaggio/DIRE/resources/Bayes/data/airline.csv">here</a>.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb20"><pre class="sourceCode numberSource r numberLines code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1"></a>airline<span class="ot">&lt;-</span><span class="fu">read.csv</span>(<span class="st">"/Users/charlie/Dropbox/CopenhagenCourse/courseMaterial/practicals/prac0/airline.csv"</span>,<span class="at">header=</span>T, <span class="at">stringsAsFactors=</span>F)</span>
+<span id="cb20-2"><a href="#cb20-2"></a>airline</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Explore the airline data, then take advantage of conjugacy to get the exact results for the posterior distribution for the mean number of fatalities. The model for the data or likelihood is <span class="math inline">\(y_i|\mu \sim Poisson(\mu)\)</span>. An uninformative prior for this data is <span class="math inline">\(\mu \sim \Gamma(0,0)\)</span>. For computational purposes we will use <span class="math inline">\(\mu \sim \Gamma(0.01,0.01)\)</span> which is nearly uniform on <span class="math inline">\((0, +\inf)\)</span>. The conjugate posterior is then <span class="math inline">\(\mu \sim \Gamma(0.01 + \Sigma y_i, 0.01 + n)\)</span>, where <span class="math inline">\(\Sigma y_i\)</span> is the total number of fatalities, and <span class="math inline">\(n\)</span> is the number of observations.</p>
+<p>Our result is the mean of the distribution, which we plot.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb21"><pre class="sourceCode numberSource r numberLines code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1"></a><span class="fu">nrow</span>(airline)</span>
+<span id="cb21-2"><a href="#cb21-2"></a><span class="fu">sum</span>(airline<span class="sc">$</span>fatal)</span>
+<span id="cb21-3"><a href="#cb21-3"></a><span class="fu">head</span>(airline)</span>
+<span id="cb21-4"><a href="#cb21-4"></a></span>
+<span id="cb21-5"><a href="#cb21-5"></a>(mn <span class="ot">&lt;-</span> <span class="fu">mean</span>( xx <span class="ot">&lt;-</span> <span class="fu">rgamma</span>( <span class="dv">10000</span>, <span class="fl">634.01</span>, <span class="fl">26.01</span> ) ) )</span>
+<span id="cb21-6"><a href="#cb21-6"></a><span class="fu">curve</span>(<span class="fu">dgamma</span>(x,<span class="fl">634.01</span>,<span class="fl">26.01</span>), <span class="at">from=</span><span class="dv">20</span>, <span class="at">to=</span><span class="dv">30</span>, <span class="at">lwd=</span><span class="dv">2</span>)</span>
+<span id="cb21-7"><a href="#cb21-7"></a><span class="fu">abline</span>( <span class="at">v=</span>mn, <span class="at">col=</span><span class="st">"red"</span>, <span class="at">lwd=</span><span class="dv">3</span> )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Now, let’s compare this same value using MCMC simulation and BUGS (JAGS flavor in this case). We begin by creating a list object to hold the data, and another list object to hold the initial values for the simulation (notice that we need three values because we will be running three chains). We then write a model statement to file using the <em>cat()</em> function.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb22"><pre class="sourceCode numberSource r numberLines code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1"></a>a.dat<span class="ot">&lt;-</span><span class="fu">list</span>(<span class="at">fatal=</span><span class="fu">c</span>(airline<span class="sc">$</span>fatal,<span class="cn">NA</span>), <span class="at">I=</span><span class="dv">27</span>)</span>
+<span id="cb22-2"><a href="#cb22-2"></a></span>
+<span id="cb22-3"><a href="#cb22-3"></a>a.inits<span class="ot">&lt;-</span><span class="fu">list</span>(</span>
+<span id="cb22-4"><a href="#cb22-4"></a>    <span class="fu">list</span>(<span class="at">mu=</span><span class="dv">20</span>),</span>
+<span id="cb22-5"><a href="#cb22-5"></a>    <span class="fu">list</span>(<span class="at">mu=</span><span class="dv">23</span>),</span>
+<span id="cb22-6"><a href="#cb22-6"></a>    <span class="fu">list</span>(<span class="at">mu=</span><span class="dv">26</span>)</span>
+<span id="cb22-7"><a href="#cb22-7"></a>    )</span>
+<span id="cb22-8"><a href="#cb22-8"></a></span>
+<span id="cb22-9"><a href="#cb22-9"></a><span class="fu">cat</span>(</span>
+<span id="cb22-10"><a href="#cb22-10"></a><span class="st">"model</span></span>
+<span id="cb22-11"><a href="#cb22-11"></a><span class="st">{</span></span>
+<span id="cb22-12"><a href="#cb22-12"></a><span class="st">for(i in 1:I)</span></span>
+<span id="cb22-13"><a href="#cb22-13"></a><span class="st">{</span></span>
+<span id="cb22-14"><a href="#cb22-14"></a><span class="st">fatal[i]~dpois(mu)</span></span>
+<span id="cb22-15"><a href="#cb22-15"></a><span class="st">}</span></span>
+<span id="cb22-16"><a href="#cb22-16"></a><span class="st">mu~dgamma(0.1,0.1)</span></span>
+<span id="cb22-17"><a href="#cb22-17"></a><span class="st">}"</span>,</span>
+<span id="cb22-18"><a href="#cb22-18"></a><span class="at">file=</span><span class="st">"m1.jag"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>We run the simulation in JAGS via the R2jags package function <em>jags()</em>. Type <em>?jags</em> to get more information on options and use. We are essentially specifying with syntax, using the R objects we created, everything we had to point to and click on in WinBUGS. Note that we are only monitoring the parameter “mu”. Type <em>?jags</em> to get more information on options and use.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb23"><pre class="sourceCode numberSource r numberLines code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1"></a><span class="fu">library</span>(R2jags)</span>
+<span id="cb23-2"><a href="#cb23-2"></a></span>
+<span id="cb23-3"><a href="#cb23-3"></a><span class="fu">args</span>(jags)</span>
+<span id="cb23-4"><a href="#cb23-4"></a></span>
+<span id="cb23-5"><a href="#cb23-5"></a>res<span class="ot">&lt;-</span><span class="fu">jags</span>(<span class="at">data=</span>a.dat, </span>
+<span id="cb23-6"><a href="#cb23-6"></a>    <span class="at">inits=</span>a.inits, </span>
+<span id="cb23-7"><a href="#cb23-7"></a>    <span class="at">parameters.to.save=</span><span class="st">"mu"</span>, </span>
+<span id="cb23-8"><a href="#cb23-8"></a>    <span class="at">model.file=</span><span class="st">"m1.jag"</span>)</span>
+<span id="cb23-9"><a href="#cb23-9"></a></span>
+<span id="cb23-10"><a href="#cb23-10"></a><span class="fu">print</span>(res)</span>
+<span id="cb23-11"><a href="#cb23-11"></a><span class="fu">plot</span>(res)</span>
+<span id="cb23-12"><a href="#cb23-12"></a><span class="fu">traceplot</span>(res)</span>
+<span id="cb23-13"><a href="#cb23-13"></a></span>
+<span id="cb23-14"><a href="#cb23-14"></a>res.mcmc<span class="ot">&lt;-</span><span class="fu">as.mcmc</span>(res)</span>
+<span id="cb23-15"><a href="#cb23-15"></a><span class="fu">summary</span>(res.mcmc)</span>
+<span id="cb23-16"><a href="#cb23-16"></a><span class="fu">plot</span>(res.mcmc)</span>
+<span id="cb23-17"><a href="#cb23-17"></a></span>
+<span id="cb23-18"><a href="#cb23-18"></a><span class="fu">autocorr.plot</span>(res.mcmc)</span>
+<span id="cb23-19"><a href="#cb23-19"></a></span>
+<span id="cb23-20"><a href="#cb23-20"></a>res.list<span class="ot">&lt;-</span><span class="fu">mcmc.list</span>(res.mcmc[[<span class="dv">1</span>]],res.mcmc[[<span class="dv">2</span>]],res.mcmc[[<span class="dv">2</span>]])</span>
+<span id="cb23-21"><a href="#cb23-21"></a><span class="fu">gelman.diag</span>(res.list)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>The summary, print, plot and traceplot functions operate directly on the bugs object R2jags produces. You’ll see that print() returns the statistics for the nodes we are monitoring. The plot() method returns some minimalist graphics summarizing the results. The traceplot() method returns plots for the three chains for each variable, here devaiance and mu. Each chain is in a different color. Notice how the chains are spiky, dense and overlapping, indicating convergence and good mixing.</p>
+<p>We can get more tools by using the “coda” package. To access the tools in in the coda package, we first have to convert the jags object to an mcmc object. With the mcmc object, we can get the Gelman-Rubin statistic and autocorrelation plots, both of which look acceptable.</p>
+
+
+</section>
+</section>
+
+
+<div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
+
+<ol>
+<li id="fn1"><p>In fact, I suspect the primary motivation for presenting non-computational approaches to realistic models is to persuade the reader that they would not want to use them. I considered not including this material, but for completeness sake, and because it illustrates some important concepts leading to the more commonly used computational approaches I decided to include it.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>Inverse Gamma means <span class="math inline">\(x^{-1} \sim Gamma(a,b)\)</span>. This makes sense for the normal variance, since <span class="math inline">\(\sigma^2\)</span> appears as <span class="math inline">\(1/\sigma^2\)</span> in the normal probability model. An inverse Gamma is actually relatively easy to sample from. Just sample from the Gamma and inverse it.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn3"><p>By assuming <span class="math inline">\(\sigma^2\)</span> is unknown and varies, and incorporating that extra variance, the tails of the resulting distribution are “fatter”. We arrive, in fact, at the t-distribution, a result that can be shown through integration.<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn4"><p>The difficulty of sampling from non-standard distributions was an obstacle to Bayesian analyses until really quite recently. That this obstacle was encountered with something as relatively simple as the normal model was disconcerting.<a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn5"><p>You see a fair amount in the Bayesian computational literature about “exploring” probability space. I find it useful to think of it with a geographic analogy. Imagine trying to map some mountainous landscape by simply walking around it. You will need to walk to a sufficient number of appropriately space locations to validly describe the landscape. A probability space is like that landscape, with peaks representing values with higher probabilities.<a href="#fnref5" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn6"><p>By Shane Jensen, from whom this example is taken, not me. (To get a sense of how you can go wrong, try values greater than 6 to see how it constrains the probability space.)<a href="#fnref6" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn7"><p>I really do encourage you follow the links above to Dr.&nbsp;Jensen’s work and course. It was one of the best presentations of this material I have ever heard.<a href="#fnref7" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn8"><p>This example comes from <a href="http://www.chem.unl.edu/zeng/joy/mclab/mcintro.html">Joy Woller</a> and is well worth a look.<a href="#fnref8" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn9"><p>This little probability parable, and much of the material as well as may of the images in this section comes from John Kruschke’s excellent book, “Doing Bayesian Analysis”. It is one of the clearest, most lucid introductions to this topic that I have come across. Buy it.<a href="#fnref9" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn10"><p>The algorithm is mathematically guaranteed to converge, but there is no guarantee that it will converge in a reasonable amount of time.<a href="#fnref10" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn11"><p>Once again from Shane Jensen’s course…<a href="#fnref11" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section></div></main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

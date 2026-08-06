@@ -3,13 +3,26 @@ project:
   output-dir: docs
 
 website:
-  title: "Curriculum for Urban Injury Research and Epidemiology (CURE)"
+  title: "CUIRE"
   navbar:
     left:
       - href: index.qmd
-        text: Home
-      - about.qmd
-      - bayes.qmd
+        text: " "
+        icon: house-door-fill
+      - sidebar:bayes
+      
+  sidebar:
+    - id: bayes
+      title: "Bayes"
+      style: "docked"
+      background: light
+      collapse-level: 2
+      contents:
+          - bayes/bayes1/bayes1.qmd
+          - bayes/bayes2/bayes2.qmd
+          - bayes/bayes3/bayes3.qmd
+          - bayes/bayes4/bayes4.qmd
+          - bayes/bayes5/bayes5.qmd
 
 format:
   html:

@@ -1,0 +1,1804 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.28">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Bayes Regression – CUIRE</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-49e51e44f424ea8c7044b429bdbbbfe2.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-9767d147d9da4196aea41de9d5c46390.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="../../styles.css">
+</head>
+
+<body class="nav-sidebar docked nav-fixed quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">CUIRE</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../index.html"> <i class="bi bi-house-door-fill" role="img">
+</i> 
+<span class="menu-text"> </span></a>
+  </li>  
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-bayes" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Bayes</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-bayes">    
+        <li>
+    <a class="dropdown-item" href="../../bayes/bayes1/bayes1.html">
+ <span class="dropdown-text">Intro to Bayes</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../bayes/bayes2/bayes2.html">
+ <span class="dropdown-text">MCMC</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../bayes/bayes3/bayes3.html">
+ <span class="dropdown-text">Bayes Regression</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../bayes/bayes4/bayes4.html">
+ <span class="dropdown-text">Bayes Meta-Analysis</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../bayes/bayes5/bayes5.html">
+ <span class="dropdown-text">More Bayes</span></a>
+  </li>  
+    </ul>
+  </li>
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../bayes/bayes3/bayes3.html">Bayes Regression</a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../bayes/bayes1/bayes1.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Intro to Bayes</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../bayes/bayes2/bayes2.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">MCMC</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../bayes/bayes3/bayes3.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">Bayes Regression</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../bayes/bayes4/bayes4.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Bayes Meta-Analysis</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../bayes/bayes5/bayes5.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">More Bayes</span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#bayesian-analysis-for-epidemiologists-iii-regression-modeling" id="toc-bayesian-analysis-for-epidemiologists-iii-regression-modeling" class="nav-link active" data-scroll-target="#bayesian-analysis-for-epidemiologists-iii-regression-modeling">Bayesian Analysis for Epidemiologists III: Regression Modeling</a></li>
+  <li><a href="#acknowledgements" id="toc-acknowledgements" class="nav-link" data-scroll-target="#acknowledgements">Acknowledgements</a>
+  <ul class="collapse">
+  <li><a href="#normal-model-with-non-informative-prior-ridge-or-penalized-regression" id="toc-normal-model-with-non-informative-prior-ridge-or-penalized-regression" class="nav-link" data-scroll-target="#normal-model-with-non-informative-prior-ridge-or-penalized-regression">Normal Model with Non-Informative Prior (Ridge or Penalized Regression)</a></li>
+  <li><a href="#normal-model-with-informative-priors-lasso-regression" id="toc-normal-model-with-informative-priors-lasso-regression" class="nav-link" data-scroll-target="#normal-model-with-informative-priors-lasso-regression">Normal Model with Informative Priors (Lasso Regression)</a></li>
+  <li><a href="#mixture-models" id="toc-mixture-models" class="nav-link" data-scroll-target="#mixture-models">Mixture Models</a></li>
+  </ul></li>
+  <li><a href="#linear-regression" id="toc-linear-regression" class="nav-link" data-scroll-target="#linear-regression">Linear Regression</a>
+  <ul class="collapse">
+  <li><a href="#example-new-york-city-crime-data" id="toc-example-new-york-city-crime-data" class="nav-link" data-scroll-target="#example-new-york-city-crime-data">Example: New York City Crime Data</a></li>
+  </ul></li>
+  <li><a href="#logistic-regression" id="toc-logistic-regression" class="nav-link" data-scroll-target="#logistic-regression">Logistic Regression</a></li>
+  <li><a href="#other-models" id="toc-other-models" class="nav-link" data-scroll-target="#other-models">Other Models</a>
+  <ul class="collapse">
+  <li><a href="#categorical-outcomes" id="toc-categorical-outcomes" class="nav-link" data-scroll-target="#categorical-outcomes">Categorical Outcomes</a></li>
+  <li><a href="#multinomial-outcomes" id="toc-multinomial-outcomes" class="nav-link" data-scroll-target="#multinomial-outcomes">Multinomial Outcomes</a></li>
+  </ul></li>
+  <li><a href="#hierarchical-models" id="toc-hierarchical-models" class="nav-link" data-scroll-target="#hierarchical-models">Hierarchical Models</a>
+  <ul class="collapse">
+  <li><a href="#introduction" id="toc-introduction" class="nav-link" data-scroll-target="#introduction">Introduction</a>
+  <ul class="collapse">
+  <li><a href="#about-shrinkage-and-outliers" id="toc-about-shrinkage-and-outliers" class="nav-link" data-scroll-target="#about-shrinkage-and-outliers">About shrinkage and outliers</a></li>
+  </ul></li>
+  <li><a href="#approach-to-bayesian-hierarchical-models-in-bugs-and-jags" id="toc-approach-to-bayesian-hierarchical-models-in-bugs-and-jags" class="nav-link" data-scroll-target="#approach-to-bayesian-hierarchical-models-in-bugs-and-jags">Approach to Bayesian Hierarchical Models in BUGS and JAGS</a></li>
+  <li><a href="#example-hierarchical-model-for-thm-concentrations" id="toc-example-hierarchical-model-for-thm-concentrations" class="nav-link" data-scroll-target="#example-hierarchical-model-for-thm-concentrations">Example: Hierarchical Model for THM Concentrations</a>
+  <ul class="collapse">
+  <li><a href="#coding-the-model" id="toc-coding-the-model" class="nav-link" data-scroll-target="#coding-the-model">Coding the Model</a></li>
+  </ul></li>
+  <li><a href="#the-variance-partition-coefficient-aka-intraclass-correlation" id="toc-the-variance-partition-coefficient-aka-intraclass-correlation" class="nav-link" data-scroll-target="#the-variance-partition-coefficient-aka-intraclass-correlation">The Variance Partition Coefficient (aka Intraclass Correlation)</a>
+  <ul class="collapse">
+  <li><a href="#your-turn" id="toc-your-turn" class="nav-link" data-scroll-target="#your-turn">Your turn…</a></li>
+  </ul></li>
+  </ul></li>
+  <li><a href="#example-hepatitis-b-immunization-in-africa" id="toc-example-hepatitis-b-immunization-in-africa" class="nav-link" data-scroll-target="#example-hepatitis-b-immunization-in-africa">Example: Hepatitis B Immunization in Africa</a>
+  <ul class="collapse">
+  <li><a href="#your-turn-1" id="toc-your-turn-1" class="nav-link" data-scroll-target="#your-turn-1">Your turn…</a></li>
+  <li><a href="#additional-levels-of-hierarchy" id="toc-additional-levels-of-hierarchy" class="nav-link" data-scroll-target="#additional-levels-of-hierarchy">Additional levels of hierarchy</a></li>
+  <li><a href="#example-the-western-australia-pregnancy-raine-cohort-study" id="toc-example-the-western-australia-pregnancy-raine-cohort-study" class="nav-link" data-scroll-target="#example-the-western-australia-pregnancy-raine-cohort-study">Example: The Western Australia Pregnancy (Raine) Cohort Study</a>
+  <ul class="collapse">
+  <li><a href="#fitting-the-model" id="toc-fitting-the-model" class="nav-link" data-scroll-target="#fitting-the-model">Fitting the Model</a></li>
+  </ul></li>
+  </ul></li>
+  <li><a href="#model-checking" id="toc-model-checking" class="nav-link" data-scroll-target="#model-checking">Model Checking</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Bayes Regression</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="bayesian-analysis-for-epidemiologists-iii-regression-modeling" class="level1">
+<h1>Bayesian Analysis for Epidemiologists III: Regression Modeling</h1>
+</section>
+<section id="acknowledgements" class="level1">
+<h1>Acknowledgements</h1>
+<p>Much of this material comes from a workshop run by Drs. David Spiegelhalter and Nicky Best in Cambridge, UK, in 2005. Other major contributions come (again) from Lyle Gurrin and Shane Jensen.</p>
+<p><a href="http://bayes.bgsu.edu/bcwr/">Jim Albert</a><br>
+<a href="http://www.statslab.cam.ac.uk/Dept/People/Spiegelhalter/davids.html">David Spiegelhalter</a><br>
+<a href="http://www1.imperial.ac.uk/medicine/people/n.best/publications/">Nicky Best</a><br>
+<a href="http://andrewgelman.com/">Andrew Gelman</a><br>
+<a href="http://bendixcarstensen.com/">Bendix Carstensen</a><br>
+<a href="http://pgh.unimelb.edu.au/about/contact/allstaff/gurrin">Lyle Guerrin</a><br>
+<a href="http://www-stat.wharton.upenn.edu/~stjensen/">Shane Jensen</a> and <a href="http://www.statisticalhorizons.com/">Statistical Horizons</a></p>
+<p>#Sections</p>
+<p><a href="#introduction-to-bayesian-regression-modeling">I. Introduction to Bayesian Regression Modeling</a><br>
+<a href="#normal-model-with-non-informative-prior-(ridge-or-penalized-regression)">1. Normal Model with Non-Informative Prior (Ridge or Penalized Regression)</a><br>
+<a href="#normal-model-with-informative-priors-(lasso-regression)">2. Normal Model with Informative Priors (Lasso Regression)</a><br>
+<a href="#mixture-models-(expectation-maximization)">3. Mixture Models (Expectation-Maximization)</a></p>
+<p><a href="#bayesian-regression-modeling-with-bugs-or-jags">II. Bayesian Regression Modeling with BUGS or JAGS</a><br>
+<a href="#linear-regression">1. Linear Regression</a><br>
+<a href="#logistic-regression">2. Logistic Regression</a><br>
+<a href="#other-models">3. Other Models</a><br>
+<a href="#hierarchical-models">4. Hierarchical Models</a></p>
+<p><a href="#model-checking">III. Model Checking</a></p>
+<p>#Introduction to Bayesian Regression Modeling</p>
+<p>Some of the advantages of using a Bayesian approach to statistical modeling is you can:</p>
+<ul>
+<li>include prior knowledge and “learn” from existing evidence</li>
+<li>easily extend to non-linear regression models</li>
+<li>easily make inferences and predictions by including complex functions of prior model results</li>
+<li>handle missing data directly in the model specification</li>
+<li>directly report results in terms of probability <a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a></li>
+</ul>
+<section id="normal-model-with-non-informative-prior-ridge-or-penalized-regression" class="level2">
+<h2 class="anchored" data-anchor-id="normal-model-with-non-informative-prior-ridge-or-penalized-regression">Normal Model with Non-Informative Prior (Ridge or Penalized Regression)</h2>
+<p>A first approach to Bayesian regression modeling builds off the normal model, <span class="math inline">\(y_i \sim Normal(\mu, \sigma^2)\)</span>, by specifying <span class="math inline">\(\mu\)</span> as a function of covariates, <span class="math inline">\(y_i \sim Normal(x_i \beta_i, \sigma^2)\)</span>. We might, for example, be interested in body weight as a linear function of abdominal and wrist circumference. Classical regression becomes Bayesian when we put priors on our parameters <span class="math inline">\(\beta\)</span> and on <span class="math inline">\(\sigma^2\)</span>. <a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a></p>
+<p>Non-informative priors return results very close to classical statistics. The approach is similar to the normal model we have already seen, where <span class="math inline">\(p(\mu) \propto 1\)</span> is flat on <span class="math inline">\(\mu\)</span>, and $p(^2) (<sup>2)</sup>{-1} $ is flat on the of <span class="math inline">\(p(\sigma^2)\)</span>. Only now, we apply the prior to all the coefficients: <span class="math inline">\(p(\beta_i) \propto 1\)</span>, which results in a more complicated joint posterior:</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="bayes/bayes3/nlRegJointPost.jpg" class="img-fluid figure-img"></p>
+<figcaption>NlRegJointPost</figcaption>
+</figure>
+</div>
+<p>We (again) use a two-step approach, first sampling the conditional posterior for <span class="math inline">\(\beta\)</span> given <span class="math inline">\(\sigma^2\)</span> (and the data), then sampling the marginal posterior of <span class="math inline">\(\sigma^2\)</span> given the data. <a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a></p>
+<p>As opposed to the classical framework where prediction is based on a single value of <span class="math inline">\(\hat{\beta}\)</span>,<span class="math inline">\(y* \sim Normal(\hat{\beta}, \sigma^2)\)</span>, in the Bayesian approach, we will include additional uncertainty of <span class="math inline">\(\beta_i\)</span>, <span class="math inline">\(p(\beta|\sigma^2,y)\)</span> which is that Inverse Gamma distribution we saw in the normal model, the expectation or mean of which ends up being <span class="math inline">\(\Sigma(y_i - X_i \hat{\beta})^2/n-p\)</span>. So, again, the predictive interval in the Bayesian framework is potentially much wider than that from classical regression. This Bayesian regression with normally distributed priors for the coefficients centered at zero, is sometimes referred to as <em>ridge or penalized regression</em>.</p>
+<p>In practical application, as before, we incorporate the additional uncertainty by using samples of <span class="math inline">\(\beta_i\)</span> in the calculation of y*, the general scheme of which is:</p>
+<ol type="1">
+<li>Sample <span class="math inline">\(\sigma^2\)</span> from the Inverse Gamma distribution.</li>
+<li>Feed those values into a simulation to sample <span class="math inline">\(\beta\)</span></li>
+<li>Use the simulated sample values of <span class="math inline">\(\sigma^2\)</span> and <span class="math inline">\(\beta\)</span> to arrive at a distribution of values for y*</li>
+<li>Summarize y*</li>
+</ol>
+<p>Again, as a practical matter, in this setting of a non-informative prior, we can take advantage of the fact that the point estimates for the Bayesian and ordinary least squares approaches are the same. We will simply run a classical linear model (e.g.&nbsp;in R using <em>lm()</em>), then use those results for for the simulations and probability calculations that allow the coefficients to vary and account for additional variability in the predictions. We see this approach in the following sample code <a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a> predicting tree volume based on tree girth and height.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode numberSource r numberLines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a> </span>
+<span id="cb1-2"><a href="#cb1-2"></a>  <span class="fu">data</span>(trees)</span>
+<span id="cb1-3"><a href="#cb1-3"></a>  <span class="fu">attach</span>(trees)</span>
+<span id="cb1-4"><a href="#cb1-4"></a> </span>
+<span id="cb1-5"><a href="#cb1-5"></a>  trees</span>
+<span id="cb1-6"><a href="#cb1-6"></a> </span>
+<span id="cb1-7"><a href="#cb1-7"></a>  <span class="do">## Plotting Outcome (Volume) as a function of Covariates (Girth, Height)</span></span>
+<span id="cb1-8"><a href="#cb1-8"></a> </span>
+<span id="cb1-9"><a href="#cb1-9"></a>  <span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>))</span>
+<span id="cb1-10"><a href="#cb1-10"></a>  <span class="fu">plot</span>(Girth,Volume,<span class="at">pch=</span><span class="dv">19</span>)</span>
+<span id="cb1-11"><a href="#cb1-11"></a>  <span class="fu">plot</span>(Height,Volume,<span class="at">pch=</span><span class="dv">19</span>)</span>
+<span id="cb1-12"><a href="#cb1-12"></a> </span>
+<span id="cb1-13"><a href="#cb1-13"></a>  <span class="do">## MLE fit of Regression Model</span></span>
+<span id="cb1-14"><a href="#cb1-14"></a> </span>
+<span id="cb1-15"><a href="#cb1-15"></a>  model <span class="ot">&lt;-</span> <span class="fu">lm</span>(Volume<span class="sc">~</span>Girth<span class="sc">+</span>Height)</span>
+<span id="cb1-16"><a href="#cb1-16"></a> </span>
+<span id="cb1-17"><a href="#cb1-17"></a>  <span class="fu">summary</span>(model)</span>
+<span id="cb1-18"><a href="#cb1-18"></a> </span>
+<span id="cb1-19"><a href="#cb1-19"></a>  <span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">1</span>))</span>
+<span id="cb1-20"><a href="#cb1-20"></a>  <span class="fu">plot</span>(model<span class="sc">$</span>fitted.values,model<span class="sc">$</span>residuals,<span class="at">pch=</span><span class="dv">19</span>)</span>
+<span id="cb1-21"><a href="#cb1-21"></a>  <span class="fu">abline</span>(<span class="at">h=</span><span class="dv">0</span>,<span class="at">col=</span><span class="dv">2</span>)</span>
+<span id="cb1-22"><a href="#cb1-22"></a> </span>
+<span id="cb1-23"><a href="#cb1-23"></a>  <span class="do">## Sampling from Posterior Distribution of coefficients beta and variance sigsq</span></span>
+<span id="cb1-24"><a href="#cb1-24"></a> </span>
+<span id="cb1-25"><a href="#cb1-25"></a>  beta.hat <span class="ot">&lt;-</span> model<span class="sc">$</span>coef</span>
+<span id="cb1-26"><a href="#cb1-26"></a>  n <span class="ot">&lt;-</span> <span class="fu">length</span>(Volume)</span>
+<span id="cb1-27"><a href="#cb1-27"></a>  p <span class="ot">&lt;-</span> <span class="fu">length</span>(beta.hat)</span>
+<span id="cb1-28"><a href="#cb1-28"></a>  s2 <span class="ot">&lt;-</span> (n<span class="sc">-</span>p)<span class="sc">*</span><span class="fu">summary</span>(model)<span class="sc">$</span>sigma<span class="sc">^</span><span class="dv">2</span></span>
+<span id="cb1-29"><a href="#cb1-29"></a>  V.beta <span class="ot">&lt;-</span> <span class="fu">summary</span>(model)<span class="sc">$</span>cov.unscaled</span>
+<span id="cb1-30"><a href="#cb1-30"></a> </span>
+<span id="cb1-31"><a href="#cb1-31"></a>  numsamp <span class="ot">&lt;-</span> <span class="dv">1000</span></span>
+<span id="cb1-32"><a href="#cb1-32"></a>  beta.samp <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="cn">NA</span>,<span class="at">nrow=</span>numsamp,<span class="at">ncol=</span>p)</span>
+<span id="cb1-33"><a href="#cb1-33"></a>  sigsq.samp <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="cn">NA</span>,numsamp)</span>
+<span id="cb1-34"><a href="#cb1-34"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>numsamp){</span>
+<span id="cb1-35"><a href="#cb1-35"></a>    temp <span class="ot">&lt;-</span> <span class="fu">rgamma</span>(<span class="dv">1</span>,<span class="at">shape=</span>(n<span class="sc">-</span>p)<span class="sc">/</span><span class="dv">2</span>,<span class="at">rate=</span>s2<span class="sc">/</span><span class="dv">2</span>)</span>
+<span id="cb1-36"><a href="#cb1-36"></a>    cursigsq <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">/</span>temp</span>
+<span id="cb1-37"><a href="#cb1-37"></a>    curvarbeta <span class="ot">&lt;-</span> cursigsq<span class="sc">*</span>V.beta</span>
+<span id="cb1-38"><a href="#cb1-38"></a>    curvarbeta.chol <span class="ot">&lt;-</span> <span class="fu">t</span>(<span class="fu">chol</span>(curvarbeta))</span>
+<span id="cb1-39"><a href="#cb1-39"></a>    z <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(p,<span class="dv">0</span>,<span class="dv">1</span>)</span>
+<span id="cb1-40"><a href="#cb1-40"></a>    curbeta <span class="ot">&lt;-</span> beta.hat<span class="sc">+</span>curvarbeta.chol<span class="sc">%*%</span>z</span>
+<span id="cb1-41"><a href="#cb1-41"></a>    sigsq.samp[i] <span class="ot">&lt;-</span> cursigsq</span>
+<span id="cb1-42"><a href="#cb1-42"></a>    beta.samp[i,] <span class="ot">&lt;-</span> curbeta</span>
+<span id="cb1-43"><a href="#cb1-43"></a>  }</span>
+<span id="cb1-44"><a href="#cb1-44"></a> </span>
+<span id="cb1-45"><a href="#cb1-45"></a>  <span class="do">## Plotting Posterior Samples for coefficients beta and variance sigsq</span></span>
+<span id="cb1-46"><a href="#cb1-46"></a> </span>
+<span id="cb1-47"><a href="#cb1-47"></a>  <span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">2</span>))</span>
+<span id="cb1-48"><a href="#cb1-48"></a>  <span class="fu">hist</span>(beta.samp[,<span class="dv">1</span>],<span class="at">main=</span><span class="st">"Intercept"</span>,<span class="at">col=</span><span class="st">"gray"</span>)</span>
+<span id="cb1-49"><a href="#cb1-49"></a>  <span class="fu">abline</span>(<span class="at">v=</span>beta.hat[<span class="dv">1</span>],<span class="at">col=</span><span class="st">"red"</span>)</span>
+<span id="cb1-50"><a href="#cb1-50"></a>  <span class="fu">hist</span>(beta.samp[,<span class="dv">2</span>],<span class="at">main=</span><span class="st">"Girth"</span>,<span class="at">col=</span><span class="st">"gray"</span>)</span>
+<span id="cb1-51"><a href="#cb1-51"></a>  <span class="fu">abline</span>(<span class="at">v=</span>beta.hat[<span class="dv">2</span>],<span class="at">col=</span><span class="st">"red"</span>)</span>
+<span id="cb1-52"><a href="#cb1-52"></a>  <span class="fu">hist</span>(beta.samp[,<span class="dv">3</span>],<span class="at">main=</span><span class="st">"Height"</span>,<span class="at">col=</span><span class="st">"gray"</span>)</span>
+<span id="cb1-53"><a href="#cb1-53"></a>  <span class="fu">abline</span>(<span class="at">v=</span>beta.hat[<span class="dv">3</span>],<span class="at">col=</span><span class="st">"red"</span>)</span>
+<span id="cb1-54"><a href="#cb1-54"></a>  <span class="fu">hist</span>(sigsq.samp,<span class="at">main=</span><span class="st">"Sigsq"</span>,<span class="at">col=</span><span class="st">"gray"</span>)</span>
+<span id="cb1-55"><a href="#cb1-55"></a>  <span class="fu">abline</span>(<span class="at">v=</span><span class="fu">summary</span>(model)<span class="sc">$</span>sigma<span class="sc">^</span><span class="dv">2</span>,<span class="at">col=</span><span class="st">"red"</span>)</span>
+<span id="cb1-56"><a href="#cb1-56"></a> </span>
+<span id="cb1-57"><a href="#cb1-57"></a>  <span class="do">## Posterior Predictive Sampling for new tree with girth = 18 and height = 80</span></span>
+<span id="cb1-58"><a href="#cb1-58"></a> </span>
+<span id="cb1-59"><a href="#cb1-59"></a>  Xstar <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">18</span>,<span class="dv">80</span>)  <span class="co"># new tree with girth = 18 and height = 80</span></span>
+<span id="cb1-60"><a href="#cb1-60"></a> </span>
+<span id="cb1-61"><a href="#cb1-61"></a>  Ystar.samp <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="cn">NA</span>,numsamp)</span>
+<span id="cb1-62"><a href="#cb1-62"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>numsamp){</span>
+<span id="cb1-63"><a href="#cb1-63"></a>     Ystar.hat <span class="ot">&lt;-</span> <span class="fu">sum</span>(beta.samp[i,]<span class="sc">*</span>Xstar) </span>
+<span id="cb1-64"><a href="#cb1-64"></a>     Ystar.samp[i] <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="dv">1</span>,<span class="at">mean=</span>Ystar.hat,<span class="at">sd=</span><span class="fu">sqrt</span>(sigsq.samp[i]))</span>
+<span id="cb1-65"><a href="#cb1-65"></a>  }   </span>
+<span id="cb1-66"><a href="#cb1-66"></a> </span>
+<span id="cb1-67"><a href="#cb1-67"></a>  <span class="do">## Plotting Predictive Samples and Data on same scale</span></span>
+<span id="cb1-68"><a href="#cb1-68"></a> </span>
+<span id="cb1-69"><a href="#cb1-69"></a>  <span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">1</span>))</span>
+<span id="cb1-70"><a href="#cb1-70"></a>  xmin <span class="ot">&lt;-</span> <span class="fu">min</span>(Volume,Ystar.samp)</span>
+<span id="cb1-71"><a href="#cb1-71"></a>  xmax <span class="ot">&lt;-</span> <span class="fu">max</span>(Volume,Ystar.samp)</span>
+<span id="cb1-72"><a href="#cb1-72"></a>  <span class="fu">hist</span>(Volume,<span class="at">main=</span><span class="st">"Tree Volume in Observed Data"</span>,<span class="at">xlim=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">90</span>),<span class="at">breaks=</span><span class="dv">10</span>,<span class="at">col=</span><span class="st">"gray"</span>)</span>
+<span id="cb1-73"><a href="#cb1-73"></a>  <span class="fu">abline</span>(<span class="at">v=</span><span class="fu">mean</span>(Volume),<span class="at">col=</span><span class="dv">2</span>)</span>
+<span id="cb1-74"><a href="#cb1-74"></a>  <span class="fu">hist</span>(Ystar.samp,<span class="at">main=</span><span class="st">"Predicted Volume of Tree with girth = 85 and height = 80"</span>,<span class="at">xlim=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">90</span>),<span class="at">col=</span><span class="st">"gray"</span>)</span>
+<span id="cb1-75"><a href="#cb1-75"></a>  <span class="fu">abline</span>(<span class="at">v=</span><span class="fu">mean</span>(Ystar.samp),<span class="at">col=</span><span class="dv">2</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="normal-model-with-informative-priors-lasso-regression" class="level2">
+<h2 class="anchored" data-anchor-id="normal-model-with-informative-priors-lasso-regression">Normal Model with Informative Priors (Lasso Regression)</h2>
+<p>We are not limited to non-informative priors for our normally distributed linear Bayesian regression models. A conjugate prior for <span class="math inline">\(\beta\)</span>’s in a normal model is also normal, <span class="math inline">\(\beta_k \sim Normal(\beta_{k0}, \tau^2)\)</span>, where, again, <span class="math inline">\(\tau^2\)</span> is a measure of our confidence in the center of our prior distribution, <span class="math inline">\(\beta_{k0}\)</span>, and (again) as <span class="math inline">\(\tau^2\)</span> approaches infinity, the prior approaches the non-informative prior above. We can take advantage of informative priors on the <span class="math inline">\(\beta\)</span>’s to help identify and select coefficients for inclusion in model. We may, for example, have a set of high-dimensional data, where there are many more coefficients than outcomes. This is often the case in analysis of medical imaging data like MRI’s where each image is characterized by many potentially important variables, but there are only a limited number of patients or outcomes. We may believe that only a small subset of the many potential variables are important, but we don’t know which ones. By setting all priors on all the <span class="math inline">\(\beta\)</span> coefficients to zero, and making <span class="math inline">\(\tau^2\)</span> small to reflect high confidence that most of the coefficients are unimportant, we can identify and select out only those coefficients strongly supported by the data.</p>
+<p>A currently popular method sometimes referred to as <em>Lasso Regression</em> is essentially a Bayesian regression with (informative) <em>Laplace priors</em> placed on the <span class="math inline">\(\beta\)</span> coefficients. A Laplace prior looks like two exponential distributions back to back. It constrains the area around, and places a stronger confidence on zero than does a normal prior centered on zero.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="bayes/bayes3/laplacePrior.jpg" class="img-fluid figure-img"></p>
+<figcaption>LaplacePrior</figcaption>
+</figure>
+</div>
+</section>
+<section id="mixture-models" class="level2">
+<h2 class="anchored" data-anchor-id="mixture-models">Mixture Models</h2>
+<p>Sometimes a single set of data arise from two different processes. Take, for example, home runs in major league baseball. The large majority of professional players won’t hit many home runs, perhaps 10 in a season. A subset of elite home run hitters will hit many more. You can think of it as data from two normal distributions, one with a mean lower than the other, <em>mixed</em> together. Some of the data, <span class="math inline">\(y_i\)</span>, from a normal distributions with mean <span class="math inline">\(\mu\)</span>_0 and standard deviation <span class="math inline">\(\sigma_0\)</span> with probability <span class="math inline">\(\alpha\)</span>. The data from the other normal distribution has a different mean <span class="math inline">\(\mu_1\)</span> and <span class="math inline">\(\sigma_1\)</span> with prob <span class="math inline">\(1-\alpha\)</span>. (The probability <span class="math inline">\(\alpha\)</span> is sometimes referred to as the mixing proportion.) If you could identify which distribution the observations come from, you could split them up and analyze them separately. But you can’t. An observation could, for example, be coming from an elite hitter having a bad year, or a mediocre hitter having a good year. <a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a></p>
+<p>We are confronted with 5 unknown parameters: <span class="math inline">\(\mu_0\)</span>, <span class="math inline">\(\sigma_0\)</span>, <span class="math inline">\(\mu_1\)</span>, <span class="math inline">\(\sigma_1\)</span>, and <span class="math inline">\(\alpha\)</span>. We could put a flat, non-informative prior on each of them, but the resulting posterior involves the products of sums and is complicated and non-standard.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="bayes/bayes3/mixturePosterior.jpg" class="img-fluid figure-img"></p>
+<figcaption>MixturePosterior</figcaption>
+</figure>
+</div>
+<p>Taking the derivative for the MLE would be essentially impossible. Grid sampling with with 5 unknown parameters, we would require a 5-dimensional grid, which translates to <span class="math inline">\(100^5\)</span> for just for 100 values. We will, instead, use an optimization algorithm called the (EM). The basic idea is to come up with additional data that would allow us to make the estimation problem easier. In this case, an indicator variable for which group the observations came from would do the trick. Of course, the problem in the first place is that we don’t have those indicators. But, the EM algorithm allows us to estimate these indicators for every observation, and then use those estimates. We proceed in two steps: expectation and maximization.</p>
+<ol type="1">
+<li>The expectation step:</li>
+</ol>
+<ul>
+<li><p>Start with some arbitrary values, e.g <span class="math inline">\(\mu_0 =5, \sigma_00.5,\mu_1=20, \sigma_1=0.5, \alpha=0.5\)</span></p></li>
+<li><p>For each observation calculate the expectation using the starting values for the parameters</p></li>
+<li><p>The expectation for an indicator variable is just the probability of the indicator variable being 1: <span class="math inline">\(E(I|\theta) = P(I=1|\theta)\)</span></p></li>
+<li><p>For observations at the extremes of the curve, the probability could be clear enough to put the observations into one group of the other</p></li>
+<li><p>For those observations where the probability is not so clear, <em>split the observation up based on probability</em>, with part of the observation in one group, and part of the observation in the other group</p></li>
+</ul>
+<ol start="2" type="1">
+<li>The maximization step:</li>
+</ol>
+<ul>
+<li><p>Once the total group of <span class="math inline">\(y_i\)</span>’s is fractionated or segmented using the expectation step, calculating the MLE becomes much easier. The the posterior term becomes a much less complicated single product, not the sum of products.</p></li>
+<li><p>Use the estimates for each of the parameters from the first pass (which were based on arbitrary choices) in a new expectation step for the indicators. Then, use those new indicators in another maximization MLE step for a second set of parameter estimates.</p></li>
+<li><p>Use that second set of parameter estimates to get a third set of indicators, and feed those to the maximization step for a third set of parameters.</p></li>
+<li><p>Lather, rinse, repeat. Basically a “hill climbing” algorithm that will run until convergence.</p></li>
+<li><p>NB: Covariates could help inform and move the process along, e.g.&nbsp;player’s weight, <span class="math inline">\(\beta\)</span>.</p></li>
+</ul>
+<p>In the following example from Shane Jensen’s course, first simulate a “true” underlying data set of a mixture of two normally distributed distributions, one with a mean of 0, the other with a mean of 4. Then pretend you don’t know that. Plotting the observed data indicates there may be two underlying processes going on.</p>
+<p>The expectation function uses variables for the five unknown parameters to calculate the probability that an observation comes from one distribution or the other. The maximization function computes values for the five unknown parameters based on the results of the expectation function. Choose a reasonable value for each of the parameters to start the algorithm. Then set up a a while() loop with stopping rules to run through iterations of the estimation and maximization steps.</p>
+<p>Plot the value for each parameter vs the number of iterations to see if and at what value the the algorithm settled into a stationary pattern. Extract point estimates for each of the four unknown parameters. Repeat the process using different starting values to check if we arrive at the same answers. (We should, and do.) Finally, compare our computational estimates to the true underlying values. (Something we will never be able to do in real life.)</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode numberSource r numberLines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a> <span class="do">## simulated data mixture of two normals with mu0=0,mu1=4,sigsq0=1,sigsq1=1,alpha=0.75</span></span>
+<span id="cb2-2"><a href="#cb2-2"></a></span>
+<span id="cb2-3"><a href="#cb2-3"></a></span>
+<span id="cb2-4"><a href="#cb2-4"></a>n <span class="ot">&lt;-</span> <span class="dv">500</span></span>
+<span id="cb2-5"><a href="#cb2-5"></a>y <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="cn">NA</span>,n)</span>
+<span id="cb2-6"><a href="#cb2-6"></a>ind.true <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="cn">NA</span>,n)</span>
+<span id="cb2-7"><a href="#cb2-7"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>n){</span>
+<span id="cb2-8"><a href="#cb2-8"></a>    ind.true[i] <span class="ot">&lt;-</span> <span class="fu">rbinom</span>(<span class="dv">1</span>,<span class="dv">1</span>,<span class="at">prob=</span><span class="fl">0.75</span>)</span>
+<span id="cb2-9"><a href="#cb2-9"></a>    <span class="cf">if</span> (ind.true[i]<span class="sc">==</span><span class="dv">1</span>){</span>
+<span id="cb2-10"><a href="#cb2-10"></a>        y[i] <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="dv">1</span>,<span class="at">mean=</span><span class="dv">4</span>,<span class="at">sd=</span><span class="fu">sqrt</span>(<span class="dv">1</span>))</span>
+<span id="cb2-11"><a href="#cb2-11"></a>    }</span>
+<span id="cb2-12"><a href="#cb2-12"></a>    <span class="cf">if</span> (ind.true[i]<span class="sc">==</span><span class="dv">0</span>){</span>
+<span id="cb2-13"><a href="#cb2-13"></a>        y[i] <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="dv">1</span>,<span class="at">mean=</span><span class="dv">0</span>,<span class="at">sd=</span><span class="fu">sqrt</span>(<span class="dv">1</span>))</span>
+<span id="cb2-14"><a href="#cb2-14"></a>    }</span>
+<span id="cb2-15"><a href="#cb2-15"></a>}</span>
+<span id="cb2-16"><a href="#cb2-16"></a></span>
+<span id="cb2-17"><a href="#cb2-17"></a></span>
+<span id="cb2-18"><a href="#cb2-18"></a> <span class="do">## plot observed data</span></span>
+<span id="cb2-19"><a href="#cb2-19"></a></span>
+<span id="cb2-20"><a href="#cb2-20"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">1</span>))</span>
+<span id="cb2-21"><a href="#cb2-21"></a><span class="fu">hist</span>(y,<span class="at">col=</span><span class="st">"gray"</span>)</span>
+<span id="cb2-22"><a href="#cb2-22"></a></span>
+<span id="cb2-23"><a href="#cb2-23"></a> <span class="do">## Expectation function:</span></span>
+<span id="cb2-24"><a href="#cb2-24"></a></span>
+<span id="cb2-25"><a href="#cb2-25"></a>Estep <span class="ot">&lt;-</span> <span class="cf">function</span>(alpha,mu0,mu1,sigsq0,sigsq1){</span>
+<span id="cb2-26"><a href="#cb2-26"></a>  ind <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="cn">NA</span>,n)</span>
+<span id="cb2-27"><a href="#cb2-27"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>n){</span>
+<span id="cb2-28"><a href="#cb2-28"></a>    prob0 <span class="ot">&lt;-</span> (<span class="dv">1</span><span class="sc">-</span>alpha)<span class="sc">*</span><span class="fu">dnorm</span>(y[i],<span class="at">mean=</span>mu0,<span class="at">sd=</span><span class="fu">sqrt</span>(sigsq0))</span>
+<span id="cb2-29"><a href="#cb2-29"></a>    prob1 <span class="ot">&lt;-</span> alpha<span class="sc">*</span><span class="fu">dnorm</span>(y[i],<span class="at">mean=</span>mu1,<span class="at">sd=</span><span class="fu">sqrt</span>(sigsq1))</span>
+<span id="cb2-30"><a href="#cb2-30"></a>    ind[i] <span class="ot">&lt;-</span> prob1<span class="sc">/</span>(prob0<span class="sc">+</span>prob1)</span>
+<span id="cb2-31"><a href="#cb2-31"></a>  }</span>
+<span id="cb2-32"><a href="#cb2-32"></a>  ind</span>
+<span id="cb2-33"><a href="#cb2-33"></a>}</span>
+<span id="cb2-34"><a href="#cb2-34"></a></span>
+<span id="cb2-35"><a href="#cb2-35"></a> <span class="do">## Maximization function</span></span>
+<span id="cb2-36"><a href="#cb2-36"></a></span>
+<span id="cb2-37"><a href="#cb2-37"></a>Mstep <span class="ot">&lt;-</span> <span class="cf">function</span>(ind){</span>
+<span id="cb2-38"><a href="#cb2-38"></a>  alpha <span class="ot">&lt;-</span> <span class="fu">sum</span>(ind)<span class="sc">/</span>n</span>
+<span id="cb2-39"><a href="#cb2-39"></a>  mu1 <span class="ot">&lt;-</span> <span class="fu">sum</span>(ind<span class="sc">*</span>y)<span class="sc">/</span><span class="fu">sum</span>(ind)</span>
+<span id="cb2-40"><a href="#cb2-40"></a>  mu0 <span class="ot">&lt;-</span> <span class="fu">sum</span>((<span class="dv">1</span><span class="sc">-</span>ind)<span class="sc">*</span>y)<span class="sc">/</span><span class="fu">sum</span>(<span class="dv">1</span><span class="sc">-</span>ind)</span>
+<span id="cb2-41"><a href="#cb2-41"></a>  sigsq1 <span class="ot">&lt;-</span> <span class="fu">sum</span>(ind<span class="sc">*</span>((y<span class="sc">-</span>mu1)<span class="sc">^</span><span class="dv">2</span>))<span class="sc">/</span><span class="fu">sum</span>(ind)</span>
+<span id="cb2-42"><a href="#cb2-42"></a>  sigsq0 <span class="ot">&lt;-</span> <span class="fu">sum</span>((<span class="dv">1</span><span class="sc">-</span>ind)<span class="sc">*</span>((y<span class="sc">-</span>mu0)<span class="sc">^</span><span class="dv">2</span>))<span class="sc">/</span><span class="fu">sum</span>(<span class="dv">1</span><span class="sc">-</span>ind)</span>
+<span id="cb2-43"><a href="#cb2-43"></a>  <span class="fu">c</span>(alpha,mu0,mu1,sigsq0,sigsq1)</span>
+<span id="cb2-44"><a href="#cb2-44"></a>}</span>
+<span id="cb2-45"><a href="#cb2-45"></a></span>
+<span id="cb2-46"><a href="#cb2-46"></a> <span class="do">## starting values for EM algorithm:</span></span>
+<span id="cb2-47"><a href="#cb2-47"></a></span>
+<span id="cb2-48"><a href="#cb2-48"></a>curalpha <span class="ot">&lt;-</span> <span class="fl">0.5</span></span>
+<span id="cb2-49"><a href="#cb2-49"></a>curmu0 <span class="ot">&lt;-</span> <span class="sc">-</span><span class="dv">1</span></span>
+<span id="cb2-50"><a href="#cb2-50"></a>curmu1 <span class="ot">&lt;-</span> <span class="dv">1</span></span>
+<span id="cb2-51"><a href="#cb2-51"></a>cursigsq0 <span class="ot">&lt;-</span> <span class="dv">1</span></span>
+<span id="cb2-52"><a href="#cb2-52"></a>cursigsq1 <span class="ot">&lt;-</span> <span class="dv">1</span></span>
+<span id="cb2-53"><a href="#cb2-53"></a>itermat <span class="ot">&lt;-</span> <span class="fu">c</span>(curalpha,curmu0,curmu1,cursigsq0,cursigsq1)</span>
+<span id="cb2-54"><a href="#cb2-54"></a></span>
+<span id="cb2-55"><a href="#cb2-55"></a> <span class="do">## run EM algorithm</span></span>
+<span id="cb2-56"><a href="#cb2-56"></a>diff <span class="ot">&lt;-</span> <span class="dv">1</span></span>
+<span id="cb2-57"><a href="#cb2-57"></a>numiters <span class="ot">&lt;-</span> <span class="dv">1</span></span>
+<span id="cb2-58"><a href="#cb2-58"></a><span class="cf">while</span> (diff <span class="sc">&gt;</span> <span class="fl">0.0001</span>){               <span class="co"># criterion to stop algorithm</span></span>
+<span id="cb2-59"><a href="#cb2-59"></a>  numiters <span class="ot">&lt;-</span> numiters<span class="sc">+</span><span class="dv">1</span></span>
+<span id="cb2-60"><a href="#cb2-60"></a>  curind <span class="ot">&lt;-</span> <span class="fu">Estep</span>(curalpha,curmu0,curmu1,cursigsq0,cursigsq1)</span>
+<span id="cb2-61"><a href="#cb2-61"></a>  curparam <span class="ot">&lt;-</span> <span class="fu">Mstep</span>(curind)</span>
+<span id="cb2-62"><a href="#cb2-62"></a>  curalpha <span class="ot">&lt;-</span> curparam[<span class="dv">1</span>]</span>
+<span id="cb2-63"><a href="#cb2-63"></a>  curmu0 <span class="ot">&lt;-</span> curparam[<span class="dv">2</span>]</span>
+<span id="cb2-64"><a href="#cb2-64"></a>  curmu1 <span class="ot">&lt;-</span> curparam[<span class="dv">3</span>]</span>
+<span id="cb2-65"><a href="#cb2-65"></a>  cursigsq0 <span class="ot">&lt;-</span> curparam[<span class="dv">4</span>]</span>
+<span id="cb2-66"><a href="#cb2-66"></a>  cursigsq1 <span class="ot">&lt;-</span> curparam[<span class="dv">5</span>]</span>
+<span id="cb2-67"><a href="#cb2-67"></a>  itermat <span class="ot">&lt;-</span> <span class="fu">rbind</span>(itermat,curparam)</span>
+<span id="cb2-68"><a href="#cb2-68"></a>  diff <span class="ot">&lt;-</span> <span class="fu">max</span>(<span class="fu">abs</span>(itermat[numiters,]<span class="sc">-</span>itermat[numiters<span class="dv">-1</span>,])) </span>
+<span id="cb2-69"><a href="#cb2-69"></a>  <span class="fu">print</span> (numiters)</span>
+<span id="cb2-70"><a href="#cb2-70"></a>}</span>
+<span id="cb2-71"><a href="#cb2-71"></a></span>
+<span id="cb2-72"><a href="#cb2-72"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">3</span>))</span>
+<span id="cb2-73"><a href="#cb2-73"></a><span class="fu">plot</span>(<span class="dv">1</span><span class="sc">:</span>numiters,itermat[,<span class="dv">1</span>],<span class="at">type=</span><span class="st">"l"</span>,<span class="at">xlab=</span><span class="st">"iters"</span>,<span class="at">ylab=</span><span class="st">"alpha"</span>,<span class="at">main=</span><span class="st">"alpha"</span>)</span>
+<span id="cb2-74"><a href="#cb2-74"></a><span class="fu">plot</span>(<span class="dv">1</span><span class="sc">:</span>numiters,itermat[,<span class="dv">2</span>],<span class="at">type=</span><span class="st">"l"</span>,<span class="at">xlab=</span><span class="st">"iters"</span>,<span class="at">ylab=</span><span class="st">"mu0"</span>,<span class="at">main=</span><span class="st">"mu0"</span>)</span>
+<span id="cb2-75"><a href="#cb2-75"></a><span class="fu">plot</span>(<span class="dv">1</span><span class="sc">:</span>numiters,itermat[,<span class="dv">3</span>],<span class="at">type=</span><span class="st">"l"</span>,<span class="at">xlab=</span><span class="st">"iters"</span>,<span class="at">ylab=</span><span class="st">"mu1"</span>,<span class="at">main=</span><span class="st">"mu1"</span>)</span>
+<span id="cb2-76"><a href="#cb2-76"></a><span class="fu">plot</span>(<span class="dv">1</span><span class="sc">:</span>numiters,itermat[,<span class="dv">4</span>],<span class="at">type=</span><span class="st">"l"</span>,<span class="at">xlab=</span><span class="st">"iters"</span>,<span class="at">ylab=</span><span class="st">"sigsq0"</span>,<span class="at">main=</span><span class="st">"sigsq0"</span>)</span>
+<span id="cb2-77"><a href="#cb2-77"></a><span class="fu">plot</span>(<span class="dv">1</span><span class="sc">:</span>numiters,itermat[,<span class="dv">5</span>],<span class="at">type=</span><span class="st">"l"</span>,<span class="at">xlab=</span><span class="st">"iters"</span>,<span class="at">ylab=</span><span class="st">"sigsq1"</span>,<span class="at">main=</span><span class="st">"sigsq1"</span>)</span>
+<span id="cb2-78"><a href="#cb2-78"></a></span>
+<span id="cb2-79"><a href="#cb2-79"></a>theta.hat <span class="ot">&lt;-</span> itermat[numiters,]</span>
+<span id="cb2-80"><a href="#cb2-80"></a>theta.hat</span>
+<span id="cb2-81"><a href="#cb2-81"></a></span>
+<span id="cb2-82"><a href="#cb2-82"></a> <span class="do">## EM algorithm with different starting values: </span></span>
+<span id="cb2-83"><a href="#cb2-83"></a>curalpha <span class="ot">&lt;-</span> <span class="fl">0.5</span></span>
+<span id="cb2-84"><a href="#cb2-84"></a>curmu0 <span class="ot">&lt;-</span> <span class="sc">-</span><span class="dv">10</span></span>
+<span id="cb2-85"><a href="#cb2-85"></a>curmu1 <span class="ot">&lt;-</span> <span class="dv">10</span></span>
+<span id="cb2-86"><a href="#cb2-86"></a>cursigsq0 <span class="ot">&lt;-</span> <span class="dv">2</span></span>
+<span id="cb2-87"><a href="#cb2-87"></a>cursigsq1 <span class="ot">&lt;-</span> <span class="dv">2</span></span>
+<span id="cb2-88"><a href="#cb2-88"></a>itermat <span class="ot">&lt;-</span> <span class="fu">c</span>(curalpha,curmu0,curmu1,cursigsq0,cursigsq1)</span>
+<span id="cb2-89"><a href="#cb2-89"></a></span>
+<span id="cb2-90"><a href="#cb2-90"></a> <span class="do">## calculate optimal density fit</span></span>
+<span id="cb2-91"><a href="#cb2-91"></a></span>
+<span id="cb2-92"><a href="#cb2-92"></a>xgrid <span class="ot">&lt;-</span> <span class="fu">ppoints</span>(<span class="dv">1000</span>)<span class="sc">*</span><span class="dv">10-2</span></span>
+<span id="cb2-93"><a href="#cb2-93"></a>yfit <span class="ot">&lt;-</span> theta.hat[<span class="dv">1</span>]<span class="sc">*</span><span class="fu">dnorm</span>(xgrid,<span class="at">mean=</span>theta.hat[<span class="dv">3</span>],<span class="at">sd=</span><span class="fu">sqrt</span>(theta.hat[<span class="dv">5</span>]))<span class="sc">+</span>(<span class="dv">1</span><span class="sc">-</span>theta.hat[<span class="dv">1</span>])<span class="sc">*</span><span class="fu">dnorm</span>(xgrid,<span class="at">mean=</span>theta.hat[<span class="dv">2</span>],<span class="at">sd=</span><span class="fu">sqrt</span>(theta.hat[<span class="dv">4</span>]))</span>
+<span id="cb2-94"><a href="#cb2-94"></a></span>
+<span id="cb2-95"><a href="#cb2-95"></a> <span class="do">## plot observed data with fitted mixture</span></span>
+<span id="cb2-96"><a href="#cb2-96"></a></span>
+<span id="cb2-97"><a href="#cb2-97"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">1</span>))</span>
+<span id="cb2-98"><a href="#cb2-98"></a><span class="fu">hist</span>(y,<span class="at">col=</span><span class="st">"gray"</span>,<span class="at">prob=</span>T,<span class="at">xlim=</span><span class="fu">c</span>(<span class="sc">-</span><span class="dv">2</span>,<span class="dv">8</span>))</span>
+<span id="cb2-99"><a href="#cb2-99"></a><span class="fu">lines</span>(xgrid,yfit,<span class="at">col=</span><span class="st">"red"</span>,<span class="at">lwd=</span><span class="dv">2</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>In most realistic situations, the different mixtures will probably not be as obvious as they are in this example. They may, instead, look more like a normal distribution that appears to have too much information in one of the tails, or perhaps even like a truncated Poisson distribution.</p>
+<p>#Bayesian Regression Modeling with BUGS or JAGS</p>
+<p>In this section we introduce how to model complex data using BUGS or JAGS. The “trick” (if there is one) is to discern the two main parts of a Bayesian model: the likelihood, and the priors. The rest tends to be tuning the machinery.</p>
+<p>As a general approach, to conduct linear regression in the BUGS or JAGS you specify:</p>
+<ol type="1">
+<li>the <em>likelihood</em> for the data</li>
+<li>the form of the <em>relationship</em> between response and explanatory variables</li>
+<li>prior distributions for regression coefficients and any unknown (nuisance) parameters</li>
+</ol>
+</section>
+</section>
+<section id="linear-regression" class="level1">
+<h1>Linear Regression</h1>
+<p>Classical linear regression can be represented as:</p>
+<p><span class="math display">\[
+y_i = \beta_0 + \Sigma \beta_x * x_i + \epsilon \\
+\epsilon \sim  N(\mu, \sigma^2)
+\]</span></p>
+<p>The Bayesian version can be represented as:</p>
+<p><span class="math display">\[
+y_i \sim N(\mu, \sigma^2) \\
+\mu = \beta_0 + \Sigma \beta_x * x_i \\
+\beta_x \sim priors
+\]</span></p>
+<p>Note (importantly) that choosing so-called non-informative priors for <span class="math inline">\(\beta\)</span> , like <span class="math inline">\(\beta_x \sim N(0, 10000)\)</span> , and for the precision term, like <span class="math inline">\(\frac{1}{\sigma^2} \sim \Gamma(0.001, 0.001)\)</span> will return classical or MLE results.</p>
+<section id="example-new-york-city-crime-data" class="level2">
+<h2 class="anchored" data-anchor-id="example-new-york-city-crime-data">Example: New York City Crime Data</h2>
+<p>As an example of a Bayesian linear regression model, we look at New York City crime data from 1966 to 1967. The outcome variable (THEFT) is the increase or decrease in the seasonally adjusted rate of grand larcenies in 23 Manhattan police precincts from a 27-week pre-intervention period compared to a 58-week intervention period. The predictor variables are the percent increase or decrease in the number of police officers in a precinct (MAN), and whether the precinct was located uptown, midtown or downtown.</p>
+<p>We specify the model as:</p>
+<p><span class="math display">\[
+THEFT_i \sim N(\mu, \sigma^) \\
+\mu = \beta_0 + \beta_1 * MAN + district \\
+\frac{1}{\sigma^2} \sim \Gamma(0.001, 0.001) \\
+\beta_0 \sim N(0, 100000) \\
+\beta_1 \sim N(0, 100000)
+\]</span></p>
+<p>We will need a prior for the effect of geographic area (district), but will discuss that in a moment. First, we consider how best to code an indicator variable in BUGS. There are two possible approaches. We can create a “design matrix” of dummy variables. In this approach we create two variables named DIST1 and DIST2, for which downtown precincts are coded <span class="math inline">\(0,0\)</span>, midtown precincts are coded <span class="math inline">\(1,0\)</span>, and uptown precincts are coded <span class="math inline">\(0,1\)</span>. The BUGS code for this model would then be:</p>
+<pre><code>model{      
+for (i in 1:N) {        
+  THEFT[i] ~dnorm(mu[i] , tau)        
+  mu[i] &lt;- beta0 + beta1*MAN[i] + beta2*DIST2[i] + beta3*DIST3[i]           
+}          
+beta0 ~dnorm(0, 0.00001)          
+beta1  ~dnorm(0, 0.00001)         
+beta2 ~dnorm(0, 0.00001)        
+beta3 ~dnorm(0, 0.00001)          
+tau ~ dgamma (0.001, 0.001)        
+sigma2 &lt;- 1/tau}           </code></pre>
+<p>Initial values for single chain for this model could be:</p>
+<pre><code>list(beta0 = 1, beta1 = -2, beta2 = -2, beta3 = 4, tau = 2)</code></pre>
+<p>Alternatively, we can code geographic area as a single vector, with <span class="math inline">\(1\)</span> for downtown, <span class="math inline">\(2\)</span> for midtown, and <span class="math inline">\(3\)</span> for uptown. This, though, requires a little indexing slight of hand in the BUGS model specification. We will have to use the “double indexing” feature of BUGS:</p>
+<pre><code>model{
+for (i in 1:23) {
+  THEFT[i] ~dnorm(mu[i] , tau)
+  mu[i] &lt;- beta0 + beta1*MAN[i] + beta2*[DIST[i]] # or nested index
+}
+beta0 ~dnorm(0, 0.00001)
+beta1  ~dnorm(0, 0.00001)
+beta2[1]&lt;-0       # reference category to make model identifiable
+beta2[2] ~dnorm(0, 0.00001)
+beta2[3] ~dnorm(0, 0.00001)
+tau ~ dgamma (0.001, 0.001)
+sigma2 &lt;- 1/tau}</code></pre>
+<p>Initial values for a single chain for this model could be</p>
+<pre><code>list(beta0 = 1, beta1 = -2, beta2 = c(NA, -2, 4), tau = 2)</code></pre>
+<p>Let’s run the model with JAGS. We’ll use the design matrix approach to specify the indicator variable. Here, we read in the data (which I extracted from a pdf of the original Rand). JAGS likes named lists for data structures (though, I’ve found data frames to work just as well), so I create one with just the variables I plan to include in the model (JAGS will throw a warning if there are unused variables, but will otherwise run the model). I use the <em>cat()</em> function to hold the model syntax in a file called “m1.jag”. For simplicity, this syntax saves the file in the current working directory, but I could have saved it anywhere. Then I create a list object to hold the initial values (I’ve found JAGS like a list of lists), and a vector to hold the list of parameters I want to monitor. Finally, I load the R2Jjags package, and specify and run the model.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode numberSource r numberLines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a>PCT<span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">4</span>, <span class="dv">5</span>, <span class="dv">6</span>, <span class="dv">7</span>, <span class="dv">9</span>, <span class="dv">10</span>, <span class="dv">13</span>, <span class="dv">14</span>, <span class="dv">16</span>, <span class="dv">17</span>, <span class="dv">18</span>, <span class="dv">19</span>, <span class="dv">20</span>, </span>
+<span id="cb7-2"><a href="#cb7-2"></a><span class="dv">22</span>, <span class="dv">23</span>, <span class="dv">24</span>, <span class="dv">25</span>, <span class="dv">26</span>, <span class="dv">28</span>, <span class="dv">30</span>, <span class="dv">32</span>, <span class="dv">34</span>)</span>
+<span id="cb7-3"><a href="#cb7-3"></a></span>
+<span id="cb7-4"><a href="#cb7-4"></a>MAN<span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="sc">-</span><span class="fl">15.79</span>, <span class="fl">0.98</span>, <span class="fl">3.71</span>, <span class="sc">-</span><span class="fl">5.37</span>, <span class="sc">-</span><span class="fl">10.23</span>, <span class="sc">-</span><span class="fl">8.32</span>, <span class="sc">-</span><span class="fl">7.80</span>, </span>
+<span id="cb7-5"><a href="#cb7-5"></a><span class="fl">6.77</span>, <span class="sc">-</span><span class="fl">8.81</span>, <span class="sc">-</span><span class="fl">9.56</span>, <span class="sc">-</span><span class="fl">2.06</span>, <span class="sc">-</span><span class="fl">0.76</span>, <span class="sc">-</span><span class="fl">6.30</span>, <span class="fl">39.40</span>, <span class="sc">-</span><span class="fl">10.79</span>, <span class="sc">-</span><span class="fl">8.16</span>, </span>
+<span id="cb7-6"><a href="#cb7-6"></a><span class="sc">-</span><span class="fl">2.82</span>, <span class="sc">-</span><span class="fl">16.19</span>, <span class="sc">-</span><span class="fl">11.00</span>, <span class="sc">-</span><span class="fl">14.60</span>, <span class="sc">-</span><span class="fl">17.96</span>, <span class="fl">0.76</span>, <span class="sc">-</span><span class="fl">10.77</span>)</span>
+<span id="cb7-7"><a href="#cb7-7"></a></span>
+<span id="cb7-8"><a href="#cb7-8"></a>THEFT<span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fl">3.19</span>, <span class="sc">-</span><span class="fl">3.45</span>, <span class="fl">0.04</span>, <span class="fl">6.62</span>, <span class="fl">3.61</span>, <span class="fl">2.67</span>, <span class="sc">-</span><span class="fl">2.45</span>, <span class="fl">9.31</span>, </span>
+<span id="cb7-9"><a href="#cb7-9"></a><span class="fl">15.29</span>, <span class="fl">3.68</span>, <span class="fl">8.63</span>, <span class="fl">10.82</span>, <span class="sc">-</span><span class="fl">0.50</span>, <span class="sc">-</span><span class="fl">11.00</span>, <span class="fl">2.05</span>, <span class="sc">-</span><span class="fl">11.80</span>, <span class="sc">-</span><span class="fl">2.02</span>, </span>
+<span id="cb7-10"><a href="#cb7-10"></a><span class="fl">4.42</span>, <span class="sc">-</span><span class="fl">0.86</span>, <span class="sc">-</span><span class="fl">0.92</span>, <span class="fl">2.16</span>, <span class="fl">1.58</span>, <span class="sc">-</span><span class="fl">1.16</span>)</span>
+<span id="cb7-11"><a href="#cb7-11"></a></span>
+<span id="cb7-12"><a href="#cb7-12"></a>DIST <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">2</span>, <span class="dv">2</span>, <span class="dv">2</span>, </span>
+<span id="cb7-13"><a href="#cb7-13"></a>    <span class="dv">2</span>, <span class="dv">2</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">3</span>, <span class="dv">3</span>, <span class="dv">3</span>, <span class="dv">3</span>, <span class="dv">3</span>)</span>
+<span id="cb7-14"><a href="#cb7-14"></a></span>
+<span id="cb7-15"><a href="#cb7-15"></a>DIST2<span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, </span>
+<span id="cb7-16"><a href="#cb7-16"></a>    <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>)</span>
+<span id="cb7-17"><a href="#cb7-17"></a></span>
+<span id="cb7-18"><a href="#cb7-18"></a>DIST3<span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, </span>
+<span id="cb7-19"><a href="#cb7-19"></a>    <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>)</span>
+<span id="cb7-20"><a href="#cb7-20"></a></span>
+<span id="cb7-21"><a href="#cb7-21"></a>m1.dat<span class="ot">&lt;-</span><span class="fu">list</span>(<span class="at">MAN=</span>MAN, <span class="at">THEFT=</span>THEFT, <span class="at">DIST2=</span>DIST2, <span class="at">DIST3=</span>DIST3)</span>
+<span id="cb7-22"><a href="#cb7-22"></a></span>
+<span id="cb7-23"><a href="#cb7-23"></a><span class="fu">cat</span>(</span>
+<span id="cb7-24"><a href="#cb7-24"></a>    <span class="st">"model{</span></span>
+<span id="cb7-25"><a href="#cb7-25"></a><span class="st">    for (i in 1:23) {</span></span>
+<span id="cb7-26"><a href="#cb7-26"></a><span class="st">      THEFT[i] ~dnorm(mu[i] , tau)</span></span>
+<span id="cb7-27"><a href="#cb7-27"></a><span class="st">      mu[i] &lt;- beta0 + beta1*MAN[i] + beta2*DIST2[i] + beta3*DIST3[i]</span></span>
+<span id="cb7-28"><a href="#cb7-28"></a><span class="st">    }</span></span>
+<span id="cb7-29"><a href="#cb7-29"></a><span class="st">    beta0 ~dnorm(0, 0.00001)</span></span>
+<span id="cb7-30"><a href="#cb7-30"></a><span class="st">    beta1  ~dnorm(0, 0.00001)</span></span>
+<span id="cb7-31"><a href="#cb7-31"></a><span class="st">    beta2 ~dnorm(0, 0.00001)</span></span>
+<span id="cb7-32"><a href="#cb7-32"></a><span class="st">    beta3 ~dnorm(0, 0.00001)</span></span>
+<span id="cb7-33"><a href="#cb7-33"></a><span class="st">    tau ~ dgamma (0.001, 0.001)</span></span>
+<span id="cb7-34"><a href="#cb7-34"></a><span class="st">    sigma2 &lt;- 1/tau}"</span>,</span>
+<span id="cb7-35"><a href="#cb7-35"></a>    <span class="at">file=</span><span class="st">"m1.jag"</span></span>
+<span id="cb7-36"><a href="#cb7-36"></a>    )</span>
+<span id="cb7-37"><a href="#cb7-37"></a></span>
+<span id="cb7-38"><a href="#cb7-38"></a>m1.inits<span class="ot">&lt;-</span><span class="fu">list</span>(<span class="fu">list</span>(<span class="st">"beta0"</span><span class="ot">=</span><span class="dv">1</span>,<span class="st">"beta1"</span><span class="ot">=</span><span class="sc">-</span><span class="dv">2</span>,<span class="st">"beta2"</span><span class="ot">=</span><span class="sc">-</span><span class="dv">2</span>,<span class="st">"beta3"</span><span class="ot">=</span> <span class="dv">4</span>,</span>
+<span id="cb7-39"><a href="#cb7-39"></a>          <span class="st">"tau"</span><span class="ot">=</span><span class="dv">2</span>))</span>
+<span id="cb7-40"><a href="#cb7-40"></a></span>
+<span id="cb7-41"><a href="#cb7-41"></a>parameters <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"beta0"</span>, <span class="st">"beta1"</span>, <span class="st">"beta2"</span>, <span class="st">"beta3"</span>, <span class="st">"mu"</span>, </span>
+<span id="cb7-42"><a href="#cb7-42"></a>           <span class="st">"sigma2"</span>)</span>
+<span id="cb7-43"><a href="#cb7-43"></a></span>
+<span id="cb7-44"><a href="#cb7-44"></a><span class="fu">library</span>(R2jags)</span>
+<span id="cb7-45"><a href="#cb7-45"></a></span>
+<span id="cb7-46"><a href="#cb7-46"></a></span>
+<span id="cb7-47"><a href="#cb7-47"></a>m1<span class="ot">&lt;-</span> <span class="fu">jags</span>(<span class="at">data =</span> m1.dat,</span>
+<span id="cb7-48"><a href="#cb7-48"></a>        <span class="at">inits =</span> m1.inits,</span>
+<span id="cb7-49"><a href="#cb7-49"></a>        <span class="at">parameters.to.save =</span> parameters,</span>
+<span id="cb7-50"><a href="#cb7-50"></a>        <span class="at">model.file =</span> <span class="st">"m1.jag"</span>,</span>
+<span id="cb7-51"><a href="#cb7-51"></a>        <span class="at">n.chains =</span> <span class="dv">1</span>,</span>
+<span id="cb7-52"><a href="#cb7-52"></a>        <span class="at">n.iter =</span> <span class="dv">5000</span>,</span>
+<span id="cb7-53"><a href="#cb7-53"></a>        <span class="at">n.burnin =</span> <span class="dv">2000</span>,</span>
+<span id="cb7-54"><a href="#cb7-54"></a>        <span class="at">n.thin =</span> <span class="dv">1</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>The next bit of code returns some results. We could access some of the convergence diagnosis tools in the “coda” package by coercing the rjags object returned by JAGS to an mcmc object with <em>as.mcmc()</em></p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode numberSource r numberLines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a>m1</span>
+<span id="cb8-2"><a href="#cb8-2"></a><span class="fu">plot</span>(m1)        </span>
+<span id="cb8-3"><a href="#cb8-3"></a><span class="fu">traceplot</span>(m1)       </span>
+<span id="cb8-4"><a href="#cb8-4"></a><span class="fu">plot</span>(<span class="fu">as.mcmc</span>(m1))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Within WinBUGS itself, you can get a nice graph of a model fit by using the “comparison tool”, setting “node” to “mu”, “other” to “THEFT”, and “axis” to “MAN”. I’m sure there is a way to do this with JAGS and or mcmc objects in R, but I haven’t figured it out yet. In the meantime, the following admittedly hack-like approach will return a not perfect, but informative graphic.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode numberSource r numberLines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a><span class="fu">plot</span>(MAN,THEFT, <span class="at">pch=</span><span class="dv">20</span>)</span>
+<span id="cb9-2"><a href="#cb9-2"></a><span class="fu">points</span>(MAN,m1<span class="sc">$</span>BUGSoutput<span class="sc">$</span>mean<span class="sc">$</span>mu,<span class="at">col=</span><span class="st">"red"</span>, <span class="at">pch=</span><span class="dv">20</span>)</span>
+<span id="cb9-3"><a href="#cb9-3"></a>reg<span class="ot">&lt;-</span><span class="fu">lm</span>(m1<span class="sc">$</span>BUGSoutput<span class="sc">$</span>mean<span class="sc">$</span>mu<span class="sc">~</span>MAN)</span>
+<span id="cb9-4"><a href="#cb9-4"></a><span class="fu">abline</span>(reg, <span class="at">col=</span><span class="st">"red"</span>)</span>
+<span id="cb9-5"><a href="#cb9-5"></a>low.ci<span class="ot">&lt;-</span>m1<span class="sc">$</span>BUGSoutput<span class="sc">$</span>summary[<span class="dv">6</span><span class="sc">:</span><span class="dv">28</span>,<span class="dv">3</span>]</span>
+<span id="cb9-6"><a href="#cb9-6"></a>high.ci<span class="ot">&lt;-</span>m1<span class="sc">$</span>BUGSoutput<span class="sc">$</span>summary[<span class="dv">6</span><span class="sc">:</span><span class="dv">28</span>,<span class="dv">7</span>]</span>
+<span id="cb9-7"><a href="#cb9-7"></a>reg2<span class="ot">&lt;-</span><span class="fu">lm</span>(low.ci<span class="sc">~</span>MAN)</span>
+<span id="cb9-8"><a href="#cb9-8"></a><span class="fu">abline</span>(reg2, <span class="at">col=</span><span class="st">"red"</span>, <span class="at">lty=</span><span class="st">"dashed"</span>)</span>
+<span id="cb9-9"><a href="#cb9-9"></a>reg3<span class="ot">&lt;-</span><span class="fu">lm</span>(high.ci<span class="sc">~</span>MAN)</span>
+<span id="cb9-10"><a href="#cb9-10"></a><span class="fu">abline</span>(reg3, <span class="at">col=</span><span class="st">"red"</span>, <span class="at">lty=</span><span class="st">"dashed"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p><img src="bayes/bayes3/crimeJag1.jpg" class="img-fluid"></p>
+<p>The black dots are the observed data, the red dots are the fitted mu[i] values from the JAGS run. Notice “shrinkage” towards the mean. This so-called “borrowing of strength” is a feature of Bayesian analysis. The solid red line is the regression from the model. The dashed lines are upper and lower limits based on regressions of the 2.5% and 97.5% probability limits on the fitted values.</p>
+<p>Perhaps most importantly, though, notice the outlying variable that is likely responsible for pulling the overall results toward significance. It is the data from the 20th precinct on the west side of Midtown Manhattan, where there was an experimental 40% increase in manpower during the experimental period. Two quick take home messages are (1) plotting data is usually more informative than summary statistics, and (2) substance area knowledge is essential to correctly interpret any kind of analysis.</p>
+<p>We could take a couple of approaches to this outlier. We could delete the data point, but throwing out data is usually not a good idea. Or we could attempt to make our analysis more robust to outliers. Bayes makes this relatively painless, by allowing us to specify the model with more robust t-distributed errors.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode numberSource r numberLines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1"></a><span class="fu">cat</span>(</span>
+<span id="cb10-2"><a href="#cb10-2"></a>    <span class="st">"model{</span></span>
+<span id="cb10-3"><a href="#cb10-3"></a><span class="st">    for (i in 1:23) {</span></span>
+<span id="cb10-4"><a href="#cb10-4"></a><span class="st">      THEFT[i] ~dt(mu[i] , tau, 4) # robust likelihood t on 4 df</span></span>
+<span id="cb10-5"><a href="#cb10-5"></a><span class="st">      mu[i] &lt;- beta0 + beta1*MAN[i] + beta2*DIST2[i] + beta3*DIST3[i]</span></span>
+<span id="cb10-6"><a href="#cb10-6"></a><span class="st">    }</span></span>
+<span id="cb10-7"><a href="#cb10-7"></a><span class="st">    beta0 ~dnorm(0, 0.00001)</span></span>
+<span id="cb10-8"><a href="#cb10-8"></a><span class="st">    beta1  ~dnorm(0, 0.00001)</span></span>
+<span id="cb10-9"><a href="#cb10-9"></a><span class="st">    beta2 ~dnorm(0, 0.00001)</span></span>
+<span id="cb10-10"><a href="#cb10-10"></a><span class="st">    beta3 ~dnorm(0, 0.00001)</span></span>
+<span id="cb10-11"><a href="#cb10-11"></a><span class="st">    tau ~ dgamma (0.001, 0.001)</span></span>
+<span id="cb10-12"><a href="#cb10-12"></a><span class="st">    sigma2 &lt;- 1/tau}"</span>,</span>
+<span id="cb10-13"><a href="#cb10-13"></a>    <span class="at">file=</span><span class="st">"m2.jag"</span></span>
+<span id="cb10-14"><a href="#cb10-14"></a>    )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>You will find that in this instance the results do not change too very much (we may want to consider an even more robust distribution like a double exponential), but it does illustrate the relative ease with which you can update models.</p>
+</section>
+</section>
+<section id="logistic-regression" class="level1">
+<h1>Logistic Regression</h1>
+<p>Logistic models are among the most popular multivariable approaches to the often dichotomous outcomes addressed by epidemiology. Fortunately, Bayesian model specification is fairly straightforward regardless of the type of regression. As an example of logistic regression in the Bayesian setting, we look at myocardial infarction in hospitalized patients. The data come from the US <a href="http://www.nhlbi.nih.gov/">National Heart Lung and Blood Institute</a> and are based on a 1997 study of the digitalis. The data set <a href="../../Users/charlie/Dropbox/Bayes/bayesWeb/bayesWebPt3/dig2.csv">dig2</a> contains a random sample of 2000 observations from the original data set. The outcome variable is myocardial infarction (“MI”) coded as 0 or 1, and variables for age, gender and body mass index.</p>
+<p>We begin by specifying a model. The process is similar to that for a linear model. We set up a loop over each observation, but here specify the likelihood as a Bernoulli-distributed outcome (rather than normally distributed) with the parameter “mu” explicitly defined as a logistic model. This model should look familiar from your statistics training, and you may be beginning to appreciate how syntactic modeling, of which BUGS and JAGS is an example, differs from some popular statistical software like SAS. After specifying the likelihood, we specify prior distributions for the <span class="math inline">\(\beta\)</span> coefficients. Here we apply only vaguely informative normal distributions to allow the data to “speak for themselves”. In a later session we’ll discuss a bit more about choosing priors for Bayesian models.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode numberSource r numberLines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a><span class="fu">cat</span>(</span>
+<span id="cb11-2"><a href="#cb11-2"></a>    <span class="st">"model {</span></span>
+<span id="cb11-3"><a href="#cb11-3"></a><span class="st">      for( i in 1 : N ) {</span></span>
+<span id="cb11-4"><a href="#cb11-4"></a><span class="st">        MI[i] ~ dbern(mu[i])</span></span>
+<span id="cb11-5"><a href="#cb11-5"></a><span class="st">        mu[i]&lt;-1/(1+exp(-(b0 + b1*AGE[i] + b2*SEX[i] + b3*BMI[i])))</span></span>
+<span id="cb11-6"><a href="#cb11-6"></a><span class="st">          }             </span></span>
+<span id="cb11-7"><a href="#cb11-7"></a><span class="st">      b0 ~ dnorm( 0 , 1.0E-12 )</span></span>
+<span id="cb11-8"><a href="#cb11-8"></a><span class="st">      b1 ~ dnorm( 0 , 1.0E-12 )</span></span>
+<span id="cb11-9"><a href="#cb11-9"></a><span class="st">      b2 ~ dnorm( 0 , 1.0E-12 )</span></span>
+<span id="cb11-10"><a href="#cb11-10"></a><span class="st">      b3 ~ dnorm( 0 , 1.0E-12 )</span></span>
+<span id="cb11-11"><a href="#cb11-11"></a><span class="st">            }"</span>, <span class="at">file=</span><span class="st">"logistic.jag"</span></span>
+<span id="cb11-12"><a href="#cb11-12"></a>    )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Note that we could, equivalently, have specified the model as:</p>
+<pre><code>MI[i] ~ dbern(p[i])
+logit(p[i]) &lt;- b0 + b1*AGE[i] + b2*SEX[i] + b3*BMI[i]</code></pre>
+<p>Next, we read in the data set and define the data structure for the JAGS run. Note, we are including the number of rows for the variable “N” in our model statement.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="sourceCode numberSource r numberLines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1"></a>mi<span class="ot">&lt;-</span><span class="fu">read.csv</span>(<span class="st">"/Users/charlie/Desktop/dig2.csv"</span>,<span class="at">header=</span>T, <span class="at">stringsAsFactors=</span>F)</span>
+<span id="cb13-2"><a href="#cb13-2"></a>    </span>
+<span id="cb13-3"><a href="#cb13-3"></a>dat1<span class="ot">&lt;-</span><span class="fu">list</span>(<span class="at">MI=</span>mi<span class="sc">$</span>MI, <span class="at">AGE=</span>mi<span class="sc">$</span>AGE, <span class="at">SEX=</span>mi<span class="sc">$</span>SEX, <span class="at">BMI=</span>mi<span class="sc">$</span>BMI, <span class="at">N=</span><span class="fu">nrow</span>(mi))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>In setting up our initial values we take a different approach than we did before. As noted in the section describing the machinery of MCMC, starting or initial values can have an effect on how efficiently the algorithm covers the sample space. There are no hard and fast rules for choosing initial values beyond the recommendation that they be “realistic” (so the MCMC sampler will run efficiently) and “over-dispersed” (so we can better assess convergence to a stable posterior distribution). One approach (that appeals to me) is to set the choice of initial values on a simple MLE run of the model. This has the added benefit of allowing you to compare your Bayesian results to those of a frequentist approach. Here, we extract the coefficients from a GLM logistic model (to get “realistic” values) and add / subtract a hopefully reasonable number (to “disperse” the initial values). The structure for the data object holding the initial values is a list of lists.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="sourceCode numberSource r numberLines code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1"></a>estInits<span class="ot">&lt;-</span><span class="fu">with</span>(mi, <span class="fu">glm</span>(MI<span class="sc">~</span>AGE<span class="sc">+</span>SEX<span class="sc">+</span>BMI, <span class="at">family=</span><span class="fu">binomial</span>(logit)))</span>
+<span id="cb14-2"><a href="#cb14-2"></a>estInits</span>
+<span id="cb14-3"><a href="#cb14-3"></a></span>
+<span id="cb14-4"><a href="#cb14-4"></a>inits<span class="ot">&lt;-</span><span class="fu">list</span>(</span>
+<span id="cb14-5"><a href="#cb14-5"></a>    <span class="fu">list</span>(<span class="at">b0=</span>estInits<span class="sc">$</span>coef[<span class="dv">1</span>]<span class="sc">+</span>.<span class="dv">5</span>, <span class="at">b1=</span>estInits<span class="sc">$</span>coef[<span class="dv">2</span>]<span class="sc">+</span>.<span class="dv">1</span>, </span>
+<span id="cb14-6"><a href="#cb14-6"></a>    <span class="at">b2=</span>estInits<span class="sc">$</span>coef[<span class="dv">3</span>]<span class="sc">+</span>.<span class="dv">1</span>,<span class="at">b3=</span>estInits<span class="sc">$</span>coef[<span class="dv">4</span>]<span class="sc">+</span>.<span class="dv">1</span>),</span>
+<span id="cb14-7"><a href="#cb14-7"></a>    <span class="fu">list</span>(<span class="at">b0=</span>estInits<span class="sc">$</span>coef[<span class="dv">1</span>]<span class="sc">-</span>.<span class="dv">5</span>, <span class="at">b1=</span>estInits<span class="sc">$</span>coef[<span class="dv">2</span>]<span class="sc">-</span>.<span class="dv">1</span>, </span>
+<span id="cb14-8"><a href="#cb14-8"></a>    <span class="at">b2=</span>estInits<span class="sc">$</span>coef[<span class="dv">3</span>]<span class="sc">-</span>.<span class="dv">1</span>,<span class="at">b3=</span>estInits<span class="sc">$</span>coef[<span class="dv">4</span>]<span class="sc">-</span>.<span class="dv">1</span>)        </span>
+<span id="cb14-9"><a href="#cb14-9"></a>    )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Next, define the parameters we want to monitor, run the JAGS program and take a quick look at the results.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15"><pre class="sourceCode numberSource r numberLines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1"></a>parameters<span class="ot">&lt;-</span><span class="fu">c</span>(<span class="st">"b0"</span>, <span class="st">"b1"</span>, <span class="st">"b2"</span>, <span class="st">"b3"</span>)</span>
+<span id="cb15-2"><a href="#cb15-2"></a></span>
+<span id="cb15-3"><a href="#cb15-3"></a><span class="fu">library</span>(R2jags)</span>
+<span id="cb15-4"><a href="#cb15-4"></a></span>
+<span id="cb15-5"><a href="#cb15-5"></a>logmod<span class="ot">&lt;-</span> <span class="fu">jags</span>(<span class="at">data =</span> dat1,</span>
+<span id="cb15-6"><a href="#cb15-6"></a>        <span class="at">inits =</span> inits,</span>
+<span id="cb15-7"><a href="#cb15-7"></a>        <span class="at">parameters.to.save =</span> parameters,</span>
+<span id="cb15-8"><a href="#cb15-8"></a>        <span class="at">model.file =</span> <span class="st">"logistic.jag"</span>,</span>
+<span id="cb15-9"><a href="#cb15-9"></a>        <span class="at">n.chains =</span> <span class="dv">2</span>,</span>
+<span id="cb15-10"><a href="#cb15-10"></a>        <span class="at">n.iter =</span> <span class="dv">5000</span>,</span>
+<span id="cb15-11"><a href="#cb15-11"></a>        <span class="at">n.burnin =</span> <span class="dv">2000</span>,</span>
+<span id="cb15-12"><a href="#cb15-12"></a>        <span class="at">n.thin =</span> <span class="dv">1</span>)</span>
+<span id="cb15-13"><a href="#cb15-13"></a></span>
+<span id="cb15-14"><a href="#cb15-14"></a>logmod</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>The point estimates are very close to those of the GLM run. This is expected. When you have a lot of data (and 2000 observations is a decent number) and very vague or only minimally informative priors, the likelihood predominates and you get the MLE estimates. You still, of course, have the benefits of being able to make direct probability assessments of your results, which are not available from a strict MLE frequentist model, and you can do things like update your results, add observations, calculate probabilities for complex functions etc…</p>
+<p>You will notice that the model takes appreciably (depending on your machine, perhaps annoyingly) longer to run. This could be a function of the model itself. Simon Jackman recommends <a href="http://jackman.stanford.edu/classes/BASS/ch8.pdf">grouping binary or Bernoulli-distributed data</a> into Binomial data to improve model behavior. But, in general, long model run times is a drawback of Bayesian analysis, especially with larger data sets. Some folks complain about having to run their simulations overnight to get reasonable estimates. If you have a model that seems to take inordinately long to run, take a close look at the convergence diagnostics (which you should do anyway…) Let’s take a quick look at the traceplots.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb16"><pre class="sourceCode numberSource r numberLines code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1"></a><span class="fu">plot</span>(<span class="fu">as.mcmc</span>(logmod))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="bayes/bayes3/logConverge1.jpg" class="img-fluid figure-img"></p>
+<figcaption>Logistic Model Un-Centered Covariates</figcaption>
+</figure>
+</div>
+<p>The convergence for nodes b1 and b3 is problematic. As we’ve discussed above, one approach to this issue is to center or standardize the data. Here, let’s mean center the problematic variables and re-run the model.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb17"><pre class="sourceCode numberSource r numberLines code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1"></a>dat1<span class="ot">&lt;-</span><span class="fu">list</span>(<span class="at">MI=</span>mi<span class="sc">$</span>MI, <span class="at">AGE=</span>(mi<span class="sc">$</span>AGE<span class="sc">-</span><span class="fu">mean</span>(mi<span class="sc">$</span>AGE)), <span class="at">SEX=</span>mi<span class="sc">$</span>SEX, <span class="at">BMI=</span>(mi<span class="sc">$</span>BMI<span class="sc">-</span><span class="fu">mean</span>(mi<span class="sc">$</span>BMI)), <span class="at">N=</span><span class="fu">nrow</span>(mi))  </span>
+<span id="cb17-2"><a href="#cb17-2"></a></span>
+<span id="cb17-3"><a href="#cb17-3"></a>logmod2<span class="ot">&lt;-</span> <span class="fu">jags</span>(<span class="at">data =</span> dat1,</span>
+<span id="cb17-4"><a href="#cb17-4"></a>        <span class="at">inits =</span> inits,</span>
+<span id="cb17-5"><a href="#cb17-5"></a>        <span class="at">parameters.to.save =</span> parameters,</span>
+<span id="cb17-6"><a href="#cb17-6"></a>        <span class="at">model.file =</span> <span class="st">"logistic.jag"</span>,</span>
+<span id="cb17-7"><a href="#cb17-7"></a>        <span class="at">n.chains =</span> <span class="dv">2</span>,</span>
+<span id="cb17-8"><a href="#cb17-8"></a>        <span class="at">n.iter =</span> <span class="dv">5000</span>,</span>
+<span id="cb17-9"><a href="#cb17-9"></a>        <span class="at">n.burnin =</span> <span class="dv">2000</span>,</span>
+<span id="cb17-10"><a href="#cb17-10"></a>        <span class="at">n.thin =</span> <span class="dv">1</span>)</span>
+<span id="cb17-11"><a href="#cb17-11"></a></span>
+<span id="cb17-12"><a href="#cb17-12"></a>logmod2</span>
+<span id="cb17-13"><a href="#cb17-13"></a></span>
+<span id="cb17-14"><a href="#cb17-14"></a><span class="fu">plot</span>(<span class="fu">as.mcmc</span>(logmod2))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="bayes/bayes3/logConverge2.jpg" class="img-fluid figure-img"></p>
+<figcaption>Logistic Model Centered Covariates</figcaption>
+</figure>
+</div>
+<p>The model should run faster. The trace plots should indicate appreciably better convergence. Finally here is a little code for extracting the (exponentiated) point estimates and a second line of code for extracting the (again exponentiated) point estimates with their 95% credible intervals. Clearly, the variable are not vary predictive of myocardial infarction in this population.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb18"><pre class="sourceCode numberSource r numberLines code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1"></a><span class="fu">lapply</span>(logmod<span class="sc">$</span>BUGSoutput<span class="sc">$</span>mean, <span class="at">FUN=</span>exp) </span>
+<span id="cb18-2"><a href="#cb18-2"></a><span class="fu">exp</span>(logmod<span class="sc">$</span>BUGSoutput<span class="sc">$</span>summary[,<span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">3</span>,<span class="dv">7</span>)])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="other-models" class="level1">
+<h1>Other Models</h1>
+<p>There are many other potential approaches to single-level Bayesian modeling. I have a write up on Poisson models in the setting of spatial analysis <a href="http://www.columbia.edu/~cjd11/charles_dimaggio/DIRE/styled-4/styled-12/">here</a>. Perhaps the most comprehensive freely available source of models is the <a href="http://www.mrc-bsu.cam.ac.uk/bugs/winbugs/manual14.pdf">WinBUGS User Manual</a>. If you are interested in non-linear regression models, I recommend the <a href="http://www.mrc-bsu.cam.ac.uk/bugs/documentation/exampVol2/node3.html">“Dugongs” example</a>.</p>
+<section id="categorical-outcomes" class="level2">
+<h2 class="anchored" data-anchor-id="categorical-outcomes">Categorical Outcomes</h2>
+<p>For categorical outcomes you can use the “dcat” distribution:</p>
+<pre><code>y[i]~dcat(p[ ])</code></pre>
+<p>Where p[ ] is an array of probabilities.</p>
+<p>As an example of how you might use this distribution, imagine you are told a fair coin came up head 10 times and you want to model how many times it was tossed, i.e.&nbsp;you want to make inferences on the denominator “n” of a binomial distributed variable.</p>
+<p>You could paste the following code directly into a WinBUGS or OpenBUGS window and run it:</p>
+<pre><code>model{
+r &lt;-10
+q &lt;- 0.5
+r ~dbin(q, n)
+n.cont ~ dunif (1, 100)
+n &lt;- round (n.cont)
+}</code></pre>
+<p>It should return a median value of 21, with a 95% probability that the true number of tosses is somewhere between 13 and 32. But this approach is actually something of a hack. We are placing a continuous uniform prior on the discrete variable “n” and making use of the <em>round()</em> function to return a discrete result.</p>
+<p>We could, though, put a <em>discrete</em> uniform prior on “n” by using the “dcat” distribution as follows:</p>
+<pre><code>model{
+r &lt;-10
+q &lt;- 0.5
+r ~dbin(q, n)
+  # discrete prior on 10 to 100
+for (j in 1 :9)  {  p[j] &lt;-0  }
+for (j in 10:100)  {  p[j] &lt;- 1/91}
+n ~ dcat (p[])
+}</code></pre>
+<p>We should get the same answer.</p>
+</section>
+<section id="multinomial-outcomes" class="level2">
+<h2 class="anchored" data-anchor-id="multinomial-outcomes">Multinomial Outcomes</h2>
+<p>The multinomial distribution is a useful extension of the binomial. Rather than a single probability for all outcomes, each outcome has its own probability. Suppose you have an outcome variable that is an array of 3 counts in K categories, e.g.&nbsp;y = (1,2,4), (3,3,3), etc… You can model these data with a multinomial distribution:</p>
+<pre><code>for (i in 1:N) {
+  y [i, 1:3] ~ dmulti(q[], n[i])   # multinom distro vector responses
+  n[i] &lt;- sum(y[i, ])
+}</code></pre>
+<p>If there are no covariates, you can place a Dirichlet Prior on q[ ] so that <span class="math inline">\(Pr(q) \propto q_k^\alpha\)</span> :</p>
+<pre><code>q[1:3] ~ ddirch(alpha [])</code></pre>
+<p><span class="math inline">\(\alpha\)</span> needs to be a fixed quantity e.g.:</p>
+<pre><code>for (k in 1:3)  {
+      alpha[k] &lt;- 1
+}</code></pre>
+<p>returns a uniform prior on q.</p>
+<p>Note that you need to specify the dimension of vectors or arrays on the left hand side of distributions in the BUGS language e.g.&nbsp;1:3 tells BUGS how much space to allocate.</p>
+<p>If you have covariates, you can use a multinomial logistic model, which is equivalent to K-1 logistic regressions comparing k &gt; 1 with category 1, the details of which can be found <a href="http://www.mrc-bsu.cam.ac.uk/bugs/documentation/exampVol2/node21.html">here</a>.</p>
+</section>
+</section>
+<section id="hierarchical-models" class="level1">
+<h1>Hierarchical Models</h1>
+<section id="introduction" class="level2">
+<h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
+<p>Say, as we so often do in probability, you are flipping coins.<a href="#fn6" class="footnote-ref" id="fnref6" role="doc-noteref"><sup>6</sup></a> But now, rather than just being interested in the coins themselves, you are also interested in the mints from which they came. So, there are two parameters, the behavior of the coins themselves and the influence of the factory in which they were minted. We may believe that the two parameters are independent, e.g.&nbsp;whether a coin lands heads or tails has nothing to do with the mint from which it came. In which case, you could look at the results of all the coin tosses as a single large experiment. Or, we may believe that the two parameters are somehow related, e.g.&nbsp;the factory in which a coin was minted may influence whether it turns up head or tails.</p>
+<p>In Bayesian modeling, parameters that affect data directly are termed, well, <em>parameters</em>. Parameters that affect data indirectly or through other parameters, like the factory in which a coin was minted, are termed <em>hyperparameters</em>. From the practical perspective of conducting Bayesian analysis, they are essentially treated the same, i.e.&nbsp;they are both part of the joint multidimensional parameter space to which we apply Bayes’ rule to update our prior beliefs to some posterior distribution. They clearly, though, have substantive importance in interpreting our analysis. And, given the complexity of the relationships, they will more frequently require Gibbs rather than Metropolis sampling algorithms.</p>
+<p>Returning to our coin and factory hierarchy, we begin by specifying a binomial likelihood for the toss of a coin: <span class="math inline">\(\sum p^x *q^{{n-x}}\)</span>, where <span class="math inline">\(p=\theta\)</span> and <span class="math inline">\(q=1-\theta\)</span>. We can place a <span class="math inline">\(Beta(a,b)\)</span> prior on this likelihood: <span class="math inline">\(p(\theta) \sim Beta(\alpha,\beta)\)</span></p>
+<p>Now, for the hierarchical part. Instead of specifying a single value for <span class="math inline">\(\alpha\)</span> and another value for <span class="math inline">\(\beta\)</span>, the parameters that define our prior, we allow them to vary according to some probability distribution. We could, for example, think of <span class="math inline">\(\alpha\)</span> and <span class="math inline">\(\beta\)</span> taking on any value between 0 and 1 and place a uniform prior on them in our model specification: <span class="math inline">\(p(\alpha) \sim Unif(0,1)\)</span> and <span class="math inline">\(p(\beta) \sim Unif(0,1)\)</span> . The model is hierarchical because there are two levels of uncertainty. The first is represented by the <span class="math inline">\(Beta(\alpha,\beta)\)</span> prior on <span class="math inline">\(\theta\)</span>. The second layer of uncertainty is the prior on the effect of <span class="math inline">\(\alpha\)</span> and <span class="math inline">\(\beta\)</span> on the Beta prior. If we were certain about <span class="math inline">\(\theta\)</span>, or had a lot of data about <span class="math inline">\(\theta\)</span>, the layers of the model could collapse to single values for <span class="math inline">\(\alpha\)</span> and <span class="math inline">\(\beta\)</span>. In general, you will find Bayesian hierarchical models characterized by two levels of uncertainty for parameters of interest. Also note, that the models are inherently nested, with one level of uncertainty nested in another.</p>
+<!-- consider example on therapeutic touch -->
+<section id="about-shrinkage-and-outliers" class="level3">
+<h3 class="anchored" data-anchor-id="about-shrinkage-and-outliers">About shrinkage and outliers</h3>
+<p>If the behavior of the coins (<span class="math inline">\(\theta\)</span>) depends in part on the shared influence of the mint in which they were created, then the bias in an individual coin is related to the bias in other coins from the same mint. If the outcomes for the coins are similar, then, the posterior distribution for the dependence of <span class="math inline">\(\theta\)</span> on <span class="math inline">\(\alpha\)</span> and <span class="math inline">\(\beta\)</span> will have a high mean value, and individual results will more closely resemble <span class="math inline">\(\theta\)</span>. This “shrinkage” of individual measurements will be most evident in outliers, which will be pulled closer to the behavior of the other coins, than the other coins will be pulled toward the outlier.</p>
+</section>
+</section>
+<section id="approach-to-bayesian-hierarchical-models-in-bugs-and-jags" class="level2">
+<h2 class="anchored" data-anchor-id="approach-to-bayesian-hierarchical-models-in-bugs-and-jags">Approach to Bayesian Hierarchical Models in BUGS and JAGS</h2>
+<p>In hierarchical models (also referred to as ‘mixed’ or ‘multi-level’ models) you are generally interested in making inferences on many parameters <span class="math inline">\(\theta_1\)</span> … <span class="math inline">\(\theta_i\)</span> measured on N ‘units’ (individuals, subsets, areas, time-points, trials etc…) which are related in some way.</p>
+<p>We can make 3 possible assumptions about the <span class="math inline">\(\theta\)</span>’s:</p>
+<ol type="1">
+<li>the <span class="math inline">\(\theta\)</span>’s are <em>identical</em>, in which case all the data can be pooled and the units from which the data arose can be ignored<br>
+</li>
+<li>the <span class="math inline">\(\theta\)</span>’s are <em>independent</em> and entirely unrelated, in which case each unit from with the data arose should be analyzed separately</li>
+<li>the <span class="math inline">\(\theta\)</span>’s are <em>exchangeable</em> or similar which is a compromise between independent and identical relationships. From the Bayesian perspective, rather than applying a prior to the individual measurements distributed across the entire sample (identical <span class="math inline">\(\theta\)</span>’s) or a separately applied prior for each (independent) <span class="math inline">\(\theta\)</span>’, we assume the individual measurements vary within each unit, and across units.</li>
+</ol>
+</section>
+<section id="example-hierarchical-model-for-thm-concentrations" class="level2">
+<h2 class="anchored" data-anchor-id="example-hierarchical-model-for-thm-concentrations">Example: Hierarchical Model for THM Concentrations</h2>
+<p>Recall the conjugate normal-normal model from section 1 of these notes where we estimated the mean THM concentration from two measurements in a zone. Say now we had a full data set of THM measurements for 70 water supply zones with multiple measurements in each zone with not all zones having the same number of measurements. We can assume a normal likelihood for the data in each zone:</p>
+<p><span class="math inline">\(x_{iz} \sim N(\theta_z, \sigma^2_z)\)</span> for i=1…<span class="math inline">\(n_z\)</span>, z=1-70</p>
+<p>Note that the likelihood now specifies 70 parameters (<span class="math inline">\(\theta_z\)</span>) for the mean THM concentration.</p>
+<p>If we assume a that <span class="math inline">\(\theta_z\)</span> are are the same for each zone (identical parameters) we specify a single prior, e.g <span class="math inline">\(\theta \sim N(\mu , \sigma^2)\)</span>. If it doesn’t make sense to expect zones supplied by different water sources to have identical THM levels (and it probably doesn’t), we can take another approach. We might assume that each zone is essentially an independent experiment in measuring THM concentrations and the results in one zone are entirely unrelated to results in any other zone. In this case, we could specify an explicit prior for each <span class="math inline">\(\theta\)</span> for 70 descriptive studies. But do we really believe that knowing, say, the results for 69 zones tells us absolutely nothing about the results for the remaining 70th zone? If we believe there is likely some room for “pooling” or “borrowing” information across zones to smooth our estimates, we may assume exchangeability across zones. In addition to a prior distribution for each <span class="math inline">\(\theta\)</span>, we might very well believe there is an appropriate prior for how the <span class="math inline">\(\theta\)</span>’s themselves vary.</p>
+<p>Rather than specify an independent prior for each <span class="math inline">\(\theta\)</span>, we could specify a hierarchical prior: <span class="math inline">\(\theta_z \sim N(\mu, \sigma^2z_{[z]})\)</span> where <span class="math inline">\(\mu\)</span> and <span class="math inline">\(sigma^2z_{[z]}\)</span> are unknown parameters for how the <span class="math inline">\(\theta\)</span>’s vary and are to be estimated. (The [ ] nomenclature indicates labels for each zone or unit from which the observations arise, not the individual observations themselves). We then assign prior distributions to the hyperparameters:</p>
+<p><span class="math inline">\(\mu \sim N(0,100000)\)</span> \ <span class="math inline">\(sigma^2z_{[z]} \sim Gamma(0.001, 0.001)\)</span> (a joint prior distribution for the entire set of parameters)</p>
+<p>The formulas for the full joint prior distribution (at both levels of specification) and the joint posterior are complex, but with BUGS we only have to specify the local relationships, and the Bayesian MCMC machinery proceeds as usual to simultaneously estimate the joint posterior distribution for all the unknown quantities. The posterior for each <span class="math inline">\(\theta_z\)</span> “borrows strength” from the likelihood contributions of all the zones through the joint influence of the priors for the hyperparameters. This leads to a global smoothing of the THM levels for each zone, and reflects our uncertainty about he true values of the hyperparameters.</p>
+<p>Here is a graphical representation (taken from David Spiegelhalter’s Cambridge WinBUGS course) of the three approaches to the THM data:</p>
+<p><img src="bayes/bayes3/bigBayes10.png" class="img-fluid"></p>
+<p>Where</p>
+<ul>
+<li><span class="math inline">\(\theta_z\)</span> is the mean THM concentration for zone z for the study period</li>
+<li><span class="math inline">\(\mu\)</span> is the overall mean THM concentration across all zones for the study period</li>
+<li><span class="math inline">\(\sigma^2_{[z]}\)</span> is the between zone variance in THM concentrations</li>
+<li><span class="math inline">\(\sigma^2_{[e]}\)</span> is the residual variance in THM concentrations (reflects measurement error and true within zone variation in THM levels)</li>
+</ul>
+<p>And here is a graphical illustration (also from Dr.&nbsp;Spiegelhalter) of the global smoothing of the hierarchical estimates:</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="bayes/bayes3/bigBayes11.png" class="img-fluid figure-img"></p>
+<figcaption>BigBayes11</figcaption>
+</figure>
+</div>
+<p>The model specification is not limited to globally-smoothed estimates. You can have locally smoothed estimates by specifying a zone-specific error variance <span class="math inline">\(\sigma^2_{[e]z}\)</span> for each measurement and placing a prior on it. Or you could use specify a conditional autoregression (CAR) model with weights based on whether zones neighbor each other (see my notes on Bayesian approaches to spatial data). These kinds of locally smoothed estimates may be difficult or impossible with non-BUGS approaches.</p>
+<p>A couple of notes of caution are in order. First, smoothing is appropriate when you feel the variation in the raw numbers exceeds what is actually going on, e.g.&nbsp;over-dispersion in a Poisson model. But, you don’t want to smooth away something that is actually causing the variation in the raw numbers, e.g.&nbsp;a cluster or “hot spot” in your data. In that case, you might include a term to account for the variation. Second, if there is missing data, you will not get results for those units on the raw scale. The hierarchical model will return results for those units.</p>
+<section id="coding-the-model" class="level3">
+<h3 class="anchored" data-anchor-id="coding-the-model">Coding the Model</h3>
+<p>The THM data are “ragged” in that they there are unequal numbers of observations for each zone. We can code these data in one of three ways: (1) using offsets, (2) with a nested index, or (3) padding out the entries with NA’s.</p>
+<p>The offset variable tells BUGS where each zone’s measurements begin and end, e.g.&nbsp;zone 1 starts at 1 and has 4 observations, zone 2 begins at 5 and has 6 observations etc.</p>
+<p>In the model statement, you identify the zones as part of the likelihood, and then place priors on the random effects mean and variance.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb25"><pre class="sourceCode numberSource r numberLines code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1"></a><span class="fu">cat</span>(<span class="st">"model{for (z in 1:Nzone){</span></span>
+<span id="cb25-2"><a href="#cb25-2"></a><span class="st">  for(i in offset[z]: (offset[z+1]-1)) {</span></span>
+<span id="cb25-3"><a href="#cb25-3"></a><span class="st">  thm[i] ~ dnorm(theta[z], tau.e)  # likelihood</span></span>
+<span id="cb25-4"><a href="#cb25-4"></a><span class="st">  }</span></span>
+<span id="cb25-5"><a href="#cb25-5"></a></span>
+<span id="cb25-6"><a href="#cb25-6"></a><span class="st">theta [z] ~dnorm(u, tau.z)  # zone mean (random effects)</span></span>
+<span id="cb25-7"><a href="#cb25-7"></a></span>
+<span id="cb25-8"><a href="#cb25-8"></a><span class="st">mu ~ dnorm(0, 0.000001) </span></span>
+<span id="cb25-9"><a href="#cb25-9"></a><span class="st">tau.z ~ dgamma(0.001, 0.001)</span></span>
+<span id="cb25-10"><a href="#cb25-10"></a><span class="st">sigma2.z &lt;- 1/tau.z  # random effects variance</span></span>
+<span id="cb25-11"><a href="#cb25-11"></a></span>
+<span id="cb25-12"><a href="#cb25-12"></a><span class="st">tau.e ~ dgamma(0.001, 0.001)</span></span>
+<span id="cb25-13"><a href="#cb25-13"></a><span class="st">sigma2.e &lt;- 1/tau.e  # residual error variance}"</span>, <span class="at">file=</span><span class="st">"thm1.jag"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Then you set up your data to reflect the structure in the model:</p>
+<p>Data</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb26"><pre class="sourceCode numberSource r numberLines code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1"></a>dat1<span class="ot">&lt;-</span><span class="fu">list</span>(<span class="at">Nzone=</span><span class="dv">70</span>,</span>
+<span id="cb26-2"><a href="#cb26-2"></a>      <span class="at">thm=</span><span class="fu">c</span>(<span class="fl">111.3</span>, <span class="fl">112.9</span>, <span class="fl">112.9</span>, <span class="dv">105</span>,<span class="dv">5</span>, <span class="fl">122.6</span> etc…),</span>
+<span id="cb26-3"><a href="#cb26-3"></a>      <span class="at">offset=</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">5</span>, <span class="dv">11</span>, etc….)</span>
+<span id="cb26-4"><a href="#cb26-4"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Using a nested index is more computationally efficient. In this neater approach, each observation is keyed to a zone.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb27"><pre class="sourceCode numberSource r numberLines code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1"></a><span class="fu">cat</span>(<span class="st">"model{for(i in 1:Nobs) {</span></span>
+<span id="cb27-2"><a href="#cb27-2"></a><span class="st">    thm[i] ~ dnorm(theta[zone[i]], tau.e)  # likelihood</span></span>
+<span id="cb27-3"><a href="#cb27-3"></a><span class="st">}</span></span>
+<span id="cb27-4"><a href="#cb27-4"></a><span class="st">for(z in 1:Nzone) {</span></span>
+<span id="cb27-5"><a href="#cb27-5"></a><span class="st">    theta[z] ~ dnorm(mu, tau.z)  # zone means (random effects)</span></span>
+<span id="cb27-6"><a href="#cb27-6"></a><span class="st">}</span></span>
+<span id="cb27-7"><a href="#cb27-7"></a><span class="st"> </span></span>
+<span id="cb27-8"><a href="#cb27-8"></a><span class="st">  # priors</span></span>
+<span id="cb27-9"><a href="#cb27-9"></a><span class="st">mu ~ dnorm(0, 0.000001)</span></span>
+<span id="cb27-10"><a href="#cb27-10"></a><span class="st">tau.z ~ dgamma(0.001, 0.001)</span></span>
+<span id="cb27-11"><a href="#cb27-11"></a><span class="st">sigma2.z &lt;- 1/tau.z   # betw-zone (random) var of mean THM)</span></span>
+<span id="cb27-12"><a href="#cb27-12"></a></span>
+<span id="cb27-13"><a href="#cb27-13"></a><span class="st">tau.e ~ dgamma(0.001, 0.001)   </span></span>
+<span id="cb27-14"><a href="#cb27-14"></a><span class="st">sigma2.e &lt;- 1/tau.e  # residual error variance</span></span>
+<span id="cb27-15"><a href="#cb27-15"></a></span>
+<span id="cb27-16"><a href="#cb27-16"></a><span class="st">}"</span>, <span class="at">file=</span><span class="st">"thm2.txt"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>And a data statement to, again, reflect the structure in the model.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb28"><pre class="sourceCode numberSource r numberLines code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1"></a>dat2<span class="ot">&lt;-</span><span class="fu">list</span> (<span class="at">Nobs=</span><span class="dv">173</span>, <span class="at">Nzone =</span> <span class="dv">70</span>,</span>
+<span id="cb28-2"><a href="#cb28-2"></a>   <span class="at">thm =</span> <span class="fu">c</span>(<span class="fl">111.3</span>, <span class="fl">112.9</span>, <span class="fl">112.9</span>, etc…),</span>
+<span id="cb28-3"><a href="#cb28-3"></a>   <span class="at">zone =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">2</span>, <span class="dv">2</span>, <span class="dv">2</span>, etc…)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Finally, you could “pad out” the observations with NA’s. Basically, this makes the data list balanced and rectangular. It is easier, perhaps, to write the model code, but it is computationally clumsier in that it causes BUGS or JAGS to spend a lot of time doing useless calculations on the NA’s.</p>
+</section>
+</section>
+<section id="the-variance-partition-coefficient-aka-intraclass-correlation" class="level2">
+<h2 class="anchored" data-anchor-id="the-variance-partition-coefficient-aka-intraclass-correlation">The Variance Partition Coefficient (aka Intraclass Correlation)</h2>
+<p>The Variance Partition Coefficient or Intraclass Correlation is the between group variance divided by the sum of the between group variance plus within group variance. In hierarchical or multilevel models, the residual variation in the response variable is split into components attributed to different levels. This is a defining characteristic of so-called random effects models, whether Bayesian or frequentist. Essentially, you are partitioning the error component of the model into that which can be accounted for by the variation among the units from which the observations arise (the “random effects” component), and the remaining unstructured error. You may be interested in quantifying the percentage of the total variation attributable to higher level units, or the proportion of variation due to the random effects component.</p>
+<p>In a 2-level normal, linear model, you can calculate:</p>
+<p><span class="math display">\[
+VPC=\frac{\sigma^2_{[e]}}{\sigma^2_{[z]}+\sigma^2_{[e]}}
+\]</span></p>
+<p>Where, <span class="math inline">\(\sigma^2_{[e]}\)</span> is the first level Normal likelihood variance <span class="math inline">\(\sigma^2_{[z]}\)</span> is the second level random effects variance</p>
+<p>To code for this in BUGS or JAGS, simply add a line of code to your model:</p>
+<pre><code>vpc &lt;- sigma2.z / (sigma2.z + sigma2.e)</code></pre>
+<p>Then monitor “vpc” as a node. So for example, in the THM data, the posterior mean for the VPC is 0.49 with a 95% credible interval of 0.32 to 0.64, indicating that about half the variance in the data was due to between zone variation.</p>
+<section id="your-turn" class="level3">
+<h3 class="anchored" data-anchor-id="your-turn">Your turn…</h3>
+<p>Take a moment to try to fit this model in JAGS using R2jags. You can find the data <a href="bayes/bayes3/thmExample/thmData.txt">here</a>. Use the model statement above; add the line of code to calculate the variance partition coefficient. Monitor the mean, the variances and the variance partition coefficient. To keep things simple, let JAGS provide initial values for this (to do this, just omit the initial values statement in the R2jags model run.) If you need it, the full syntax is <a href="bayes/bayes3/thmExample/thmExample.R">here</a></p>
+</section>
+</section>
+</section>
+<section id="example-hepatitis-b-immunization-in-africa" class="level1">
+<h1>Example: Hepatitis B Immunization in Africa</h1>
+<p>Hepatitis B is endemic in Africa. A national vaccination program was introduced in the Gambia. The program effectiveness depends on the duration of immunity. In a study of program effectiveness, 106 children were immunized. Baseline titers were drawn at the time of vaccination, and 2 or three times afterward. Investigators were interested in developing a useful model for predicting a child’d protection against hepatitis B after vaccination. A similar study in Senegal found titer levels were proportionate to the inverse of the time since vaccination, <span class="math inline">\(titer \propto 1/t\)</span>.</p>
+<p>As the following figure indicates, the data are very messy.</p>
+<p><img src="bayes/bayes3/bigBayes12.jpg" class="img-fluid"></p>
+<p>As a first approach, we might specify a non-hierarchical linear model,</p>
+<p><span class="math display">\[
+y_{ij} \sim N(\mu_{ij}, \sigma^2)
+\]</span>,</p>
+<p>where <span class="math inline">\(y_{ij}\)</span> is the log of the <span class="math inline">\(j^{th}\)</span> titer for the <span class="math inline">\(i^{th}\)</span> child. A linear predictor could be</p>
+<p><span class="math display">\[
+\mu_{ij} = \beta_0 \beta_1 * (t_{ij} - \bar{t} + \beta_3 * (y_{0i} - \bar{y_0}))
+\]</span>,</p>
+<p>where <span class="math inline">\(t_{ij}\)</span> is the log time of days since the <span class="math inline">\(j^{th}\)</span> vaccination for child <span class="math inline">\(i\)</span>, and <span class="math inline">\(y_{0i}\)</span> is the log baseline titer for child <span class="math inline">\(i\)</span>.</p>
+<p>The problem with this approach is that it assumes a common regression line for all the children and takes no account of the repeated measurements within children. To address these issues, we can take a hierarchical approach to a linear mixed or random coefficients model where we modify the linear model to allow separate intercepts and slopes for each child:</p>
+<p><span class="math display">\[
+\mu_{ij} = \beta_{0i} \beta_{1i}* (t_{ij} - \bar{t} + \beta_3 * (y_{0i} - \bar{y_0}))
+\]</span>,</p>
+<p>Note the subtle but important difference from the linear model in this specification. Now there is a separate intercept (<span class="math inline">\(\beta_{0i}\)</span>) and slope (<span class="math inline">\(\beta_{1i}\)</span>) for each child. This is analogous to the THM example, but instead of “zones” we have multiple measurements on each child. Similarly, we assume that the intercepts (<span class="math inline">\(\beta_{0i}\)</span>) and slopes (<span class="math inline">\(\beta_{1i}\)</span>) are “exchangeable”. In our Bayesian model specification, we now place priors on both parameters,</p>
+<p><span class="math display">\[
+\beta_{0i} \sim N(\mu_{\beta 0}, \sigma^2) \\
+\beta_{1i} \sim N(\mu_{\beta 1}, \sigma^2) \\
+\]</span></p>
+<p>And place <span class="math inline">\(N(0, .00001)\)</span> hyperparameters on <span class="math inline">\(\mu_{\beta 0}\)</span> and <span class="math inline">\(\mu_{\beta 1}\)</span></p>
+<p>Despite the complexity of the model, the implementation in BUGS or JAGS only involves specifying local relationships and proceeds in a familiar fashion. We are again faced with ragged data of 2 or 3 observations per child. A nested index formation would look like this:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb30"><pre class="sourceCode numberSource r numberLines code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1"></a>(<span class="st">"model{for (k in 1:TotalObs) {</span></span>
+<span id="cb30-2"><a href="#cb30-2"></a><span class="st">  y[k] ~ dnorm(mu[k], tau)</span></span>
+<span id="cb30-3"><a href="#cb30-3"></a><span class="st">   mu[k] &lt;- alpha[child[k]] + </span></span>
+<span id="cb30-4"><a href="#cb30-4"></a><span class="st">beta[child[k]] * (t[k]-tbar) + gamma*(y0[child[k]] – y0bar)</span></span>
+<span id="cb30-5"><a href="#cb30-5"></a><span class="st">}</span></span>
+<span id="cb30-6"><a href="#cb30-6"></a><span class="st">For (i in 1:N) {</span></span>
+<span id="cb30-7"><a href="#cb30-7"></a><span class="st">   alpha[i]  ~ dorm(mu.alpha, tau.alpha) </span></span>
+<span id="cb30-8"><a href="#cb30-8"></a><span class="st">    beta[i] ~  dnorm(mu.beta, tau.alpha)</span></span>
+<span id="cb30-9"><a href="#cb30-9"></a><span class="st">}}"</span>, <span class="at">file=</span> <span class="st">"hepb.jags"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>And the data specification to reflect the model structure looks like this:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb31"><pre class="sourceCode numberSource r numberLines code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1"></a>dat<span class="ot">&lt;-</span><span class="fu">list</span> (<span class="at">N=</span><span class="dv">106</span>, <span class="at">TotalObs=</span><span class="dv">288</span>,</span>
+<span id="cb31-2"><a href="#cb31-2"></a>   <span class="at">y =</span> <span class="fu">c</span>(<span class="fl">4.99</span>, <span class="fl">8.02</span>, <span class="fl">6.83</span>, <span class="fl">4.91</span>, etc...),</span>
+<span id="cb31-3"><a href="#cb31-3"></a>   <span class="at">t =</span> <span class="fu">c</span>(<span class="dv">6</span>,<span class="dv">54</span>, <span class="fl">6.96</span>, <span class="fl">5.84</span>, <span class="fl">6.52</span>, etc...),</span>
+<span id="cb31-4"><a href="#cb31-4"></a>   <span class="at">child =</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">2</span>, etc...),</span>
+<span id="cb31-5"><a href="#cb31-5"></a>   <span class="at">y0 =</span> <span class="fu">c</span>(<span class="fl">8.61</span>, <span class="fl">8.61</span>, <span class="fl">7.10</span>, <span class="fl">7.10</span>, etc...)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<section id="your-turn-1" class="level3">
+<h3 class="anchored" data-anchor-id="your-turn-1">Your turn…</h3>
+<p>I was fortunate enough to track down the original <a href="../../Users/charlie/Dropbox/Bayes/bayesWeb/bayesWebPt3/hepBexample/hepBdata.txt">data</a> in a WinBUGS archive <a href="https://www.jiscmail.ac.uk/cgi-bin/webadmin?A2=BUGS;2a2624f0.02">email</a> from Dr.&nbsp;David Spiegelhalter. Try coding and running the model in JAGS. This time, though, try using the “offset” approach I described in the THM example. Again, for simplicity sake, allow JAGS to supply the initial values. If you need it, the answer is <a href="bayes/bayes3/hepBexample/hepBexample.R">here</a></p>
+</section>
+<section id="additional-levels-of-hierarchy" class="level2">
+<h2 class="anchored" data-anchor-id="additional-levels-of-hierarchy">Additional levels of hierarchy</h2>
+<p>It is (relatively) straightforward to extend the linear approach to generalized models (Poisson, Logit), and to incorporate additional levels of hierarchy or uncertainty, e.g.&nbsp;measurements within zone, within regions, with cross-classified hierarchies. Here is some model code an example of a (somewhat) more complicated model with an additional level of variation. The code was written for a data set of 800 observations on children who attended 132 primary and 19 secondary schools in Scotland. (They came originally from a training data set for the “MLWin” software package) The variables are:</p>
+<ul>
+<li>Y = exam attainment score at age 16</li>
+<li>VRQ = verbal reasoning score taken on secondary school entry</li>
+<li>SEX = gender (0=boy, 1=girl)</li>
+<li>PID = primary school ID code</li>
+<li>SID = secondary school ID code</li>
+</ul>
+<p>The following code is for a normal hierarchical model with independent random effects for primary school and secondary school. Gender and verbal reasoning included as ‘fixed’ covariate effects (although since Bayesian, these ‘fixed’ effects still assigned prior distributions).</p>
+<pre><code>for (i in 1:Nobs) {
+  Y[i] ~ dnorm(mu[i], tau.e)
+  mu[i] &lt;- alpha + beta[1]*SEX[i] + beta[2]*VRQ[i] + theta.ps[PID[i]] + theta.ss[SID[i]]
+
+}
+
+ # random effects distributions (note: non-centered)
+for (j in 1:Nprim) { theta.ps[j] ~ dnorm(0, tau.ps) } # primary school effects
+for (k in 1:Nsec)  [ theta.ss[k] ~ dnorm(0, tau.ss } secondary school effects
+
+ # priors on regression coefficients and variances
+tau.e ~ dgamma(0.001, 0.001) # residual error variance
+sigma2.e &lt;- 1/tau.e
+tau.ps ~ dgamma(0.001, 0.001) # between primary school variance
+sigma2.ps &lt;- 1/tau.ps
+tau.ss ~ dgamma(0.001, 0.001) # between secondary school variance
+sigma2.ps &lt;- 1/tau.ps
+alpha ~ dnorm (0, 0.00001) # intercept
+for (q in 1:2) { beta[q] ~ dnorm 0.00001 } # regression coefficients
+
+ # percentage variance of total variance explained...
+VPS.ps &lt;- sigma2.ps / (sigma2.3 + sigma2.ps + sigma2.ss) #...by primary school 
+                                                                                                
+VPS.ps &lt;- sigma2.ss / (sigma2.3 + sigma2.ps + sigma2.ss) #...by secondary school</code></pre>
+</section>
+<section id="example-the-western-australia-pregnancy-raine-cohort-study" class="level2">
+<h2 class="anchored" data-anchor-id="example-the-western-australia-pregnancy-raine-cohort-study">Example: The Western Australia Pregnancy (Raine) Cohort Study</h2>
+<p>The Raine Cohort started as an RCT of potential adverse effects of ultrasound. All subjects were given routine US at 18 weeks. Then randomized to additional US at 24, 28, 34, and 38 weeks. The project was subsequently converted to a cohort study. Because the data quantified fetal growth with serial biometric data, the study was used to investigate the so-called “fetal origins” hypothesis that fetal adaptation to an adverse intrauterine environment results in permanent physiological changes. (Prenatal ultrasound biometry related to subsequent blood pressure in childhood. K Blake, L Gurrin, et al.&nbsp;J Epidemiol Community Health. 2002 September; 56(9): 713–718.) Researchers investigated whether there was an inverse relationship between low birth weight and subsequent hypertension.</p>
+<p>The data consisted of 3450 ultrasound exams for 5 fetal dimensions on 707 fetuses. We will just consider head circumference, where <span class="math inline">\({Y}_{ij}\)</span> is the measured head circumference for the <span class="math inline">\({i}^{th}\)</span> fetus at the <span class="math inline">\({j}^{th}\)</span> timepoint <span class="math inline">\({t}_{ij} = 18, 24, 28, 34, 38\)</span> weeks.The number of measurements for a fetus varied between 1 and 7. (As part of their analyses, the researchers transformed (Box-Cox) the data to establish a linear relationship, but that need not concern us here.)</p>
+<p>A , based on an assumption of complete homogeneity, would have a single fixed intercept and a single fixed slope for all the data: <span class="math inline">\({y}_{ij} = {\beta}_{0} + {\beta}_{1} * {x}_{ij} + {\varepsilon}_{ij}\)</span>, where <span class="math inline">\({\varepsilon}_{ij} \sim N(0,{\sigma}_{\varepsilon}^{2})\)</span></p>
+<p>By now, you should be thinking that the repeated measures in this longitudinal data set suggest a hierarchical or <em>linear mixed model</em>, <a href="#fn7" class="footnote-ref" id="fnref7" role="doc-noteref"><sup>7</sup></a> with subject-level (repeated measures) intercepts and slopes:</p>
+<p><span class="math display">\[
+{Y}_{ij} = ({\beta}_{0} + {u}_{0i}) + ({\beta}_{1} + {u}_{1i}){X}_{ij} + {\varepsilon}_{ij},
+\]</span></p>
+<p>Where, for the <span class="math inline">\(j^th\)</span> measurement on the <span class="math inline">\(i^th\)</span> fetus (<span class="math inline">\(i=700\)</span>),</p>
+<ul>
+<li><span class="math inline">\(\beta_0\)</span> is the fixed intercept for each child</li>
+<li><span class="math inline">\(u_{0i}\)</span> is the random intercept for each child</li>
+<li><span class="math inline">\(\beta_1\)</span> is the fixed slope for each child</li>
+<li><span class="math inline">\(u_{1i}\)</span> is the random slope for each child</li>
+</ul>
+<p>The model follows a bivariate normal distribution</p>
+<p><span class="math display">\[
+\begin{equation*}
+\left({\begin{array}{c} {u}_{0i} \\ {u}_{1i} \end{array}}\right) =
+{\text {N}}_{\text {2}} \left[{\left({\begin{array}{c} 0
+\\ 0 \end{array}}\right),\left[{\begin{array}{cc} {\sigma}_{0}^{2}
+&amp; {\sigma}_{01} \\ {\sigma}_{01} &amp; {\sigma}_{1}^{2}
+\end{array}}\right]}\right]
+\end{equation*}
+\]</span></p>
+<p>where <span class="math inline">\(\sigma_{1}^{2}\)</span> allows for covariance between the slope and the intercept while centering the model.</p>
+<p>In the following code. I step through the analyses for these data.</p>
+<section id="fitting-the-model" class="level3">
+<h3 class="anchored" data-anchor-id="fitting-the-model">Fitting the Model</h3>
+<p>We begin, as we should, by looking at the data. Start by reading and exploring the Raine data. There are variables for id, head circumference and gestational age. We are interested in the relationship between head circumference and gestational age. The variable “tga” is the transformed gestational age (<span class="math inline">\(tga = ga − 0.0116638 * ga^2\)</span>) which makes the relationship between head circumference and gestational age linear.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb33"><pre class="sourceCode numberSource r numberLines code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1"></a>fetal <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">".../fetal.csv"</span>,<span class="at">header=</span><span class="cn">TRUE</span>)</span>
+<span id="cb33-2"><a href="#cb33-2"></a><span class="fu">str</span>( fetal) <span class="co"># id, head circumference, gestational age, </span></span>
+<span id="cb33-3"><a href="#cb33-3"></a><span class="fu">head</span>( fetal, <span class="dv">10</span> )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>We tabulate the number of measurement for each child, and see that the majority of children had 4 or 5 repeated measures, but they range from 1 to 7. We then create so-called “spaghetti plots” for a random sample of 100 of the 706 fetuses, demonstrating the linearizing effect of the transformation, and that the square root transformation of head circumference makes the relationship between it and gestational age more linear.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb34"><pre class="sourceCode numberSource r numberLines code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1"></a><span class="fu">with</span>(fetal, <span class="fu">addmargins</span>(<span class="fu">table</span>(<span class="fu">table</span>(id)))) <span class="co"># tab number measurements per kid</span></span>
+<span id="cb34-2"><a href="#cb34-2"></a></span>
+<span id="cb34-3"><a href="#cb34-3"></a><span class="fu">par</span>( <span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">3</span>), <span class="at">mar=</span><span class="fu">c</span>(<span class="dv">3</span>,<span class="dv">3</span>,<span class="dv">1</span>,<span class="dv">1</span>), <span class="at">mgp=</span><span class="fu">c</span>(<span class="dv">3</span>,<span class="dv">1</span>,<span class="dv">0</span>)<span class="sc">/</span><span class="fl">1.6</span> )</span>
+<span id="cb34-4"><a href="#cb34-4"></a>id.sub <span class="ot">&lt;-</span> <span class="fu">sample</span>( <span class="fu">unique</span>(fetal<span class="sc">$</span>id), <span class="dv">50</span> )</span>
+<span id="cb34-5"><a href="#cb34-5"></a><span class="fu">with</span>( fetal, <span class="fu">plot</span>( ga, hc, <span class="at">type=</span><span class="st">"n"</span> ) )</span>
+<span id="cb34-6"><a href="#cb34-6"></a><span class="cf">for</span>( i <span class="cf">in</span> id.sub ) <span class="fu">with</span>( <span class="fu">subset</span>(fetal,id<span class="sc">==</span>i), <span class="fu">lines</span>(ga,hc) )</span>
+<span id="cb34-7"><a href="#cb34-7"></a><span class="fu">with</span>( fetal, <span class="fu">plot</span>( tga, hc, <span class="at">type=</span><span class="st">"n"</span> ) )</span>
+<span id="cb34-8"><a href="#cb34-8"></a><span class="cf">for</span>( i <span class="cf">in</span> id.sub ) <span class="fu">with</span>( <span class="fu">subset</span>(fetal,id<span class="sc">==</span>i), <span class="fu">lines</span>(tga,hc) )</span>
+<span id="cb34-9"><a href="#cb34-9"></a><span class="fu">with</span>( fetal, <span class="fu">plot</span>( tga, <span class="fu">sqrt</span>(hc), <span class="at">type=</span><span class="st">"n"</span> ) )</span>
+<span id="cb34-10"><a href="#cb34-10"></a><span class="cf">for</span>( i <span class="cf">in</span> id.sub ) <span class="fu">with</span>( <span class="fu">subset</span>(fetal,id<span class="sc">==</span>i), <span class="fu">lines</span>(tga,<span class="fu">sqrt</span>(hc)) )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Before moving on to a hierarchical Bayesian model in JAGS, let’s (again, as we should) take a more straightforward approach and fit a model using the R package “lmer4”, which despite our interest here in Bayesian modeling is the R tool of choice mixed models. <a href="#fn8" class="footnote-ref" id="fnref8" role="doc-noteref"><sup>8</sup></a></p>
+<p>In “mler4” models are specified with fixed (not varying by group) and random (varying by group) variables:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb35"><pre class="sourceCode numberSource r numberLines code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1"></a><span class="fu">lmer</span> (y <span class="sc">~</span> fixed <span class="sc">+</span> (<span class="dv">1</span> <span class="sc">+</span> random <span class="sc">|</span> group))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>The number 1 is used to specify that the intercept varies by group, the term “random” stands in for a variable with varying slope. You can also use it to specify GLM models:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb36"><pre class="sourceCode numberSource r numberLines code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1"></a><span class="fu">lmer</span> (y <span class="sc">~</span> fixed <span class="sc">+</span> (random <span class="sc">|</span> group),</span>
+<span id="cb36-2"><a href="#cb36-2"></a>        <span class="at">family=</span><span class="fu">binomial</span> (<span class="at">link=</span>“logistic”))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>We fit a random effects linear model for an outcome measure of (fetus “f” at time “t”) square root of head circumference <span class="math inline">\(y_{ft}\)</span> for each fetus at time t. For simplicity in this illustrative model, we’ll specify that each child’s measurements across time (slopes) are parallel to each other, but vary by intercept. The <span class="math inline">\(\beta_0\)</span> intercept is not really interpretable in this contect (no child has a head circumference of 0), and we could if we wanted set it to some baseline level, e.g.&nbsp;at age 18 months by centering the gestational age variable (<em>I|tga-18</em>). The <span class="math inline">\(\beta_1\)</span> coefficient reflects the (fixed) effect of time. The random effect is, again, that the intercept is allowed to vary for each child relative to each other (<em>1 | id</em>) though (again) the slopes are otherwise parallel to each other.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb37"><pre class="sourceCode numberSource r numberLines code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1"></a><span class="fu">library</span>( lme4 )</span>
+<span id="cb37-2"><a href="#cb37-2"></a>m0 <span class="ot">&lt;-</span> <span class="fu">lmer</span>(<span class="fu">sqrt</span>(hc) <span class="sc">~</span> tga <span class="sc">+</span> (<span class="dv">1</span> <span class="sc">|</span> id), <span class="at">data=</span>fetal)</span>
+<span id="cb37-3"><a href="#cb37-3"></a><span class="fu">summary</span>(m0)</span>
+<span id="cb37-4"><a href="#cb37-4"></a><span class="fu">fixef</span>(m0)</span>
+<span id="cb37-5"><a href="#cb37-5"></a><span class="fu">VarCorr</span>(m0)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>In the summary statistics, we see the intercept is estimated as -.08 but (as noted above) is not really interpretable here. The effect of time is the tga estimate of 0.086 or about a 1 cm increase in head circumference per week. The random effects result of interest is “id (Intercept) 0.059714 0.24437” which tells us that each child’s series of results (the regression line) varies from each other by about 0.24 cm. The residual result “Residual 0.062665 0.25033” is interpreted as usual, i.e.&nbsp;it is the difference between the observations and the predictions (from the regression line). We can extract estimates and variances with <em>fixef(m0)</em> returning the same results as the summary shows. We request a variance-covariance matrix for the random effects with <em>VarCorr(m0)</em>, which is not very informative for this very simple model, since there is only one random effect term and it correlates with itself as 1.</p>
+<p>Now let’s fit a Bayesian model of the same data in JAGS. In this run, we’ll model the untransformed head circumference as an outcome, and the mean-centered time (tga) variable as a fixed effect. (As a comparison, try doing this with <em>lmer()</em> …) In the model statement the random effect for each child is represented as sigma.u, the error as sigma.e</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb38"><pre class="sourceCode numberSource r numberLines code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1"></a><span class="fu">cat</span>(<span class="st">"</span></span>
+<span id="cb38-2"><a href="#cb38-2"></a><span class="st">model</span></span>
+<span id="cb38-3"><a href="#cb38-3"></a><span class="st">{</span></span>
+<span id="cb38-4"><a href="#cb38-4"></a><span class="st"> for( j in 1:N )  # for each observational unit</span></span>
+<span id="cb38-5"><a href="#cb38-5"></a><span class="st">{</span></span>
+<span id="cb38-6"><a href="#cb38-6"></a><span class="st"> mu[j] &lt;- beta[1] + beta[2] * ( tga[j]-18 )  + u[id[j]]</span></span>
+<span id="cb38-7"><a href="#cb38-7"></a><span class="st"> hc[j] ~ dnorm( mu[j], tau.e )</span></span>
+<span id="cb38-8"><a href="#cb38-8"></a><span class="st">}</span></span>
+<span id="cb38-9"><a href="#cb38-9"></a></span>
+<span id="cb38-10"><a href="#cb38-10"></a><span class="st"> for( i in 1:I )  # random effects for each person</span></span>
+<span id="cb38-11"><a href="#cb38-11"></a><span class="st">{</span></span>
+<span id="cb38-12"><a href="#cb38-12"></a><span class="st"> u[i] ~ dnorm(0,tau.u)</span></span>
+<span id="cb38-13"><a href="#cb38-13"></a><span class="st">}</span></span>
+<span id="cb38-14"><a href="#cb38-14"></a></span>
+<span id="cb38-15"><a href="#cb38-15"></a><span class="st"> # Priors: </span></span>
+<span id="cb38-16"><a href="#cb38-16"></a><span class="st">   # Fixed intercept and slope</span></span>
+<span id="cb38-17"><a href="#cb38-17"></a><span class="st">     beta[1] ~ dnorm(0.0,1.0E-5)</span></span>
+<span id="cb38-18"><a href="#cb38-18"></a><span class="st">     beta[2] ~ dnorm(0.0,1.0E-5)</span></span>
+<span id="cb38-19"><a href="#cb38-19"></a></span>
+<span id="cb38-20"><a href="#cb38-20"></a><span class="st">   # Residual variance</span></span>
+<span id="cb38-21"><a href="#cb38-21"></a><span class="st">     tau.e &lt;- pow(sigma.e,-2)</span></span>
+<span id="cb38-22"><a href="#cb38-22"></a><span class="st">     sigma.e  ~ dunif(0,100)</span></span>
+<span id="cb38-23"><a href="#cb38-23"></a></span>
+<span id="cb38-24"><a href="#cb38-24"></a><span class="st">   # Between-person variation</span></span>
+<span id="cb38-25"><a href="#cb38-25"></a><span class="st">     tau.u &lt;- pow(sigma.u,-2)</span></span>
+<span id="cb38-26"><a href="#cb38-26"></a><span class="st">     sigma.u  ~ dunif(0,100)</span></span>
+<span id="cb38-27"><a href="#cb38-27"></a><span class="st">}"</span>,</span>
+<span id="cb38-28"><a href="#cb38-28"></a>             <span class="at">file=</span><span class="st">"fetalJags1.txt"</span> )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Next, we define the data elements, including defining the <em>N</em> observations over <em>I</em> individuals, and use the <em>attr()</em> function to extract initial values form our <em>lmer</em> run.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb39"><pre class="sourceCode numberSource r numberLines code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1"></a>fetal.dat <span class="ot">&lt;-</span> <span class="fu">list</span>( <span class="at">id =</span> <span class="fu">as.integer</span>( <span class="fu">factor</span>(fetal<span class="sc">$</span>id) ),</span>
+<span id="cb39-2"><a href="#cb39-2"></a>             <span class="at">hc =</span> fetal<span class="sc">$</span>hc,</span>
+<span id="cb39-3"><a href="#cb39-3"></a>             <span class="at">tga =</span> fetal<span class="sc">$</span>tga,</span>
+<span id="cb39-4"><a href="#cb39-4"></a>             <span class="at">N =</span> <span class="fu">nrow</span>(fetal),</span>
+<span id="cb39-5"><a href="#cb39-5"></a>             <span class="at">I =</span> <span class="fu">length</span>( <span class="fu">unique</span>(fetal<span class="sc">$</span>id) ) )</span>
+<span id="cb39-6"><a href="#cb39-6"></a></span>
+<span id="cb39-7"><a href="#cb39-7"></a>( sigma.e <span class="ot">&lt;-</span> <span class="fu">attr</span>(<span class="fu">VarCorr</span>(m0),<span class="st">"sc"</span>) )</span>
+<span id="cb39-8"><a href="#cb39-8"></a>( sigma.u <span class="ot">&lt;-</span> <span class="fu">attr</span>(<span class="fu">VarCorr</span>(m0)<span class="sc">$</span>id,<span class="st">"stddev"</span>) )</span>
+<span id="cb39-9"><a href="#cb39-9"></a>( beta    <span class="ot">&lt;-</span> <span class="fu">fixef</span>( m0 ) )</span>
+<span id="cb39-10"><a href="#cb39-10"></a></span>
+<span id="cb39-11"><a href="#cb39-11"></a></span>
+<span id="cb39-12"><a href="#cb39-12"></a>fetal.inits <span class="ot">&lt;-</span> <span class="fu">list</span>( <span class="fu">list</span>( <span class="at">sigma.e =</span> sigma.e<span class="sc">/</span><span class="dv">3</span>,</span>
+<span id="cb39-13"><a href="#cb39-13"></a>                  <span class="at">sigma.u =</span> sigma.u<span class="sc">/</span><span class="dv">3</span>,</span>
+<span id="cb39-14"><a href="#cb39-14"></a>                     <span class="at">beta =</span> beta   <span class="sc">/</span><span class="dv">3</span> ),</span>
+<span id="cb39-15"><a href="#cb39-15"></a>            <span class="fu">list</span>( <span class="at">sigma.e =</span> sigma.e<span class="sc">*</span><span class="dv">3</span>,</span>
+<span id="cb39-16"><a href="#cb39-16"></a>                  <span class="at">sigma.u =</span> sigma.u<span class="sc">*</span><span class="dv">3</span>,</span>
+<span id="cb39-17"><a href="#cb39-17"></a>                     <span class="at">beta =</span> beta   <span class="sc">*</span><span class="dv">3</span> ),</span>
+<span id="cb39-18"><a href="#cb39-18"></a>            <span class="fu">list</span>( <span class="at">sigma.e =</span> sigma.e<span class="sc">/</span><span class="dv">3</span>,</span>
+<span id="cb39-19"><a href="#cb39-19"></a>                  <span class="at">sigma.u =</span> sigma.u<span class="sc">*</span><span class="dv">3</span>,</span>
+<span id="cb39-20"><a href="#cb39-20"></a>                     <span class="at">beta =</span> beta   <span class="sc">/</span><span class="dv">3</span> ),</span>
+<span id="cb39-21"><a href="#cb39-21"></a>            <span class="fu">list</span>( <span class="at">sigma.e =</span> sigma.e<span class="sc">*</span><span class="dv">3</span>,</span>
+<span id="cb39-22"><a href="#cb39-22"></a>                  <span class="at">sigma.u =</span> sigma.u<span class="sc">/</span><span class="dv">3</span>,</span>
+<span id="cb39-23"><a href="#cb39-23"></a>                     <span class="at">beta =</span> beta   <span class="sc">*</span><span class="dv">3</span> ) )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>And now set the parameters we want to monitor, run the model in JAGS, and explore the results.</p>
+<p>fetal.params&lt;-c(“beta”, “sigma.e”, “sigma.u”)</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb40"><pre class="sourceCode numberSource r numberLines code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1"></a><span class="fu">library</span>(R2jags)</span>
+<span id="cb40-2"><a href="#cb40-2"></a></span>
+<span id="cb40-3"><a href="#cb40-3"></a>jag.fetal<span class="ot">&lt;-</span><span class="fu">jags</span>(<span class="at">data=</span>fetal.dat, </span>
+<span id="cb40-4"><a href="#cb40-4"></a>    <span class="at">inits=</span>fetal.inits, </span>
+<span id="cb40-5"><a href="#cb40-5"></a>    <span class="at">parameters.to.save=</span>fetal.params, <span class="at">n.chains=</span><span class="dv">4</span>, <span class="at">n.iter=</span><span class="dv">500</span>, <span class="at">n.thin=</span><span class="dv">20</span>,</span>
+<span id="cb40-6"><a href="#cb40-6"></a>    <span class="at">model.file=</span><span class="st">"fetalJags1.txt"</span>)</span>
+<span id="cb40-7"><a href="#cb40-7"></a></span>
+<span id="cb40-8"><a href="#cb40-8"></a>jag.fetal</span>
+<span id="cb40-9"><a href="#cb40-9"></a><span class="fu">summary</span>(jag.fetal)</span>
+<span id="cb40-10"><a href="#cb40-10"></a><span class="fu">print</span>(jag.fetal)</span>
+<span id="cb40-11"><a href="#cb40-11"></a><span class="fu">plot</span>(jag.fetal)</span>
+<span id="cb40-12"><a href="#cb40-12"></a><span class="fu">traceplot</span>(jag.fetal)</span>
+<span id="cb40-13"><a href="#cb40-13"></a></span>
+<span id="cb40-14"><a href="#cb40-14"></a>jag.mcmc.fetal<span class="ot">&lt;-</span><span class="fu">as.mcmc</span>(jag.fetal)</span>
+<span id="cb40-15"><a href="#cb40-15"></a><span class="fu">plot</span>(jag.mcmc.fetal)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>The results will differ from the lmer run because the BUGS model has untransformed head circumference as a dependent, and the bugs model has the transformed gestational age adjusted to the 18th week (tga[j]-18).</p>
+<p>To fit a (likely) more realistic model with both random intercept and slope, we need only alter the code slightly. First, in <em>lmer4</em>.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb41"><pre class="sourceCode numberSource r numberLines code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1"></a><span class="fu">library</span>(lme4)</span>
+<span id="cb41-2"><a href="#cb41-2"></a>m0 <span class="ot">&lt;-</span> <span class="fu">lmer</span>(hc <span class="sc">~</span> tga <span class="sc">+</span> (<span class="dv">1</span> <span class="sc">+</span> tga <span class="sc">|</span> id), <span class="at">data=</span>fetal)</span>
+<span id="cb41-3"><a href="#cb41-3"></a><span class="fu">summary</span>(m0)</span>
+<span id="cb41-4"><a href="#cb41-4"></a></span>
+<span id="cb41-5"><a href="#cb41-5"></a><span class="fu">VarCorr</span>(m0)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>We see a strong (~0.9) correlation between the random components, indicating that fetuses with the smallest head circumferences at baseline have steeper slopes in the regression line. Again, some simple centering helps address this issue, and when we update the model, we see less correlation. For good measure, we take a look at a qqplot to assess the normality of the residuals.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb42"><pre class="sourceCode numberSource r numberLines code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1"></a>fetal <span class="ot">&lt;-</span> <span class="fu">transform</span>(fetal, <span class="at">tga.cent=</span>tga<span class="dv">-18</span>)</span>
+<span id="cb42-2"><a href="#cb42-2"></a></span>
+<span id="cb42-3"><a href="#cb42-3"></a>m1 <span class="ot">&lt;-</span> <span class="fu">lmer</span>(hc <span class="sc">~</span> tga.cent <span class="sc">+</span> (<span class="dv">1</span> <span class="sc">+</span> tga.cent <span class="sc">|</span> id), <span class="at">data=</span>fetal)</span>
+<span id="cb42-4"><a href="#cb42-4"></a><span class="fu">summary</span>(m1)</span>
+<span id="cb42-5"><a href="#cb42-5"></a></span>
+<span id="cb42-6"><a href="#cb42-6"></a><span class="fu">VarCorr</span>(m1)</span>
+<span id="cb42-7"><a href="#cb42-7"></a></span>
+<span id="cb42-8"><a href="#cb42-8"></a>m1.res<span class="ot">&lt;-</span><span class="fu">residuals</span>(m1)</span>
+<span id="cb42-9"><a href="#cb42-9"></a><span class="fu">qqnorm</span>(m1.res) <span class="co"># check normality of residuals</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Now, let’s model it in JAGS. It is a good deal more complex than the approach in <em>lmer4</em>. <a href="#fn9" class="footnote-ref" id="fnref9" role="doc-noteref"><sup>9</sup></a></p>
+<p>When specifying the model, we first fix the data elements to be used in the model definition, then define the model. Note that in defining our priors, we also have to define a prior for the variance-covariance matrix of the random effects. The Wishart prior for the for random effect variance-covariance takes takes a 2x2 matrix as input, with R as a mean value, defined at the beginning or model statement. Note that the two values are in two different scales, cm for head circumference, and change in head circumference per week.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb43"><pre class="sourceCode numberSource r numberLines code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1"></a><span class="fu">cat</span>(<span class="st">"</span></span>
+<span id="cb43-2"><a href="#cb43-2"></a><span class="st"> # fixing data to be used in model definition </span></span>
+<span id="cb43-3"><a href="#cb43-3"></a><span class="st">data</span></span>
+<span id="cb43-4"><a href="#cb43-4"></a><span class="st">{</span></span>
+<span id="cb43-5"><a href="#cb43-5"></a><span class="st"> zero[1] &lt;- 0</span></span>
+<span id="cb43-6"><a href="#cb43-6"></a><span class="st"> zero[2] &lt;- 0</span></span>
+<span id="cb43-7"><a href="#cb43-7"></a><span class="st"> R[1,1] &lt;- 0.1</span></span>
+<span id="cb43-8"><a href="#cb43-8"></a><span class="st"> R[1,2] &lt;- 0</span></span>
+<span id="cb43-9"><a href="#cb43-9"></a><span class="st"> R[2,1] &lt;- 0</span></span>
+<span id="cb43-10"><a href="#cb43-10"></a><span class="st"> R[2,2] &lt;- 0.5</span></span>
+<span id="cb43-11"><a href="#cb43-11"></a><span class="st">}</span></span>
+<span id="cb43-12"><a href="#cb43-12"></a></span>
+<span id="cb43-13"><a href="#cb43-13"></a><span class="st">model</span></span>
+<span id="cb43-14"><a href="#cb43-14"></a><span class="st">{</span></span>
+<span id="cb43-15"><a href="#cb43-15"></a><span class="st"> for( i in 1:I )  # intercept and slope ith kid, incl random effects</span></span>
+<span id="cb43-16"><a href="#cb43-16"></a><span class="st">{</span></span>
+<span id="cb43-17"><a href="#cb43-17"></a><span class="st"> u[i,1:2] ~ dmnorm(zero,Omega.u) # biv nl (2 r.e.'s, (intercept, slope) q fetus</span></span>
+<span id="cb43-18"><a href="#cb43-18"></a><span class="st">}</span></span>
+<span id="cb43-19"><a href="#cb43-19"></a><span class="st"> # Define model for each (jth) observation or measurement</span></span>
+<span id="cb43-20"><a href="#cb43-20"></a><span class="st">for( j in 1:N )</span></span>
+<span id="cb43-21"><a href="#cb43-21"></a><span class="st">{</span></span>
+<span id="cb43-22"><a href="#cb43-22"></a><span class="st">    mu[j] &lt;- ( beta[1] + u[id[j],1] ) +</span></span>
+<span id="cb43-23"><a href="#cb43-23"></a><span class="st">             ( beta[2] + u[id[j],2] ) * (tga[j]-18 )</span></span>
+<span id="cb43-24"><a href="#cb43-24"></a><span class="st">    hc[j] ~ dnorm(mu[j], tau.e)</span></span>
+<span id="cb43-25"><a href="#cb43-25"></a><span class="st">}</span></span>
+<span id="cb43-26"><a href="#cb43-26"></a></span>
+<span id="cb43-27"><a href="#cb43-27"></a><span class="st">    # Priors:</span></span>
+<span id="cb43-28"><a href="#cb43-28"></a></span>
+<span id="cb43-29"><a href="#cb43-29"></a><span class="st">    # Fixed intercept and slope</span></span>
+<span id="cb43-30"><a href="#cb43-30"></a><span class="st">      beta[1] ~ dnorm(0.0,1.0E-5)</span></span>
+<span id="cb43-31"><a href="#cb43-31"></a><span class="st">      beta[2] ~ dnorm(0.0,1.0E-5)</span></span>
+<span id="cb43-32"><a href="#cb43-32"></a></span>
+<span id="cb43-33"><a href="#cb43-33"></a><span class="st">    # Residual variance</span></span>
+<span id="cb43-34"><a href="#cb43-34"></a><span class="st">    tau.e &lt;- pow(sigma.e,-2)</span></span>
+<span id="cb43-35"><a href="#cb43-35"></a><span class="st">    sigma.e  ~ dunif(0,100)</span></span>
+<span id="cb43-36"><a href="#cb43-36"></a></span>
+<span id="cb43-37"><a href="#cb43-37"></a><span class="st">    # variance-covariance matrix of the random effects</span></span>
+<span id="cb43-38"><a href="#cb43-38"></a><span class="st">      sigma.u &lt;- inverse(Omega.u)</span></span>
+<span id="cb43-39"><a href="#cb43-39"></a><span class="st">      Omega.u  ~ dwish( R, 2 ) </span></span>
+<span id="cb43-40"><a href="#cb43-40"></a><span class="st">     }                                                      </span></span>
+<span id="cb43-41"><a href="#cb43-41"></a><span class="st">          file="</span>fetalJags2.txt<span class="st">")</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>In defining the data, the grouping variable has to be a factor, and even if it is a factor in the data, it needs to be “re-factorized” for the JAGS run, creating a factor of a factor if needed, and results in the required consecutive levels, in case some are missing in original data This is necessary for the <em>j indexing</em> will work correctly</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb44"><pre class="sourceCode numberSource r numberLines code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1"></a>fetal2.dat <span class="ot">&lt;-</span> <span class="fu">list</span>( <span class="at">id =</span> <span class="fu">as.integer</span>(<span class="fu">factor</span>(fetal<span class="sc">$</span>id) ), </span>
+<span id="cb44-2"><a href="#cb44-2"></a>                 <span class="at">hc =</span> fetal<span class="sc">$</span>hc,</span>
+<span id="cb44-3"><a href="#cb44-3"></a>                 <span class="at">tga =</span> fetal<span class="sc">$</span>tga.cent,</span>
+<span id="cb44-4"><a href="#cb44-4"></a>                 <span class="at">N =</span> <span class="fu">nrow</span>(fetal),</span>
+<span id="cb44-5"><a href="#cb44-5"></a>                 <span class="at">I =</span> <span class="fu">length</span>( <span class="fu">unique</span>(fetal<span class="sc">$</span>id) ) )</span>
+<span id="cb44-6"><a href="#cb44-6"></a></span>
+<span id="cb44-7"><a href="#cb44-7"></a>   <span class="co"># selecting intis from lmer run</span></span>
+<span id="cb44-8"><a href="#cb44-8"></a>( sigma.e <span class="ot">&lt;-</span> <span class="fu">attr</span>(<span class="fu">VarCorr</span>(m1),<span class="st">"sc"</span>) )</span>
+<span id="cb44-9"><a href="#cb44-9"></a>( sigma.u <span class="ot">&lt;-</span> <span class="fu">attr</span>(<span class="fu">VarCorr</span>(m1)<span class="sc">$</span>id,<span class="st">"stddev"</span>) )</span>
+<span id="cb44-10"><a href="#cb44-10"></a>( beta    <span class="ot">&lt;-</span> <span class="fu">fixef</span>(m1))</span>
+<span id="cb44-11"><a href="#cb44-11"></a>(Omega.u<span class="ot">&lt;-</span><span class="fu">matrix</span>(<span class="fu">c</span>(.<span class="dv">5</span>,.<span class="dv">5</span>,.<span class="dv">5</span>,.<span class="dv">5</span>),<span class="dv">2</span>,<span class="dv">2</span>))</span>
+<span id="cb44-12"><a href="#cb44-12"></a></span>
+<span id="cb44-13"><a href="#cb44-13"></a></span>
+<span id="cb44-14"><a href="#cb44-14"></a>fetal2.inits <span class="ot">&lt;-</span> <span class="fu">list</span>( <span class="fu">list</span>(</span>
+<span id="cb44-15"><a href="#cb44-15"></a>                  <span class="at">sigma.e =</span> sigma.e<span class="sc">/</span><span class="dv">3</span>,</span>
+<span id="cb44-16"><a href="#cb44-16"></a>                  <span class="at">sigma.u =</span> sigma.u<span class="sc">/</span><span class="dv">3</span>,</span>
+<span id="cb44-17"><a href="#cb44-17"></a>                     <span class="at">beta =</span> beta<span class="sc">/</span><span class="dv">3</span>,</span>
+<span id="cb44-18"><a href="#cb44-18"></a>                   <span class="at">Omega.u=</span>Omega.u<span class="sc">/</span><span class="dv">3</span>),</span>
+<span id="cb44-19"><a href="#cb44-19"></a>            <span class="fu">list</span>( <span class="at">sigma.e =</span> sigma.e<span class="sc">*</span><span class="dv">3</span>,</span>
+<span id="cb44-20"><a href="#cb44-20"></a>                  <span class="at">sigma.u =</span> sigma.u<span class="sc">*</span><span class="dv">3</span>,</span>
+<span id="cb44-21"><a href="#cb44-21"></a>                     <span class="at">beta =</span> beta<span class="sc">*</span><span class="dv">3</span>,</span>
+<span id="cb44-22"><a href="#cb44-22"></a>                   <span class="at">Omega.u=</span>Omega.u<span class="sc">*</span><span class="dv">3</span>),</span>
+<span id="cb44-23"><a href="#cb44-23"></a>            <span class="fu">list</span>( <span class="at">sigma.e =</span> sigma.e<span class="sc">/</span><span class="dv">3</span>,</span>
+<span id="cb44-24"><a href="#cb44-24"></a>                  <span class="at">sigma.u =</span> sigma.u<span class="sc">*</span><span class="dv">3</span>,</span>
+<span id="cb44-25"><a href="#cb44-25"></a>                     <span class="at">beta =</span> beta   <span class="sc">/</span><span class="dv">3</span>, </span>
+<span id="cb44-26"><a href="#cb44-26"></a>                    <span class="at">Omega.u=</span>Omega.u<span class="sc">*</span><span class="dv">3</span>),</span>
+<span id="cb44-27"><a href="#cb44-27"></a>            <span class="fu">list</span>( <span class="at">sigma.e =</span> sigma.e<span class="sc">*</span><span class="dv">3</span>,</span>
+<span id="cb44-28"><a href="#cb44-28"></a>                  <span class="at">sigma.u =</span> sigma.u<span class="sc">/</span><span class="dv">3</span>,</span>
+<span id="cb44-29"><a href="#cb44-29"></a>                     <span class="at">beta =</span> beta   <span class="sc">*</span><span class="dv">3</span>,</span>
+<span id="cb44-30"><a href="#cb44-30"></a>                    <span class="at">Omega.u=</span>Omega.u<span class="sc">/</span><span class="dv">3</span> ))</span>
+<span id="cb44-31"><a href="#cb44-31"></a></span>
+<span id="cb44-32"><a href="#cb44-32"></a>fetal2.params<span class="ot">&lt;-</span><span class="fu">c</span>(<span class="st">"beta"</span>, <span class="st">"sigma.e"</span>, <span class="st">"sigma.u"</span>, <span class="st">"Omega.u"</span>)</span>
+<span id="cb44-33"><a href="#cb44-33"></a></span>
+<span id="cb44-34"><a href="#cb44-34"></a></span>
+<span id="cb44-35"><a href="#cb44-35"></a></span>
+<span id="cb44-36"><a href="#cb44-36"></a><span class="fu">library</span>(R2jags)</span>
+<span id="cb44-37"><a href="#cb44-37"></a></span>
+<span id="cb44-38"><a href="#cb44-38"></a>jag.fetal2<span class="ot">&lt;-</span><span class="fu">jags</span>(<span class="at">data=</span>fetal2.dat, </span>
+<span id="cb44-39"><a href="#cb44-39"></a><span class="at">inits=</span>fetal2.inits, </span>
+<span id="cb44-40"><a href="#cb44-40"></a><span class="at">parameters.to.save=</span>fetal2.params, <span class="at">n.chains=</span><span class="dv">4</span>, <span class="at">n.iter=</span><span class="dv">1000</span>, <span class="at">n.thin=</span><span class="dv">20</span>,</span>
+<span id="cb44-41"><a href="#cb44-41"></a><span class="at">model.file=</span><span class="st">"...fetalJags1.txt"</span>)</span>
+<span id="cb44-42"><a href="#cb44-42"></a></span>
+<span id="cb44-43"><a href="#cb44-43"></a></span>
+<span id="cb44-44"><a href="#cb44-44"></a><span class="fu">summary</span>(jag.fetal2)</span>
+<span id="cb44-45"><a href="#cb44-45"></a><span class="fu">print</span>(jag.fetal2)</span>
+<span id="cb44-46"><a href="#cb44-46"></a><span class="fu">plot</span>(jag.fetal2)</span>
+<span id="cb44-47"><a href="#cb44-47"></a><span class="fu">traceplot</span>(jag.fetal2)</span>
+<span id="cb44-48"><a href="#cb44-48"></a></span>
+<span id="cb44-49"><a href="#cb44-49"></a>jag.mcmc.fetal2<span class="ot">&lt;-</span><span class="fu">as.mcmc</span>(jag.fetal2)</span>
+<span id="cb44-50"><a href="#cb44-50"></a><span class="fu">plot</span>(jag.mcmc.fetal2)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>To review and summarize the model code to help you better understand it…</p>
+<p>In the first level of hierarchy:</p>
+<ul>
+<li>the subject-level index runs from i = 1 to 707</li>
+<li>the random effect terms are u[i,1:2]} ~ dmnorm((0,0),Omega.beta[,])
+<ul>
+<li>u[i,1] (<span class="math inline">\({u}_{0i}\)</span>) and u[i,2] (<span class="math inline">\({u}_{1i}\)</span>) are multivariate normally distributed.</li>
+</ul></li>
+<li>mu.beta[1] is the fixed effects intercept <span class="math inline">\({\beta}_{0}\)</span><br>
+</li>
+<li>mu.beta[2] is the fixed effects slope <span class="math inline">\({\beta}_{1}\)</span>.</li>
+<li>Omega.beta[,]} is the <em>inverse</em> of the random effects variance-covariance matrix.</li>
+</ul>
+<p>In the second level of hierarchy:</p>
+<ul>
+<li>The observation-level index runs from j = 1 to 3097</li>
+<li>mu[j] &lt;- (mu.beta[1] + u[id[j],1]) + (mu.beta[2] + u[id[j],2])*X[j]
+<ul>
+<li>The observation-specific mean (mu[j]) uses id[j] as the first index of the random effect array u[1:707,1:2] to pick up the id number of the <span class="math inline">\(j^{th}\)</span> observation and select the correct row of the random effect array.</li>
+<li>The final step adds the error term to the mean: Y[j] ~ dnorm(mu[j],tau.e)</li>
+</ul></li>
+</ul>
+<p>The prior distributions are:</p>
+<ul>
+<li>standard non-informative priors for fixed effects <span class="math inline">\({\beta}_{0}\)</span>, <span class="math inline">\({\beta}_{1}\)</span> and <span class="math inline">\({\sigma}_{e}\)</span></li>
+<li>Wishart prior for Omega.beta, which requires
+<ul>
+<li>degrees of freedom parameter (we use 2, the smallest possible value)</li>
+<li>scale matrix that represents our prior guess about the order of magnitude of the covariance matrix of the random effects (we assume <span class="math inline">\({\sigma}_{0}^{2} = 0.5\)</span>, <span class="math inline">\({\sigma}_{1}^{2} = 0.1\)</span> and <span class="math inline">\({\sigma}_{01} = 0\)</span>.)</li>
+</ul></li>
+</ul>
+</section>
+</section>
+</section>
+<section id="model-checking" class="level1">
+<h1>Model Checking</h1>
+<p>An important part of any data analysis is assessing the fit of a model to observed data. Does your model make sense? This is no less true in Bayesian analysis. <em>Predictive validation</em> consists of checking how well data generated from your model match up with actual observations. This can be done through external predictions, by holding back some data, say 10%, when fitting your model and comparing those observations to those generated by plugging predictor values into your model. Or you could use all your data to fit the model, and compare the observed outcomes to those predicted by the model.</p>
+<p>In a Bayesian setting, you can compare data generated from the posterior predictive distribution to the observed data. You can create a posterior predictive data set for each individual or observation in your data set by using simulations that include the additional variance that characterizes Bayesian analyses. Residuals are calculated by subtracting the simulated values from the observed values. Residual plots are evaluated as they usually are. But, in a Bayesian approach we can repeat this process many time by simulating many predictive data sets and calculating many residuals based on them. So, for example, if you were concerned about heteroskedasticity, you could calculate the correlation between the absolute value of the residuals to the fitted values many times and plot a histogram of the many correlations you calculate.</p>
+<p>Another approach is to compare the data generated from simulations of the predictive distribution to the actual data using a statistic of some kind. One possible such statistic is the so-called <em>posterior predictive p-value</em> (ppp-value), <a href="#fn10" class="footnote-ref" id="fnref10" role="doc-noteref"><sup>10</sup></a> which is approximated by calculating the proportion of the predicted values that are more extreme for the statistic than the observed value for that statistic. Ideally, you’d like to see a large ppp-value (greater than say 0.5) as an indication that the model is a good fit to the statistic. Possible statistics that you can compare include the mean, the standard deviation, minimum values and maximum values.</p>
+<p>Shane Jensen presents an example based on the number of bicycles vs.&nbsp;the number of cars on 10 street corners in Berkley, California. The data are presented and plotted in the code below. We could model these data as 10 realizations of the same underlying binomial process, i.e.&nbsp;no group-level heterogeneity. A Beta-Binomial model, with <span class="math inline">\(y_i \sim Bin(n, \theta)\)</span> and <span class="math inline">\(\theta \sim Beta(1,1)\)</span> would meet this specifications. The conjugate posterior distribution would be <span class="math inline">\(\theta \sim Beta(\Sigma(y)-1, \Sigma(n)-\Sigma(y)+1)\)</span></p>
+<p>The simple conjugate Binomial-Beta model results in a posterior Beta with a mean proportion of about 0.2, which is consistent with the observed data. There were, though, two extreme values, one close to zero, the other close to 0.5. Does our model allow for this extra heterogeneity? To check, we generate 10,000 posterior predictive data sets using our model, and see what proportion include values close to that minimum and that maximum. We can conclude that our model allows for the low value, but not for the high value. We will have to reconfigure out model, perhaps as a hierarchical or mixed model.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb45"><pre class="sourceCode numberSource r numberLines code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1"></a> <span class="co">#data</span></span>
+<span id="cb45-2"><a href="#cb45-2"></a>y <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">16</span>,<span class="dv">9</span>,<span class="dv">10</span>,<span class="dv">13</span>,<span class="dv">19</span>,<span class="dv">20</span>,<span class="dv">18</span>,<span class="dv">17</span>,<span class="dv">35</span>,<span class="dv">55</span>)</span>
+<span id="cb45-3"><a href="#cb45-3"></a>n <span class="ot">&lt;-</span><span class="fu">c</span>(<span class="dv">74</span>, <span class="dv">99</span>, <span class="dv">58</span>, <span class="dv">70</span>, <span class="dv">122</span>, <span class="dv">77</span>, <span class="dv">104</span>, <span class="dv">129</span>, <span class="dv">308</span>, <span class="dv">119</span>)</span>
+<span id="cb45-4"><a href="#cb45-4"></a><span class="fu">plot</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>,(y<span class="sc">/</span>n), <span class="at">type=</span><span class="st">"h"</span>, <span class="at">ylim=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">1</span>))</span>
+<span id="cb45-5"><a href="#cb45-5"></a></span>
+<span id="cb45-6"><a href="#cb45-6"></a> <span class="co"># posterior</span></span>
+<span id="cb45-7"><a href="#cb45-7"></a>theta<span class="ot">&lt;-</span><span class="fu">rbeta</span>(<span class="dv">10000</span>,(<span class="fu">sum</span>(y)<span class="sc">+</span><span class="dv">1</span>),((<span class="fu">sum</span>(n)<span class="sc">-</span><span class="fu">sum</span>(y))<span class="sc">-</span><span class="dv">1</span>))</span>
+<span id="cb45-8"><a href="#cb45-8"></a><span class="fu">plot</span>(<span class="fu">density</span>(theta))</span>
+<span id="cb45-9"><a href="#cb45-9"></a><span class="fu">hist</span>(theta)</span>
+<span id="cb45-10"><a href="#cb45-10"></a></span>
+<span id="cb45-11"><a href="#cb45-11"></a> <span class="co"># posterior predictive</span></span>
+<span id="cb45-12"><a href="#cb45-12"></a>y.star<span class="ot">&lt;-</span><span class="fu">rbinom</span>(<span class="dv">10000</span>,<span class="dv">20</span>, theta)</span>
+<span id="cb45-13"><a href="#cb45-13"></a><span class="fu">hist</span>(y.star)</span>
+<span id="cb45-14"><a href="#cb45-14"></a></span>
+<span id="cb45-15"><a href="#cb45-15"></a> <span class="co"># check probability of minimum and maximum</span></span>
+<span id="cb45-16"><a href="#cb45-16"></a>check.max<span class="ot">&lt;-</span><span class="fu">sum</span>(((y.star<span class="sc">/</span>n) <span class="sc">&gt;</span> .<span class="dv">5</span>)<span class="sc">/</span><span class="dv">10000</span>)</span>
+<span id="cb45-17"><a href="#cb45-17"></a>check.max</span>
+<span id="cb45-18"><a href="#cb45-18"></a></span>
+<span id="cb45-19"><a href="#cb45-19"></a>check.min<span class="ot">&lt;-</span><span class="fu">sum</span>(((y.star<span class="sc">/</span>n) <span class="sc">&lt;</span> .<span class="dv">01</span>)<span class="sc">/</span><span class="dv">10000</span>)</span>
+<span id="cb45-20"><a href="#cb45-20"></a>check.min</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+
+
+</section>
+
+
+<div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
+
+<ol>
+<li id="fn1"><p>A Note on Reporting Results of Bayesian Models: In classical statistical inference, we can’t make direct probability statements about parameters. A p value is not the probability that the null hypothesis is true, but rather the probability of observing data as or more extreme than we obtained given that the null hypothesis is true. In Bayesian inference we can directly calculate the probability of parameter values by calculating the area of the posterior distribution to the right of that value, which is simply equal to the proportion of values in the posterior sample of the parameter which are greater than that value. We can use that information to report the results of Bayesian analyses as means with so-called 95% <em>credible</em> intervals for parameter estimates.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>In the setting of regression, the priors describe the residual variance.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn3"><p>Despite this apparent additional complexity, after all is said and done, with a non-informative prior we will arrive at the matrix algebra formula for the ordinary least squares solution for the problem.<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn4"><p>Again, taken from Shane Jensen. (You may be starting to notice a pattern…)<a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn5"><p>OK. I like baseball, so this example (again) from Shane Jensen appeals to me, but mixture models also have been usefully applied to public health data on cancer survival, malaria risk, and responses to behavioral health questionaires.<a href="#fnref5" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn6"><p>I wonder how folks will teach probability theory when coins become obsolete. Will we talk about flipping debit cards?<a href="#fnref6" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn7"><p>The model is “mixed” in that there are both fixed and random effects.<a href="#fnref7" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn8"><p>This is really a very nice package. I recommend you spend some time with Gelman and Hill’s “Data Analysis Using Regression and Multilevel/Hierarchical Models” which is an excellent text for both BUGS and lmer4-specified hierarchical models.<a href="#fnref8" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn9"><p>Some folks may, rightfully, protest about this complexity. There have been recent developments to advance the “machinery” of Bayesian modeling to simplify and streamline approaches will maintain the integrity of the results. Some notable advances include the <a href="http://www.r-inla.org/">INLA</a> package and <a href="http://blog.revolutionanalytics.com/2012/08/rstan-fast-multilevel-bayesian-modeling-in-r.html">STAN</a><a href="#fnref9" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn10"><p>p-values, because of their association with “statistical significance” have are generally fallen into disfavor, and are often verboten in the Bayesian literature. But as used here by Shane Jensen, they make sense.<a href="#fnref10" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section></div></main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

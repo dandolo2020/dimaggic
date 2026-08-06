@@ -1,0 +1,1673 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.28">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Intro to Bayes – CUIRE</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-49e51e44f424ea8c7044b429bdbbbfe2.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-9767d147d9da4196aea41de9d5c46390.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="../../styles.css">
+</head>
+
+<body class="nav-sidebar docked nav-fixed quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">CUIRE</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../index.html"> <i class="bi bi-house-door-fill" role="img">
+</i> 
+<span class="menu-text"> </span></a>
+  </li>  
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-bayes" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Bayes</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-bayes">    
+        <li>
+    <a class="dropdown-item" href="../../bayes/bayes1/bayes1.html">
+ <span class="dropdown-text">Intro to Bayes</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../bayes/bayes2/bayes2.html">
+ <span class="dropdown-text">MCMC</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../bayes/bayes3/bayes3.html">
+ <span class="dropdown-text">Bayes Regression</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../bayes/bayes4/bayes4.html">
+ <span class="dropdown-text">Bayes Meta-Analysis</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../bayes/bayes5/bayes5.html">
+ <span class="dropdown-text">More Bayes</span></a>
+  </li>  
+    </ul>
+  </li>
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../bayes/bayes1/bayes1.html">Intro to Bayes</a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../bayes/bayes1/bayes1.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">Intro to Bayes</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../bayes/bayes2/bayes2.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">MCMC</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../bayes/bayes3/bayes3.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Bayes Regression</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../bayes/bayes4/bayes4.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Bayes Meta-Analysis</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../bayes/bayes5/bayes5.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">More Bayes</span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#bayesian-analysis-for-epidemiologists-i-introduction" id="toc-bayesian-analysis-for-epidemiologists-i-introduction" class="nav-link active" data-scroll-target="#bayesian-analysis-for-epidemiologists-i-introduction">Bayesian Analysis for Epidemiologists I: Introduction</a></li>
+  <li><a href="#acknowledgements" id="toc-acknowledgements" class="nav-link" data-scroll-target="#acknowledgements">Acknowledgements</a></li>
+  <li><a href="#contents" id="toc-contents" class="nav-link" data-scroll-target="#contents">Contents</a></li>
+  <li><a href="#the-bayesian-way" id="toc-the-bayesian-way" class="nav-link" data-scroll-target="#the-bayesian-way">The Bayesian Way</a>
+  <ul class="collapse">
+  <li><a href="#why-bayes" id="toc-why-bayes" class="nav-link" data-scroll-target="#why-bayes">Why Bayes?</a>
+  <ul class="collapse">
+  <li><a href="#bayes-vs.-classical" id="toc-bayes-vs.-classical" class="nav-link" data-scroll-target="#bayes-vs.-classical">Bayes vs.&nbsp;Classical</a></li>
+  <li><a href="#the-benefits-of-bayes" id="toc-the-benefits-of-bayes" class="nav-link" data-scroll-target="#the-benefits-of-bayes">The Benefits of Bayes</a></li>
+  </ul></li>
+  <li><a href="#bayes-theorem" id="toc-bayes-theorem" class="nav-link" data-scroll-target="#bayes-theorem">Bayes Theorem</a>
+  <ul class="collapse">
+  <li><a href="#example-positive-predictive-value" id="toc-example-positive-predictive-value" class="nav-link" data-scroll-target="#example-positive-predictive-value">Example: Positive Predictive Value</a></li>
+  <li><a href="#example-student-sleep-habits" id="toc-example-student-sleep-habits" class="nav-link" data-scroll-target="#example-student-sleep-habits">Example: Student Sleep Habits</a></li>
+  </ul></li>
+  </ul></li>
+  <li><a href="#single-parameter-problems" id="toc-single-parameter-problems" class="nav-link" data-scroll-target="#single-parameter-problems">Single-Parameter Problems</a>
+  <ul class="collapse">
+  <li><a href="#single-parameter-binomial-example-race-and-promotion-at-a-state-agency" id="toc-single-parameter-binomial-example-race-and-promotion-at-a-state-agency" class="nav-link" data-scroll-target="#single-parameter-binomial-example-race-and-promotion-at-a-state-agency">Single Parameter Binomial Example: Race and Promotion at a State Agency</a></li>
+  <li><a href="#single-parameter-binomial-example-perchlorate-and-thyroid-tumors" id="toc-single-parameter-binomial-example-perchlorate-and-thyroid-tumors" class="nav-link" data-scroll-target="#single-parameter-binomial-example-perchlorate-and-thyroid-tumors">Single Parameter Binomial Example: Perchlorate and Thyroid Tumors</a></li>
+  <li><a href="#single-parameter-poisson-example-airline-crashes" id="toc-single-parameter-poisson-example-airline-crashes" class="nav-link" data-scroll-target="#single-parameter-poisson-example-airline-crashes">Single-Parameter Poisson Example: Airline Crashes</a></li>
+  <li><a href="#single-parameter-normal-model" id="toc-single-parameter-normal-model" class="nav-link" data-scroll-target="#single-parameter-normal-model">Single-Parameter Normal Model</a></li>
+  </ul></li>
+  <li><a href="#conjugate-analyses" id="toc-conjugate-analyses" class="nav-link" data-scroll-target="#conjugate-analyses">Conjugate Analyses</a>
+  <ul class="collapse">
+  <li><a href="#binomial-example-drug-response" id="toc-binomial-example-drug-response" class="nav-link" data-scroll-target="#binomial-example-drug-response">Binomial Example: Drug Response</a></li>
+  <li><a href="#binomial-example-placenta-previa" id="toc-binomial-example-placenta-previa" class="nav-link" data-scroll-target="#binomial-example-placenta-previa">Binomial Example: Placenta Previa</a></li>
+  <li><a href="#conjugate-analysis-of-poisson-data" id="toc-conjugate-analysis-of-poisson-data" class="nav-link" data-scroll-target="#conjugate-analysis-of-poisson-data">Conjugate Analysis of Poisson Data</a>
+  <ul class="collapse">
+  <li><a href="#poisson-example-london-bombings-during-wwii" id="toc-poisson-example-london-bombings-during-wwii" class="nav-link" data-scroll-target="#poisson-example-london-bombings-during-wwii">Poisson Example: London Bombings during WWII</a></li>
+  <li><a href="#poisson-example-heart-transplant-mortality" id="toc-poisson-example-heart-transplant-mortality" class="nav-link" data-scroll-target="#poisson-example-heart-transplant-mortality">Poisson Example: Heart Transplant Mortality</a></li>
+  </ul></li>
+  <li><a href="#conjugate-analysis-of-normally-distributed-data" id="toc-conjugate-analysis-of-normally-distributed-data" class="nav-link" data-scroll-target="#conjugate-analysis-of-normally-distributed-data">Conjugate Analysis of Normally Distributed Data</a>
+  <ul class="collapse">
+  <li><a href="#example-thm-concentrations" id="toc-example-thm-concentrations" class="nav-link" data-scroll-target="#example-thm-concentrations">Example: THM Concentrations</a></li>
+  </ul></li>
+  </ul></li>
+  <li><a href="#probability-distributions-used-in-bayesian-analysis" id="toc-probability-distributions-used-in-bayesian-analysis" class="nav-link" data-scroll-target="#probability-distributions-used-in-bayesian-analysis">Probability Distributions Used in Bayesian Analysis</a>
+  <ul class="collapse">
+  <li><a href="#the-beta-distribution" id="toc-the-beta-distribution" class="nav-link" data-scroll-target="#the-beta-distribution">The Beta Distribution</a></li>
+  <li><a href="#the-gamma-distribution" id="toc-the-gamma-distribution" class="nav-link" data-scroll-target="#the-gamma-distribution">The Gamma Distribution</a></li>
+  <li><a href="#the-normal-distribution" id="toc-the-normal-distribution" class="nav-link" data-scroll-target="#the-normal-distribution">The Normal Distribution</a></li>
+  <li><a href="#the-uniform-distribution" id="toc-the-uniform-distribution" class="nav-link" data-scroll-target="#the-uniform-distribution">The Uniform Distribution</a></li>
+  <li><a href="#the-exponential-distribution" id="toc-the-exponential-distribution" class="nav-link" data-scroll-target="#the-exponential-distribution">The Exponential Distribution</a></li>
+  <li><a href="#the-dirichlet-distribution" id="toc-the-dirichlet-distribution" class="nav-link" data-scroll-target="#the-dirichlet-distribution">The Dirichlet Distribution</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Intro to Bayes</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="bayesian-analysis-for-epidemiologists-i-introduction" class="level1">
+<h1>Bayesian Analysis for Epidemiologists I: Introduction</h1>
+</section>
+<section id="acknowledgements" class="level1">
+<h1>Acknowledgements</h1>
+<p>I am indebted to the following individuals upon who’s work the material in these pages has been (extensively) based. I strongly encourage you to follow these links. My notes are really just a pale reflection.</p>
+<p><a href="http://bayes.bgsu.edu/bcwr/">Jim Albert</a><br>
+<a href="http://www.statslab.cam.ac.uk/Dept/People/Spiegelhalter/davids.html">David Spiegelhalter</a><br>
+<a href="http://www1.imperial.ac.uk/medicine/people/n.best/publications/">Nicky Best</a><br>
+<a href="http://andrewgelman.com/">Andrew Gelman</a><br>
+<a href="http://bendixcarstensen.com/">Bendix Carstensen</a><br>
+<a href="http://pgh.unimelb.edu.au/about/contact/allstaff/gurrin">Lyle Guerrin</a><br>
+<a href="http://www-stat.wharton.upenn.edu/~stjensen/">Shane Jensen</a> and <a href="http://www.statisticalhorizons.com/">Statistical Horizons</a></p>
+</section>
+<section id="contents" class="level1">
+<h1>Contents</h1>
+<p><a href="#the-bayesian-way">I. THE BAYESIAN WAY</a><br>
+<a href="##why-bayes">1. Why Bayes?</a><br>
+<a href="###bayes-vs-classical">bayes vs.&nbsp;classical</a><br>
+<a href="###the-benefits-of-bayes">the benefits of bayes</a><br>
+<a href="##bayes-theorem">2. Bayes Theorem</a><br>
+<a href="###example-positive-predictive-value">example: positive predictive value</a><br>
+<a href="###example-student-sleep-habits">example: student sleep habits</a></p>
+<p><a href="#single-parameter-problems">II. SINGLE PARAMETER PROBLEMS</a><br>
+<a href="##single-parameter-binomial-example:-race-and-promotion-at-a-state-agency">1. Single Parameter Binomial Example: Race and Promotion at a State Agency</a><br>
+<a href="##single-parameter-binomial-example:-perchlorate-and-thyroid-tumors">2. Single Parameter Binomial Example: Perchlorate and Thyroid Tumors</a><br>
+<a href="##single-parameter-poisson-example:-airline-crashes">3. Single Parameter Poisson Example: Airline Crashes</a><br>
+<a href="##single-parameter-normal-model">4. Single Parameter Normal Model</a></p>
+<p><a href="#conjugate-analyses">III. CONJUGATE ANALYSES</a><br>
+<a href="##conjugate-analysis-of-binomial-data">1. Conjugate Analysis of Binomial Data</a><br>
+<a href="###binomial-example:-drug-response">binomial example: drug response</a><br>
+<a href="###binomial-example:-placenta-previa">binomial example: placenta previa</a><br>
+<a href="##conjugate-analysis-of-poisson-data">2. Conjugate Analysis of Poisson Data</a><br>
+<a href="###poisson-example:-london-bombings-during-wwii">poisson example: London bombings during WWII</a><br>
+<a href="###poisson-example:-heart-transplant-mortality">poisson example: heart transplant mortality</a><br>
+<a href="##conjugate-analysis-of-normally-distributed-data">3. Conjugate Analysis of Normally Distributed Data</a><br>
+<a href="###example:-thm-concentrations">example: THM concentrations</a></p>
+<p><a href="#probability-distributions-used-in-bayesian-analysis">IV. PROBABILITY DISTRIBUTIONS USED IN BAYESIAN ANALYSIS</a></p>
+<p><a href="bayes/bayes1/bayesWebPt1Rev1Beamer.pdf">Link to Slides</a></p>
+</section>
+<section id="the-bayesian-way" class="level1">
+<h1>The Bayesian Way</h1>
+<blockquote class="blockquote">
+<p>A Bayesian is one who, vaguely expecting to see a horse and catching a glimpse of a donkey, strongly concludes he has seen a mule. (Senn, 1997)</p>
+</blockquote>
+<blockquote class="blockquote">
+<p>The Bayesian approach is “the explicit use of external evidence in the design, monitoring, analysis, interpretation and reporting of a (scientific investigation)” (Spiegelhalter, 2004)</p>
+</blockquote>
+<p>Bayesian analysis is a natural and coherent way of thinking about science and learning. With advances in theoretical approaches to sampling from marginal and conditional distributions, and the advent of sufficient computing power to make those approaches pragmatic, Bayes is not only theoretically correct, but practical and doable. Some advantages of Bayes are:</p>
+<ul>
+<li>It is flexible and can adapt to complex situations</li>
+<li>It is efficient, using all available information</li>
+<li>It is intuitively informative, providing <em>relevant</em> probability summaries in a way that is consistent with how we think and learn.</li>
+<li>It captures additional uncertainty in predictions by allowing parameter estimates to vary.</li>
+</ul>
+<p>In a nutshell, Bayesian inference combines what you observe (the data) with what (you think) you know about the unknown parameters underlying those data. The main difference with classical or frequentist statistics is that in classical statistics, parameters are fixed or non-random, and only the data or samples from the universe of data vary randomly from experiment to experiment. Any inferences on the parameters in which we are interested are couched in somewhat roundabout terms about samples. In Bayesian statistics, unknown quantities like parameters (which we will refer to as <span class="math inline">\(\theta\)</span>), as well as missing or mis-measured data are treated as random variables and we can make direct probability statements about them.</p>
+<p>Since <span class="math inline">\(\theta\)</span> is a random variable, it has a probability distribution which reflects our uncertainty about it. This is termed the <em>prior distribution (<span class="math inline">\(Pr[\theta]\)</span>)</em>. The data are represented by a probability model termed the <em>likelihood (<span class="math inline">\(Pr[y|\theta]\)</span>)</em>. We use <em>Bayes theorem</em> to combine the prior distribution with the likelihood to obtain the conditional probability distribution for the unobserved quantities of interest given the data, called the <em>posterior distribution (<span class="math inline">\(Pr[\theta|y]\)</span>)</em>. The prior expresses our understanding (or lack thereof) before seeing the data. The Posterior expresses our understanding or the gain in knowledge after seeing the data.</p>
+<p>The revolutionary step, actually, is simply expressing uncertainty about parameters with probability distributions. But, as we will see, there is no free lunch. Prior distributions, and how they can reasonably be combined with our data, will complicate our lives. To get a reasonable posterior probability distribution out, you need to put in a reasonable prior opinion concerning the plausibility of values for outcomes like treatment effects.</p>
+<section id="why-bayes" class="level2">
+<h2 class="anchored" data-anchor-id="why-bayes">Why Bayes?</h2>
+<section id="bayes-vs.-classical" class="level3">
+<h3 class="anchored" data-anchor-id="bayes-vs.-classical">Bayes vs.&nbsp;Classical</h3>
+<p>Traditionally, statistical analysis has involved four activities intended to answer four questions:</p>
+<ol type="1">
+<li>Estimating unknown parameters (What is the mean value for some medical test in a population?)</li>
+<li>Accounting for variability in estimated parameters (How much does that value vary around the mean?)</li>
+<li>Testing hypotheses (Is the value for the medical test different in treated vs.&nbsp;untreated populations)</li>
+<li>Making predictions (What would we expect the mean value to be in a new sample of patients?)</li>
+</ol>
+<p>Classically, parameters (means, standard deviations, regression coefficients, etc…) are considered fixed but unknown. <a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> The emphasis is on the <em>sample</em> of data we are using to estimate the parameter. Our estimate of the parameter will change from sample to sample, but it is the samples that vary, not the parameter. This leads to some rather roundabout ways of thinking.</p>
+<p>If we believe the only thing varying is the sample, not the underlying parameter, then it behooves us to take many samples and see how those sample estimates of the parameter behave. But this is impractical at best (and nonsensical at worst) under most realistic scenarios. Our data are our data. Rather, we trust in asymptotic theory that if our sample is large enough, the central limit theorem assures us our sample estimate is at or very near the underlying population estimate, and we can adjust our estimates of how it varies from estimate to estimate using the number of observations in the current estimate.</p>
+<p>So, while the natural interpretation of a 95% confidence interval is that there is a 95% probability that <span class="math inline">\(\mu\)</span> is in that interval, that would imply that <span class="math inline">\(\mu\)</span> varies randomly according to some probability distribution. But, since in the classical framework the the only thing varying is the data or samples, all we can really say is that out of 100 samples, 95 of the samples will contain the true underlying parameter, <span class="math inline">\(\mu\)</span>.</p>
+<p>The central philosophical difference between Bayesian vs.&nbsp;classical statistics is that in the Bayesian approach unknown parameters are considered random quantities with their own probability distributions. We are suddenly free of many of the logical gymnastics imposed on us by the classical framework of fixed parameters. But it comes at a cost. In addition to characterizing the probability of the data or sample (which is necessary in both Bayesian and classical approaches) we must now explicitly characterize the probability of the parameters as well. That can get messy.</p>
+<p>Both Bayesian and classical statistics involved characterizing the probability or likelihood of the observed data. So, for example, if you are interested in the batting average for a baseball team where each player has an individual batting average, to get the overall probability, you would multiply all the batting averages: <span class="math inline">\(p(y|\theta = \Pi (y_i|\theta)\)</span>. This is termed the likelihood function and is essentially the joint probability of all your observations.</p>
+<p>Classical statistics consists primarily of determining the MLE’s for the parameters underlying some set of data. The maximum likelihood estimate involves choosing or determining those parameters that make the data you observed as likely as possible. The details involve taking the derivative of the statistical model (e.g.&nbsp;say a normal probability model) and setting it equal to zero to maximize it. <a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a> The results are fairly intuitive for standard probability distributions like the normal, where the MLEs that fall out of the calculus are <span class="math inline">\(\Sigma Y_i/n\)</span> for <span class="math inline">\(\mu\)</span> and <span class="math inline">\((y_i - \hat{y})^2/n\)</span> for variance. But they become increasingly more complicated the more complex the data are, and for complex non-standard distributions may be very difficult indeed.</p>
+<p>Bayesian statistics also require specifying the MLE’s for the observed data, which is called the data likelihood and can be represent as <span class="math inline">\(p(y|\theta)\)</span>, but now adds the requirement to also specify the unknown parameters <span class="math inline">\(p(\theta)\)</span>, which is called the prior distribution. The general approach is to specify a distribution for the parameters(s) ( <em>the prior</em>), look at data (<em>the likelihood</em>), then combine what we expected with what we observed to update what we think about the parameter (now called <em>the posterior</em> distribution). The updating is done with Bayes rule. We’ll introduce it more formally in a moment, but it is: <span class="math inline">\(p(\theta|y) = p(y|\theta)p(\theta)/p(y)\)</span>, and is usually written as a single line: <span class="math inline">\(p(\theta|y) \propto p(y|\theta)p(\theta)\)</span> (the <span class="math inline">\(p(y)\)</span> term is usually dropped because it is there just to normalize or integrate the expression to 1).</p>
+<p>The aim of a frequentist approach to, say, a clinical trial is to <em>determine what the trial tells us about the treatment effect</em>. We assume the effect is 0 (<span class="math inline">\(H_0\)</span>). We collect evidence (data) about this unknown treatment affect, and calculate point estimates, p values, and CI’s as summaries of the size of the treatment effect.</p>
+<p>The aim of a Bayesian approach is to <em>learn whether the trial should change our opinion about the treatment effect</em>. To achieve this, we would</p>
+<ul>
+<li>State the <em>plausibility</em> of different values of the treatment effect (the <em>prior</em> distribution)</li>
+<li>State the <em>support</em> for different values of the effect based solely on the trial data (the <em>likelihood</em>)</li>
+<li><em>Combine</em> these two sources to produce a final opinion about the treatment effect (the <em>posterior</em> distribution)</li>
+</ul>
+<p>By combining the prior and the likelihood using Bayes’ Theorem, we are essentially weighting the likelihood or evidence from the trial with the relative plausibilities defined by the prior. It can be viewed as a process of formalized learning from experience. Once you have the posterior distribution, you can get point and interval estimates of treatment effects or any function of the parameters, probabilities of exceeding critical values, predictions for new patients, and prior information for future trials.</p>
+<p>This weighting of the posterior and the prior is an essential characteristic of Bayesian analysis. To make this more concrete, consider some normally distributed process, say age in a population. The prior is described by it’s mean and it’s variance around that mean, <span class="math inline">\(\mu \sim N(\alpha, \tau^2)\)</span>. The likelihood is based on a sample of data from the population, is similarly normally distributed (<span class="math inline">\(y_i \sim N(\mu, \sigma^2)\)</span>) and is described by it’s likelihood, with the MLE for <span class="math inline">\(\mu\)</span> equal to <span class="math inline">\(\Sigma y_i/n\)</span> and the MLE for <span class="math inline">\(\sigma^2\)</span> equal to <span class="math inline">\((y_i - \hat{y})^2/n\)</span>.</p>
+<p>According to Bayes Theorem, we can combine the prior, <span class="math inline">\(p(\theta)\)</span> with the data likelihood <span class="math inline">\((y|\theta)\)</span> to get at the posterior, <span class="math inline">\(p(\theta|y)\)</span>. If we were to (somehow) know the variance and just had to get at the posterior for the mean, the calculation is:</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="bayes/bayes1/nlPosterior.jpg" class="img-fluid figure-img"></p>
+<figcaption>Posterior Distribution for Normal Mean</figcaption>
+</figure>
+</div>
+<p>We can view the posterior distribution as a compromise between the data and the prior The data are represented by how large a sample size you have, <span class="math inline">\(n\)</span>, the prior represented by the standard deviation around <span class="math inline">\(\mu\)</span> in the prior specification. We will find that this neat analytic calculation is more the exception than the rule. It applies only when standard distributions, like the normal, binomial or Poisson, combine nicely with similar-looking likelihoods. And then, only for simple 1 or perhaps 2 parameter problems. For the far more common and realistic situation, say combining a normal prior with a Poisson likelihood, and resulting distribution would be decidedly non-standard and would require computational approaches.</p>
+<p>A lot of the skepticism about Bayesian models comes from the assumptions that go into choosing a prior. Ideally the prior comes from real prior information, which we try to build in to the model in an intelligent and disciplined manner. If though, there is no prior information, or we are not confident in what is known, we can specify a prior that is not too influential. Termed “non-informative” or “minimally informative”, these priors will not weight or update the MLE from the data very much or at all, and the Bayesian results will be identical to the classical results.</p>
+</section>
+<section id="the-benefits-of-bayes" class="level3">
+<h3 class="anchored" data-anchor-id="the-benefits-of-bayes">The Benefits of Bayes</h3>
+<p>What then do we gain from the added complications of a Bayesian approach? Most immediately, we will have a probability distribution for the parameter values, so we now we can make direct probability statements about the parameters, and can say things like , “the probability of adding 10 years to life if given drug X is less than 5%”, or “there is a 95% probability that the true value for the effect of drug X is between 5 and 15”. Further, we will not have to rely on asymptotic assumptions. So, even if we don’t have a lot of data, can still do and report an analysis. In this case, the prior will be more influential, so ideally will be based on real and good information, but we can validly evaluate a number of. Finally (and this is the part the most appeals to me) a Bayesian approach allows a principled approach to scientific learning. The forced agnosticism of the classical approach requires us to throw out prior information. But, in the case where we actually have valid and reliable prior information, the Bayesian approach allows us to build it into our analysis.</p>
+<p>An additional benefit from a Bayesian approach is in the area of predictions. As noted above, the point estimate for a parameter in the Bayesian framework is simply the mean of the posterior distribution for that parameter. An estimate of variability is calculated as the desired interval from the posterior distribution, with no need to invoke theories about “repeated sampling”. If the estimate of variability contains 95% of the probability in the posterior distribution, it is called the 95% posterior interval or sometimes the 95% credible interval.</p>
+<p>We can use the posterior distribution to form the basis for predictions, by specifying the <em>posterior predictive distribution</em>, $ p(y<em>|Y) = p(y</em>|)p(|y)$, where y* is the value we want to predict, Y is the data, <span class="math inline">\((y*|\theta)\)</span> is the new data likelihood, and <span class="math inline">\(p(\theta|y)\)</span> is the posterior. The Bayesian approach incorporates both the variability in the data (<span class="math inline">\((y*|\theta)\)</span>) By contrast, the classical approach uses , ignoring variability in <span class="math inline">\(\theta\)</span>. So, for example, in a regression analysis, the classical approach uses a single regression line and predicts using the model. A Bayesian regression model results in a range or distribution of possible regression lines, each with a possible value of <span class="math inline">\(y*\)</span>. As a result, a Bayesian prediction will have more variability around the point estimate.</p>
+</section>
+</section>
+<section id="bayes-theorem" class="level2">
+<h2 class="anchored" data-anchor-id="bayes-theorem">Bayes Theorem</h2>
+<p>Bayes Theorem <a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a>, named after the Rev.&nbsp;Thomas Bayes (Turnbridge Wells, England, c1763), is strikingly simple in its derivation, but profound in it’s implications. If you know the probability that A occurs given that B occurs, then Bayes theorem states that we can use that information to calculate the probability that B occurs, given that A occurs. In probability nomenclature, Bayes Theorem says that if we know <span class="math inline">\(Pr[A|B]\)</span> we can get at <span class="math inline">\(Pr[B|A]\)</span>. We will see that this allows us to ask (and answer) the kinds of questions that really matter, like what is the probability that I have a disease given that I have a positive test (as opposed to what is the probability that my test is positive, given that I have a disease)</p>
+<p>Deriving Bayes Theorem is fairly straightforward:</p>
+<p><span class="math display">\[
+   Pr[A \cap B] = Pr[B \cap A] \\
+   Pr[A \cap B] = Pr[A|B] Pr[B]\\
+   Pr[B \cap A] = Pr[B|A] Pr[A]\\
+   Pr[A|B] Pr[B] = Pr[B|A] Pr[A]\\
+   Pr[A|B]  = \frac{Pr[B|A] Pr[A]}{Pr[B]}\\
+   Pr[B|A]  = \frac{Pr[A|B] Pr[B]}{Pr[A]}
+\]</span></p>
+<p>We are going to pay close attention to the denominator in those last two equations. By the law of total probability, <span class="math inline">\(Pr[A] = Pr[A|B] Pr[B] + Pr[A|\overline{B}] Pr[\overline{B}]\)</span> , so</p>
+<p><span class="math display">\[
+    Pr[B|A]  = \frac{Pr[A|B] Pr[B]}{Pr[A|B] Pr[B] + Pr[A|\overline{B}] Pr[\overline{B}]}\\
+     Pr[B|A]  = \frac{Pr[A|B] Pr[B]}{\sum Pr[A|B] Pr[B]}
+\]</span></p>
+<p>This equation is for categorical or discrete events, but when we work in probabilities we are frequently interested in probability distributions which sum to one, so the equation may more properly be written:</p>
+<p><span class="math display">\[
+    Pr[B|A]  = \frac{Pr[A|B] Pr[B]}{\int dB Pr[A|B]Pr[B]}
+\]</span></p>
+<p>In terms of parameters and data, Bayes’ theorem is:</p>
+<p><span class="math display">\[
+    Pr[\theta|y] =  \frac{Pr[y|\theta] Pr[\theta]}{\int dB Pr[y|\theta]Pr[\theta]}
+\]</span></p>
+<p>Depending on the situation, this integration in the denominator can be quite difficult or impossible. But all the denominator is doing here is making sure the entire probability integrates to 1, i.e.&nbsp;it is a normalizing factor. The important part for our purposes is the numerator and we find that it is proportional to <span class="math inline">\(p(y|\theta)p(\theta)\)</span> , i.e.&nbsp;it has the same form, just the overall size changes. You will most often see Bayes Theorem presented in terms of this proportionality, with the denominator left out:</p>
+<p><span class="math display">\[
+    Pr[\theta|y] \propto  Pr[y|\theta] Pr[\theta]
+\]</span></p>
+<section id="example-positive-predictive-value" class="level3">
+<h3 class="anchored" data-anchor-id="example-positive-predictive-value">Example: Positive Predictive Value</h3>
+<p>The classic example of Bayes Theorem from clinical epidemiology is that of the sensitivity and specificity of a medical test vs.&nbsp;its positive and negative predictive values. in the 1990’s, enzyme-linked immunosorbent assay (ELISA) was used as a screening test for HIV. It was documented as being nearly 100% sensitive and 100% specific for detecting HIV. If the ELISA came back negative, the person was informed they were HIV negative. But, if the ELISA screening test came back positive, a confirmatory Western Blot test was performed. If both the ELISA and the Western Blot were positive, the person was informed they were HIV positive. If the Western Blot was negative, the sample was discarded and person was not informed about their positive screening test.</p>
+<p>If, then ELISA was nearly 100% sensitive and specific, why the confirmatory Western Blot for positive screens? Bayes Theorem helps provide the answer</p>
+<p>The sensitivity of a screening medical test is the probability that a person will test positive given that they have the disease (<span class="math inline">\(Pr[+|D\)</span>). The specificity of a test is the probability that a person will test negative given that they do not have the disease (<span class="math inline">\(Pr[-| \overline{D}\)</span>). But is this really what a patient and his or her healthcare provider are interested? Rather than wondering if they will test positive if they have the disease, they are concerned whether they have the disease given that they tested positive (or don’t have the disease, given that they tested negative). And this, it turns out, is a very different question. These measures are called the positive and negative predictive values of a test. Bayes allows us to answer the question in which we are interested.</p>
+<p>Consider the following table of HIV test results. Again, ELISA is the screening test, and Western Blot is the “truth” or “gold standard” that tells us whether someone actually has the disease.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 22%">
+<col style="width: 22%">
+<col style="width: 29%">
+</colgroup>
+<thead>
+<tr class="header">
+<th></th>
+<th>Western Blot +</th>
+<th>Western Blot -</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>ELISA +</td>
+<td>498</td>
+<td>4</td>
+</tr>
+<tr class="even">
+<td>ELSIA -</td>
+<td>10</td>
+<td>488</td>
+</tr>
+</tbody>
+</table>
+<p>Let’s use Bayes Theorem to calculate the sensitivity of the ELISA screening test.<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a> The sensitivity of a test is the <span class="math inline">\(Pr[+|D]\)</span> which we can calculate from the table as as:</p>
+<p><span class="math display">\[
+   \frac{Pr[D|+]P[+]}{Pr[D|+]P[+] + Pr[D|-]P[-]}\\
+   \frac{(498/502)(502/1000)}{(498/502)(502/1000) + (10/498)(498/1000)}
+\]</span></p>
+<p>In R, we write:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode numberSource r numberLines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a>((<span class="dv">498</span><span class="sc">/</span><span class="dv">502</span>)<span class="sc">*</span>(<span class="dv">502</span><span class="sc">/</span><span class="dv">1000</span>))<span class="sc">/</span>(((<span class="dv">498</span><span class="sc">/</span><span class="dv">502</span>)<span class="sc">*</span>(<span class="dv">502</span><span class="sc">/</span><span class="dv">1000</span>)) <span class="sc">+</span> ((<span class="dv">10</span><span class="sc">/</span><span class="dv">498</span>)<span class="sc">*</span>(<span class="dv">498</span><span class="sc">/</span><span class="dv">1000</span>)))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>And our result is, as advertised, a sensitivity of 98%.</p>
+<p>The calculation for positive predictive value is:</p>
+<p><span class="math display">\[
+   Pr[D|+] = \frac{Pr[+|D]P[D]}{Pr[+|D]P[D] + Pr[+|\overline{D}]P[\overline{D}]}\\
+   = \frac{(498/508)(508/1000)}{(498/508)(508/1000) + (4/488)(492/1000) }
+\]</span></p>
+<p>Which results in a positive predictive value of 99%. So, then, why the confirmatory Western Blot? Well, did you notice the prevalence of disease in this population? More than half of this group is HIV positive. In fact, they were a group of IV Drug Users in the New York City area. What if we were to make these calculations with a group with a prevalence more in line with the general population? Since the sensitivity and specificity of a test is an attribute of the test itself, we can apply those proportions to a hypothetical population of a million people, with a disease prevalence of 0.02%:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 22%">
+<col style="width: 22%">
+<col style="width: 29%">
+</colgroup>
+<thead>
+<tr class="header">
+<th></th>
+<th>Western Blot +</th>
+<th>Western Blot -</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>ELISA +</td>
+<td>1960</td>
+<td>9944</td>
+</tr>
+<tr class="even">
+<td>ELSIA -</td>
+<td>40</td>
+<td>990056</td>
+</tr>
+</tbody>
+</table>
+<p>A positive predictive value using these numbers is:</p>
+<p><span class="math display">\[
+      \frac{(1960/2000)(2000/1000000)}{(1960/2000)(2000/1000000) + (784/998000)(998000/1000000)}
+\]</span></p>
+<p>For a positive predictive value of about 20%.</p>
+<p>We can see a couple of things here. First, Bayes Theorem works, and that’s certainly nice enough. Second, we can use Bayes theorem to derive probabilities for separate but related events, and that’s actually quite provocative. Third, some terms we use in epidemiology, like prevalence, may have different names, like <span class="math inline">\(Pr[D]\)</span> in other statistical traditions. That is only to be expected, but can pose an initial obstacle to understanding Bayesian statistics.</p>
+<p>This use of Bayesian analysis is well-accepted and uncontroversial. It’s been said a frequentist is someone who only uses Bayes Theorem sometimes. The controversy arises when extending these principles to general statistical analysis, where parameters are assigned probability distributions.</p>
+</section>
+<section id="example-student-sleep-habits" class="level3">
+<h3 class="anchored" data-anchor-id="example-student-sleep-habits">Example: Student Sleep Habits</h3>
+<p>As a first Bayesian analysis, <a href="http://bayes.bgsu.edu/bcwr/">Jim Albert</a> considers the proportion of college students who get more than 8 hours sleep. His intuition tells him it is about 30%. He surveyed one of his classes and found that 11 of 27 (47%) had slept more than 8 hours the night before. What would the Rev.&nbsp;Bayes say about this? That we need to update our prior assumptions in light of the data, and that we can calculate a new (posterior) probability distribution proportional to the product of our initial assumptions (prior) and the data (likelihood):</p>
+<p><span class="math display">\[
+posterior \; \propto \; prior \; * \; likelihood \\
+p(\theta | y) \propto p(\theta)*p(y | \theta)
+\]</span></p>
+<p>The data (our likelihood) is binomially distributed as <span class="math inline">\(\theta^k * (1-\theta)^{n-k}\)</span>, where <span class="math inline">\(\theta\)</span> is the probability of sleeping more than 8 hours, <span class="math inline">\(k\)</span> is the number of students who said they slept more than 8 hours, and <span class="math inline">\(n\)</span> is the number of students surveyed.</p>
+<p>The prior is a bit more difficult to nail down. Say we believe <span class="math inline">\(\theta\)</span> is somewhere between 0 and 50%, but mostly clustered around 30%. We’ll need to specify it a bit more precisely. There are a couple of ways to do that. We will most often define a continuous probability distribution to describe our prior assumptions, but in this first simple case, let’s take a so-called “discrete” approach. This involves writing a list of plausible values, weighting them by how probable we think they are, and then converting the weights to a probability distribution that sums to one by dividing through by the sum of the weights.</p>
+<ul>
+<li>plausible values for proportion of heavy sleepers (theta)
+<ul>
+<li>0.05, 0.15, 0.25, 0.35, 0.45, 0.55, 0.65, 0.75, 0.86, 0.95</li>
+</ul></li>
+<li>weights for those plausible values
+<ul>
+<li>0, 1, 2, 3, 4, 2, 1, 0, 0, 0</li>
+</ul></li>
+<li>convert to probabilities
+<ul>
+<li>0.00, 0.08, 0.15, 0.23, 0.31, 0.15, 0.08, 0.00, 0.00, 0.00</li>
+</ul></li>
+</ul>
+<p>To calculate the posterior, we multiply each value of the posterior by the likelihood of that value. The actual calculations involve log transformations and some other manipulations. Jim Albert’s “LearnBayes” package has a function called <em>pdisc()</em>, that makes the calculations relatively straightforward. Let’s load the package and find out a little about <em>pdisc()</em>.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode numberSource r numberLines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a><span class="fu">library</span>(LearnBayes)</span>
+<span id="cb2-2"><a href="#cb2-2"></a>?pdisc</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>First, we assign our likelihood data to an object called (appropriately enough) “data”. Then we create our prior and plot it.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode numberSource r numberLines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a>data<span class="ot">&lt;-</span><span class="fu">c</span>(<span class="dv">11</span>, <span class="dv">16</span>)  <span class="co"># number successes and failures</span></span>
+<span id="cb3-2"><a href="#cb3-2"></a></span>
+<span id="cb3-3"><a href="#cb3-3"></a>theta<span class="ot">&lt;-</span><span class="fu">seq</span>(<span class="fl">0.05</span>, <span class="fl">0.95</span>, <span class="at">by =</span> <span class="fl">0.1</span>)</span>
+<span id="cb3-4"><a href="#cb3-4"></a>weights<span class="ot">&lt;-</span><span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">2</span>, <span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">0</span>,<span class="dv">0</span>)</span>
+<span id="cb3-5"><a href="#cb3-5"></a>prior<span class="ot">&lt;-</span>weights<span class="sc">/</span><span class="fu">sum</span>(weights)</span>
+<span id="cb3-6"><a href="#cb3-6"></a><span class="fu">plot</span>(theta, prior, <span class="at">type=</span><span class="st">"h"</span>, <span class="at">ylab=</span><span class="st">"Prior Probability"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Now, we use the <em>pdisc()</em> function to calculate the posterior, and then print a table of the</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode numberSource r numberLines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a>post<span class="ot">&lt;-</span><span class="fu">pdisc</span>(theta, prior, data) </span>
+<span id="cb4-2"><a href="#cb4-2"></a><span class="fu">round</span>(<span class="fu">cbind</span>(theta, prior, post), <span class="dv">2</span>) </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>And now a little plot to see how our prior has changed or been updated in light of the data.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode numberSource r numberLines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a>par.old<span class="ot">&lt;-</span><span class="fu">par</span>()</span>
+<span id="cb5-2"><a href="#cb5-2"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">3</span>,<span class="dv">1</span>))</span>
+<span id="cb5-3"><a href="#cb5-3"></a><span class="fu">plot</span>(<span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">1</span>),<span class="fu">c</span>(<span class="dv">11</span><span class="sc">/</span>(<span class="dv">11</span><span class="sc">+</span><span class="dv">16</span>),<span class="dv">16</span><span class="sc">/</span>(<span class="dv">11</span><span class="sc">+</span><span class="dv">16</span>)),  <span class="at">type=</span><span class="st">"h"</span>, <span class="at">ylim=</span><span class="fu">c</span>(<span class="dv">0</span>,.<span class="dv">7</span>),  </span>
+<span id="cb5-4"><a href="#cb5-4"></a>                     <span class="at">lwd=</span><span class="dv">5</span>, <span class="at">main=</span><span class="st">"data"</span> )</span>
+<span id="cb5-5"><a href="#cb5-5"></a><span class="fu">plot</span>(theta, prior, <span class="at">type=</span><span class="st">"h"</span>, <span class="at">ylab=</span><span class="st">"Prior Probability"</span>, <span class="at">ylim=</span><span class="fu">c</span>(<span class="dv">0</span>,.<span class="dv">7</span>),  </span>
+<span id="cb5-6"><a href="#cb5-6"></a>                     <span class="at">lwd=</span><span class="dv">5</span>, <span class="at">main=</span><span class="st">"prior"</span>)</span>
+<span id="cb5-7"><a href="#cb5-7"></a><span class="fu">plot</span>(theta, post, <span class="at">type=</span><span class="st">"h"</span>, <span class="at">ylab=</span><span class="st">"Posterior Probability"</span>, <span class="at">ylim=</span><span class="fu">c</span>(<span class="dv">0</span>,.<span class="dv">7</span>),  </span>
+<span id="cb5-8"><a href="#cb5-8"></a>                     <span class="at">lwd=</span><span class="dv">5</span>, <span class="at">main=</span><span class="st">"posterior"</span>)</span>
+<span id="cb5-9"><a href="#cb5-9"></a><span class="fu">par</span>(par.old)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>This plot, from Jim Albert’s book, more clearly illustrates the prior and the posterior.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="bayes/bayes1/discretePrior.jpeg" class="img-fluid figure-img"></p>
+<figcaption>Discrete Prior to Discrete Posterior</figcaption>
+</figure>
+</div>
+<p>In the following sections we explore the process of updating our prior distribution for various kinds of parameters by combining it with evidence from a data likelihood to produce a posterior distribution.</p>
+</section>
+</section>
+</section>
+<section id="single-parameter-problems" class="level1">
+<h1>Single-Parameter Problems</h1>
+<p>As with most introductions to Bayesian analyses we begin with relatively simpler single parameter problems, like trying to estimate the single underlying proportion in a binomial problem, or the single underlying rate in a Poisson model, or (less realistically) the mean in a normal model where we already know the standard deviation. <a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a> These problems can be solved analytically, i.e.&nbsp;there are formulas to combine a prior with a likelihood to get at a reasonable specification for a posterior. We will explore how and why these analyses “work” in the following section on conjugate analyses, but for now will simply present some early examples.</p>
+<section id="single-parameter-binomial-example-race-and-promotion-at-a-state-agency" class="level2">
+<h2 class="anchored" data-anchor-id="single-parameter-binomial-example-race-and-promotion-at-a-state-agency">Single Parameter Binomial Example: Race and Promotion at a State Agency</h2>
+<p>In a state agency, 26 of 48 blacks or African Americans passed a test for promotion, compared to 206 of 259 White applicants. Proportions like these have a binomial data likelihood. If we have no previous evidence or information upon which to base a prior distribution, we may use a minimally or non-informative prior. In this case (for reasons that will be come clearer when we go through the discussion of conjugate analyses in the next section) a Beta distribution will work well. In this case we use a Beta(1,1) distribution which is flat on range from 0 to 1 and results in a non-informative uniform prior. The Beta(<span class="math inline">\(\alpha\)</span>, <span class="math inline">\(beta\)</span>) distribution is flexible, if <span class="math inline">\(\alpha\)</span> = <span class="math inline">\(beta\)</span>, it is uniform, if <span class="math inline">\(\alpha\)</span> <span class="math inline">\(beta\)</span>, humped to right, if <span class="math inline">\(\alpha\)</span> <span class="math inline">\(beta\)</span>, it is humped to the left. (See the section below on probability distributions.)</p>
+<p>We can combine the binomial likelihood with the Beta prior in simple analytic fashion: mathematically just add the Beta <span class="math inline">\(\alpha\)</span> parameter from the prior to the number of successes from the binomial data likelihood, then add the Beta <span class="math inline">\(\beta\)</span> parameter from the prior to the number of failures, which will results in a Beta(<span class="math inline">\(y+\alpha\)</span> , <span class="math inline">\(n-y+\betab\)</span>)) posterior. In this example then, the resulting posterior distribution for the Black applicants is Beta(27,23). We repeat this process for the data from White applicants for a Beta (207,54) posterior distribution. We then simulate or sample from these two distributions many times, and compare the two samples to draw inferences.</p>
+<p>Here is the code for this procedure:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode numberSource r numberLines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a>    <span class="co"># data </span></span>
+<span id="cb6-2"><a href="#cb6-2"></a>y.black <span class="ot">&lt;-</span> <span class="dv">26</span>; n.black <span class="ot">&lt;-</span> <span class="dv">48</span></span>
+<span id="cb6-3"><a href="#cb6-3"></a>y.white <span class="ot">&lt;-</span> <span class="dv">206</span>; n.white <span class="ot">&lt;-</span> <span class="dv">259</span></span>
+<span id="cb6-4"><a href="#cb6-4"></a></span>
+<span id="cb6-5"><a href="#cb6-5"></a>   <span class="co"># likelihood for black applicants</span></span>
+<span id="cb6-6"><a href="#cb6-6"></a>?rbinom</span>
+<span id="cb6-7"><a href="#cb6-7"></a>likelihood.black<span class="ot">&lt;-</span><span class="fu">rbinom</span>(<span class="dv">10000</span>, <span class="dv">48</span> ,(<span class="dv">26</span><span class="sc">/</span><span class="dv">48</span>))</span>
+<span id="cb6-8"><a href="#cb6-8"></a><span class="fu">plot</span>(<span class="fu">density</span>(likelihood.black))</span>
+<span id="cb6-9"><a href="#cb6-9"></a></span>
+<span id="cb6-10"><a href="#cb6-10"></a></span>
+<span id="cb6-11"><a href="#cb6-11"></a>   <span class="co">#  Beta(1,1) prior</span></span>
+<span id="cb6-12"><a href="#cb6-12"></a>?rbeta</span>
+<span id="cb6-13"><a href="#cb6-13"></a>prior<span class="ot">&lt;-</span> <span class="fu">rbeta</span>(<span class="dv">10000</span>,<span class="dv">1</span>,<span class="dv">1</span>)   </span>
+<span id="cb6-14"><a href="#cb6-14"></a><span class="fu">plot</span>(<span class="fu">density</span>(prior))</span>
+<span id="cb6-15"><a href="#cb6-15"></a></span>
+<span id="cb6-16"><a href="#cb6-16"></a></span>
+<span id="cb6-17"><a href="#cb6-17"></a>  <span class="co"># posterior from updated uniform Beta(1,1) by adding 1 to number </span></span>
+<span id="cb6-18"><a href="#cb6-18"></a>  <span class="co"># of successes and 1 to number of failures</span></span>
+<span id="cb6-19"><a href="#cb6-19"></a>  <span class="co"># 10000 simulation for blacks and whites</span></span>
+<span id="cb6-20"><a href="#cb6-20"></a></span>
+<span id="cb6-21"><a href="#cb6-21"></a>theta.black <span class="ot">&lt;-</span> <span class="fu">rbeta</span>(<span class="dv">10000</span>,y.black<span class="sc">+</span><span class="dv">1</span>,n.black<span class="sc">-</span>y.black<span class="sc">+</span><span class="dv">1</span>)</span>
+<span id="cb6-22"><a href="#cb6-22"></a>theta.white <span class="ot">&lt;-</span> <span class="fu">rbeta</span>(<span class="dv">10000</span>,y.white<span class="sc">+</span><span class="dv">1</span>,n.white<span class="sc">-</span>y.white<span class="sc">+</span><span class="dv">1</span>)</span>
+<span id="cb6-23"><a href="#cb6-23"></a>   </span>
+<span id="cb6-24"><a href="#cb6-24"></a>   <span class="co"># plot densities</span></span>
+<span id="cb6-25"><a href="#cb6-25"></a>old.par<span class="ot">&lt;-</span><span class="fu">par</span>()</span>
+<span id="cb6-26"><a href="#cb6-26"></a></span>
+<span id="cb6-27"><a href="#cb6-27"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">1</span>))</span>
+<span id="cb6-28"><a href="#cb6-28"></a><span class="fu">plot</span>(<span class="fu">density</span>(theta.black), <span class="at">xlim=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">1</span>), <span class="at">main=</span><span class="st">"probability blacks passing"</span>)</span>
+<span id="cb6-29"><a href="#cb6-29"></a><span class="fu">plot</span>(<span class="fu">density</span>(theta.white),  <span class="at">col=</span><span class="st">"red"</span>, <span class="at">xlim=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">1</span>), <span class="at">main=</span><span class="st">"probability </span></span>
+<span id="cb6-30"><a href="#cb6-30"></a><span class="st">                                              whites passing"</span>)</span>
+<span id="cb6-31"><a href="#cb6-31"></a></span>
+<span id="cb6-32"><a href="#cb6-32"></a>   <span class="co"># plot histograms</span></span>
+<span id="cb6-33"><a href="#cb6-33"></a>mintheta <span class="ot">&lt;-</span> <span class="fu">min</span>(theta.black,theta.white)</span>
+<span id="cb6-34"><a href="#cb6-34"></a>maxtheta <span class="ot">&lt;-</span> <span class="fu">max</span>(theta.black,theta.white)</span>
+<span id="cb6-35"><a href="#cb6-35"></a></span>
+<span id="cb6-36"><a href="#cb6-36"></a><span class="fu">hist</span>(theta.black,<span class="at">col=</span><span class="st">"gray"</span>,<span class="at">xlim=</span><span class="fu">c</span>(mintheta,maxtheta))</span>
+<span id="cb6-37"><a href="#cb6-37"></a><span class="fu">hist</span>(theta.white,<span class="at">col=</span><span class="st">"gray"</span>,<span class="at">xlim=</span><span class="fu">c</span>(mintheta,maxtheta))</span>
+<span id="cb6-38"><a href="#cb6-38"></a></span>
+<span id="cb6-39"><a href="#cb6-39"></a><span class="fu">par</span>(old.par)</span>
+<span id="cb6-40"><a href="#cb6-40"></a>  <span class="co"># compute posterior probability blacks scoring less than whites</span></span>
+<span id="cb6-41"><a href="#cb6-41"></a>  <span class="co"># proportion times in 10000 simulations blacks scored less than whites</span></span>
+<span id="cb6-42"><a href="#cb6-42"></a>(prob <span class="ot">&lt;-</span> <span class="fu">sum</span>(theta.black <span class="sc">&lt;=</span> theta.white)<span class="sc">/</span><span class="dv">10000</span>)</span>
+<span id="cb6-43"><a href="#cb6-43"></a>  <span class="co"># essentially 100%</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>We can extend this model to predict how many African American applicants from among 100 future applicants would be expected to pass this test. Again, in addition to the variation in the data (the likelihood) we will add the variation in the underlying parameter (<span class="math inline">\(\theta\)</span>) The process involves 1)sample a large number (10000) of <span class="math inline">\(\theta\)</span>’s from the Beta(27,23) posterior, then 2)for each of those values of <span class="math inline">\(\theta_i\)</span>, sample a single y* from Binomial(100, <span class="math inline">\(\theta_i\)</span>). By contrast, a classical approach might be a parametric bootstrap, sampling y* from Binomial(100, <span class="math inline">\(\theta\)</span>) from single value of <span class="math inline">\(\theta\)</span></p>
+<p>A couple of points about the prior in this analysis. First, note that the uniform Beta(1,1) prior subtly pulls the posterior estimate to the middle. We will see that this kind of compromise between the data and the prior is one of the defining characteristics of Bayesian analysis. The influence of the prior, in fact, allows us to draw some conclusions in sparse data settings when classical approaches are not possible. For example, say there are zero outcomes in some sample. In the classical framework, the CI of 1.96 plus minus <span class="math inline">\(\sqrt{pq/n}\)</span> collapses to 0 plus or minus 0. The Bayesian approach allows some estimation, e.g we can apply an uninformative Beta(1,1) to a Binomial (0, 25) likelihood to arrive at a Beta(1,26) posterior. With the <span class="math inline">\(\alpha\)</span> term so much less than the <span class="math inline">\(\beta\)</span> term we would expect almost all the probability to be humped up on the left side of the curve near zero. But it does return a result.</p>
+<p>Second, while a uniform or flat prior on 0 to 1 is indeed only minimally informative, and makes sense in this binomial setting, it might not in other settings. Consider, for example, a normal prior for the mean of a normally distributed likelihood. A flat prior would go from minus infinity to plus infinity. Do we really know so little about the mean that we think it can be anything at all? Ranging infinitely? As a general rule, you should evaluate the sensitivity of your results to your prior specification. For small data sets (say 5 or six observations) the choice of prior will invariable be influential. For more reasonably-sized data sets,the results will be more robust, but you should still look at how they behave for different specification of a prior.</p>
+<p>In the 1950’s Sir Harold Jeffreys described an approach or general scheme for selecting minimally informative priors that now bears his name. It involves setting the prior equal to the square root of the expected Fisher information (you can see the details <a href="http://en.wikipedia.org/wiki/Jeffreys_prior">here</a>). The Jeffreys prior for binomial data is Beta(0.5,0.5) for <span class="math inline">\(\theta\)</span></p>
+</section>
+<section id="single-parameter-binomial-example-perchlorate-and-thyroid-tumors" class="level2">
+<h2 class="anchored" data-anchor-id="single-parameter-binomial-example-perchlorate-and-thyroid-tumors">Single Parameter Binomial Example: Perchlorate and Thyroid Tumors</h2>
+<p>Let’s look at another single parameter binomial problem as a motivating example. In this case we’ll look at little more closely at how in the setting of sparse data, a Bayesian approach can help us draw inferences when a classical approach might not, and how a more informative prior could help us advance and update our thinking about a problem . This data for this example comes from an online presentation by <a href="http://www.niehs.nih.gov/about/visiting/events/pastmtg/assets/docs_a_b/bayesser07pdf.pdf">David Dunson</a> at the US National Institute for Environmental Health Sciences.</p>
+<p>Percholorate is a ground water contaminant that has been associated with thyroid tumors. In a study, 2 of 30 lab rats exposed to perchlorate developed thyroid tumors, compared to 0 of 30 control rats. What conclusions can be draw? Given the small numbers, a first reasonable approach in the classical framework might be a Fisher’s exact test.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode numberSource r numberLines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a>(rat.dat<span class="ot">&lt;-</span><span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">0</span>,<span class="dv">28</span>,<span class="dv">30</span>), <span class="at">nrow =</span> <span class="dv">2</span>))</span>
+<span id="cb7-2"><a href="#cb7-2"></a><span class="fu">fisher.test</span>(rat.dat)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>The p-value is 0.49, indicating no association, but as noted above, because of the zero value, the confidence interval collapses to infinity. What can we learn from a Bayesian approach? Let’s repeat our approach to binomial data from above</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode numberSource r numberLines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a>  <span class="co"># data</span></span>
+<span id="cb8-2"><a href="#cb8-2"></a>y.perchlorate <span class="ot">&lt;-</span> <span class="dv">2</span>; n.perchlorate <span class="ot">&lt;-</span> <span class="dv">30</span></span>
+<span id="cb8-3"><a href="#cb8-3"></a>y.control <span class="ot">&lt;-</span> <span class="dv">0</span>; n.control<span class="ot">&lt;-</span> <span class="dv">30</span></span>
+<span id="cb8-4"><a href="#cb8-4"></a>  <span class="co"># update Beta(1,1) prior for exposed and unexposed</span></span>
+<span id="cb8-5"><a href="#cb8-5"></a>theta.perchlorate <span class="ot">&lt;-</span> <span class="fu">rbeta</span>(<span class="dv">10000</span>,y.perchlorate<span class="sc">+</span><span class="dv">1</span>,n.perchlorate<span class="sc">-</span>y.perchlorate<span class="sc">+</span><span class="dv">1</span>)</span>
+<span id="cb8-6"><a href="#cb8-6"></a>theta.control <span class="ot">&lt;-</span> <span class="fu">rbeta</span>(<span class="dv">10000</span>,y.control<span class="sc">+</span><span class="dv">1</span>,n.control<span class="sc">-</span>y.control<span class="sc">+</span><span class="dv">1</span>)</span>
+<span id="cb8-7"><a href="#cb8-7"></a>  <span class="co"># graphically compare exposed and unexposed</span></span>
+<span id="cb8-8"><a href="#cb8-8"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">1</span>))</span>
+<span id="cb8-9"><a href="#cb8-9"></a><span class="fu">plot</span>(<span class="fu">density</span>(theta.perchlorate), <span class="at">xlim=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">1</span>), <span class="at">main=</span><span class="st">"probability of tumor </span></span>
+<span id="cb8-10"><a href="#cb8-10"></a><span class="st">                                             in exposed rats"</span>)</span>
+<span id="cb8-11"><a href="#cb8-11"></a><span class="fu">plot</span>(<span class="fu">density</span>(theta.control),  <span class="at">col=</span><span class="st">"red"</span>, <span class="at">xlim=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">1</span>), <span class="at">main=</span><span class="st">"probability of </span></span>
+<span id="cb8-12"><a href="#cb8-12"></a><span class="st">                                        tumor in control rats"</span>)</span>
+<span id="cb8-13"><a href="#cb8-13"></a>  <span class="co"># probability that exposed have more tumors than unexposed</span></span>
+<span id="cb8-14"><a href="#cb8-14"></a><span class="fu">sum</span>(theta.perchlorate <span class="sc">&gt;=</span> theta.control)<span class="sc">/</span><span class="dv">10000</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>We find that the Beta(1,1) prior exerts considerable influence on these analyses. In fact, we can interpret it as corresponding to having as much information as two observations, one with the outcome, and one without. In this case, adding that information indicates that in 87% of the simulations, perchlorate exposed rats developed more thyroid tumors than control rats. This is a very different conclusion than from the classical analysis. Let’s go a bit further. What is the difference in the number of tumors between these two groups of rats? In a Bayesian framework it is as simple as subtracting one set of simulations from the other and examining the resulting distribution.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode numberSource r numberLines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a>theta.diff<span class="ot">&lt;-</span>theta.perchlorate<span class="sc">-</span>theta.control</span>
+<span id="cb9-2"><a href="#cb9-2"></a>  <span class="co"># 95% credible interval</span></span>
+<span id="cb9-3"><a href="#cb9-3"></a><span class="fu">quantile</span>(theta.diff, <span class="at">probs=</span><span class="fu">c</span>(<span class="fl">0.05</span>,<span class="fl">0.95</span>))</span>
+<span id="cb9-4"><a href="#cb9-4"></a>  <span class="co"># plot differences</span></span>
+<span id="cb9-5"><a href="#cb9-5"></a><span class="fu">plot</span>(<span class="fu">density</span>(theta.diff))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>We see that now, as opposed to the classical approach, we can calculate a 95% interval for the difference in tumors between the two groups of rats. It includes zero, so it is consistent with the non-significant classical p-value from the Fisher’s exact test. But we also see that the majority of the probability lies above zero, which reflects our probability calculation above. It is reasonable to continue to be concerned about the association of perchlorate with tumors.</p>
+<p>An additional advantage of a Bayesian approach can be seen if we have some real prior evidence or belief about the putative association of perchlorate and thyroid tumors. It would be reasonable to assume that we do. Why else would we be doing this experiment in the first place? Dr.&nbsp;Dunson, in his presentation, suggests a Beta(0.11, 2.6) as representing previous experimental evidence. Let’s use that prior, and combine it with our data to update the posterior.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode numberSource r numberLines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1"></a>theta.perchlorate <span class="ot">&lt;-</span> <span class="fu">rbeta</span>(<span class="dv">10000</span>,y.perchlorate<span class="fl">+.11</span>,</span>
+<span id="cb10-2"><a href="#cb10-2"></a>                        n.perchlorate<span class="sc">-</span>y.perchlorate<span class="fl">+2.6</span>)</span>
+<span id="cb10-3"><a href="#cb10-3"></a>theta.control <span class="ot">&lt;-</span> <span class="fu">rbeta</span>(<span class="dv">10000</span>,y.control<span class="fl">+.11</span>,n.control<span class="sc">-</span>y.control<span class="fl">+2.6</span>)</span>
+<span id="cb10-4"><a href="#cb10-4"></a>theta.diff<span class="ot">&lt;-</span>theta.perchlorate<span class="sc">-</span>theta.control</span>
+<span id="cb10-5"><a href="#cb10-5"></a><span class="fu">quantile</span>(theta.diff, <span class="at">probs=</span><span class="fu">c</span>(<span class="fl">0.05</span>,<span class="fl">0.95</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>And, in fact, taking what we know about the topic into account, pushes our 95% interval for the difference between the exposed and unexposed rats out of the range of zero.</p>
+</section>
+<section id="single-parameter-poisson-example-airline-crashes" class="level2">
+<h2 class="anchored" data-anchor-id="single-parameter-poisson-example-airline-crashes">Single-Parameter Poisson Example: Airline Crashes</h2>
+<p>As in the case of a binomial data likelihood combined with a Beta prior distribution, there is a relatively straightforward (at least when you see the end result…) analytic solution to the setting when there is a Poisson likelihood of count data. It turns out that a Poisson data likelihood combines nicely with a Gamma prior to produce a Gamma posterior.</p>
+<p>This example again comes from Dr.&nbsp;Shane Jensen. Consider the count of airline crashes per year over a 10-year period form 1976 to 1985: <span class="math inline">\(y = (24, 25, 31, 31, 22, 21, 26, 20, 16, 22)\)</span>. Note that now, as opposed to the setting of binomial data, which are the number of events or “successes” that occur out of some total number of opportunities, we don’t have the underlying number of opportunities. <a href="#fn6" class="footnote-ref" id="fnref6" role="doc-noteref"><sup>6</sup></a>. What we do have, is 10 realizations of a poisson process with some underlying rate that (importantly) does not change over those 10 realizations. the results are interpreted as the rate of crashes. (We’ll address the issue of whether it is reasonable to assume an unchanging rate over time shortly.)</p>
+<p>Each year of data is distributed as <span class="math inline">\(p(y_i|\theta) \theta^{y_i}e^{-\theta}/ y_i!\)</span>. We multiply the probability of each year of data to get likelihood of the data: <span class="math inline">\(p(y|\theta)=\theta ^{\Sigma y_i}e^{n\theta}/\Pi y_i!\)</span>. An analytically convenient prior is the Gamma distribution, which is also a series of realizations on the positive real line and (more importantly) has the same functional form as Poisson does (<span class="math inline">\(\theta^{\alpha - 1} e^{-beta  * \theta}\)</span>). You can, roughly, think of this analytic convenience as due to the two distributions looking similar to each other. The analytic solution for the posterior distribution when we have a Poisson data likelihood and a Gamma prior is <span class="math inline">\(Gamma(y_i + \alpha, n + \beta)\)</span></p>
+<p>Again, as in the binomial case, we can interpret the influence of the Gamma prior parameters <span class="math inline">\(\alpha\)</span> and <span class="math inline">\(\beta\)</span> in terms of our data. Here, <span class="math inline">\(n\)</span> is number of years of data, so can think of the <span class="math inline">\(\beta\)</span> term as the “number of years of data” that we believe our prior is worth, and <span class="math inline">\(\alpha\)</span> is the number of outcomes we believe our prior is worth. The mean of the Gamma is <span class="math inline">\(a/b\)</span>, so the mean of the posterior is <span class="math inline">\(\frac{y_i + \alpha}{n + \beta}\)</span> and we can again see the resulting prior as a compromise between our data and the prior. The minimally informative Jeffrey’s prior for this setting is Gamma(0.5,0), which is improper, so we use Gamma(0.5,0.0001). Here is some code to run this example.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode numberSource r numberLines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a>   <span class="co"># data</span></span>
+<span id="cb11-2"><a href="#cb11-2"></a></span>
+<span id="cb11-3"><a href="#cb11-3"></a>years <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1976</span>,<span class="dv">1977</span>,<span class="dv">1978</span>,<span class="dv">1979</span>,<span class="dv">1980</span>,<span class="dv">1981</span>,<span class="dv">1982</span>,<span class="dv">1983</span>,<span class="dv">1984</span>,<span class="dv">1985</span>)</span>
+<span id="cb11-4"><a href="#cb11-4"></a>crashes <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">24</span>,<span class="dv">25</span>,<span class="dv">31</span>,<span class="dv">31</span>,<span class="dv">22</span>,<span class="dv">21</span>,<span class="dv">26</span>,<span class="dv">20</span>,<span class="dv">16</span>,<span class="dv">22</span>)</span>
+<span id="cb11-5"><a href="#cb11-5"></a>numyears <span class="ot">&lt;-</span> <span class="fu">length</span>(years)</span>
+<span id="cb11-6"><a href="#cb11-6"></a>sumcrashes <span class="ot">&lt;-</span> <span class="fu">sum</span>(crashes)</span>
+<span id="cb11-7"><a href="#cb11-7"></a></span>
+<span id="cb11-8"><a href="#cb11-8"></a>  <span class="co"># posterior from updated non informative (Jeffrey) prior</span></span>
+<span id="cb11-9"><a href="#cb11-9"></a>  theta <span class="ot">&lt;-</span> <span class="fu">rgamma</span>(<span class="dv">10000</span>,<span class="at">shape=</span>(sumcrashes<span class="fl">+0.5</span>),<span class="at">rate=</span>(numyears<span class="fl">+0.0001</span>))</span>
+<span id="cb11-10"><a href="#cb11-10"></a><span class="fu">plot</span>(<span class="fu">density</span>(theta))</span>
+<span id="cb11-11"><a href="#cb11-11"></a></span>
+<span id="cb11-12"><a href="#cb11-12"></a>   <span class="co"># posterior predictive distribution for crashes in next year</span></span>
+<span id="cb11-13"><a href="#cb11-13"></a></span>
+<span id="cb11-14"><a href="#cb11-14"></a>y.star <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="cn">NA</span>,<span class="dv">10000</span>) <span class="co"># vector to hold simulations</span></span>
+<span id="cb11-15"><a href="#cb11-15"></a></span>
+<span id="cb11-16"><a href="#cb11-16"></a>   <span class="co"># sample one observation from the posterior distribution</span></span>
+<span id="cb11-17"><a href="#cb11-17"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">10000</span>){</span>
+<span id="cb11-18"><a href="#cb11-18"></a>    y.star[i] <span class="ot">&lt;-</span> <span class="fu">rpois</span>(<span class="dv">1</span>,theta[i])</span>
+<span id="cb11-19"><a href="#cb11-19"></a>}</span>
+<span id="cb11-20"><a href="#cb11-20"></a></span>
+<span id="cb11-21"><a href="#cb11-21"></a>  <span class="co"># plot histograms for data, posterior and posterior predictive on same scale</span></span>
+<span id="cb11-22"><a href="#cb11-22"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">3</span>,<span class="dv">1</span>))</span>
+<span id="cb11-23"><a href="#cb11-23"></a><span class="fu">hist</span>(crashes,<span class="at">col=</span><span class="st">"gray"</span>,<span class="at">xlim=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">50</span>),<span class="at">breaks=</span><span class="dv">10</span>)</span>
+<span id="cb11-24"><a href="#cb11-24"></a><span class="fu">hist</span>(theta,<span class="at">col=</span><span class="st">"gray"</span>,<span class="at">xlim=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">50</span>))</span>
+<span id="cb11-25"><a href="#cb11-25"></a><span class="fu">hist</span>(y.star,<span class="at">col=</span><span class="st">"gray"</span>,<span class="at">xlim=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">50</span>))</span>
+<span id="cb11-26"><a href="#cb11-26"></a></span>
+<span id="cb11-27"><a href="#cb11-27"></a>posterior distribution vs. the posterior predictive distribution</span>
+<span id="cb11-28"><a href="#cb11-28"></a><span class="fu">mean</span>(theta)</span>
+<span id="cb11-29"><a href="#cb11-29"></a><span class="fu">quantile</span>(theta, <span class="at">probs=</span><span class="fu">c</span>(<span class="fl">0.05</span>,<span class="fl">0.95</span>))</span>
+<span id="cb11-30"><a href="#cb11-30"></a><span class="fu">mean</span>(y.star)</span>
+<span id="cb11-31"><a href="#cb11-31"></a><span class="fu">quantile</span>(y.star, <span class="at">probs=</span><span class="fu">c</span>(<span class="fl">0.05</span>,<span class="fl">0.95</span>))</span>
+<span id="cb11-32"><a href="#cb11-32"></a></span>
+<span id="cb11-33"><a href="#cb11-33"></a><span class="fu">sum</span>(theta<span class="sc">&gt;</span><span class="dv">30</span>)<span class="sc">/</span><span class="dv">10000</span></span>
+<span id="cb11-34"><a href="#cb11-34"></a><span class="fu">sum</span>(y.star<span class="sc">&gt;</span><span class="dv">30</span>)<span class="sc">/</span><span class="dv">10000</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>We are extending the approach to simulate the <em>posterior predictive distribution</em>. Recall, that this includes both the variation in the data and the variation in the rate parameter. (As opposed to classical predictions that include only the variation in the data.) We can see both graphically an in the 95% probability intervals how much more variation goes into the posterior predictive. We can also see that there is a 10% probability that crashes in the following year will exceed 30.</p>
+</section>
+<section id="single-parameter-normal-model" class="level2">
+<h2 class="anchored" data-anchor-id="single-parameter-normal-model">Single-Parameter Normal Model</h2>
+<p>As we saw above, a single parameter version of the normal model exists, though it doesn’t make a lot of practical sense because it assumes we don’t know the mean, but somehow do know the variance. The most analytically tractable prior distribution for a normal data likelihood turn out to be, in fact, the normal distribution itself. <a href="#fn7" class="footnote-ref" id="fnref7" role="doc-noteref"><sup>7</sup></a> The resulting posterior is also normal.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="bayes/bayes1/nlPosterior.jpg" class="img-fluid figure-img"></p>
+<figcaption>Posterior Distribution for Normal Mean (<span class="math inline">\(\alpha\)</span> = prior mean, <span class="math inline">\(\mu_0\)</span>)</figcaption>
+</figure>
+</div>
+<p>Again, can see that a small value of <span class="math inline">\(\tau\)</span> up weights the prior value for the mean (<span class="math inline">\(\mu_0\)</span>). Alternatively as data accumulate and <span class="math inline">\(n\)</span> increases, the posterior has to move toward the data likelihood. The posterior in the normal setting, then, is “controlled” by 3 things: how noisy the data are, confidence in our prior (<span class="math inline">\(\tau\)</span>), and how much data we have (<span class="math inline">\(n\)</span>). We have 2 main ways of making the data more influential: get more data, or make <span class="math inline">\(\tau\)</span> much bigger. A normal prior with infinite variance approaches a flat distribution as its limit, and is, in fact, the Jeffreys prior for the normal setting, though it is improper, and (again) infinite variance may not make much sense. We also note that by setting <span class="math inline">\(\tau\)</span> to infinity, posterior ends up being <span class="math inline">\(\sim Normal(\hat{y}, \sigma^2/n)\)</span> which is, in fact, what we see in classical statistics as result of MLE (e.g.&nbsp;CI $ +1.96* / $)</p>
+<p>And, again, when making predictions, the classical approach would involve a calculation for a single <span class="math inline">\(\bar{y}\)</span> with variability, a Bayesian would put in additional variability from choice of potential <span class="math inline">\(\bar{y_i}\)</span>.</p>
+</section>
+</section>
+<section id="conjugate-analyses" class="level1">
+<h1>Conjugate Analyses</h1>
+<p>In the previous section we spent time working with what are termed conjugate priors. In this section we’ll further explore and expand those types of Bayesian analysis, which are useful in their right, but also introduce important concepts underlying the Bayesian framework.</p>
+<p>Conjugacy refers to a statistical relationship between probability distributions, in this case the prior distribution, the likelihood and the posterior distribution. A prior is said to be conjugate to a likelihood if both the prior and the likelihood are in the same statistical “family” or class of parametric densities. Combining a conjugate prior and likelihood results in a posterior that is the same type of distribution as the prior. We have already seen that a beta prior distribution combines with a binomial likelihood to produce an updated beta posterior. Also, that a gamma prior is conjugate to a Poisson likelihood and results in a gamma posterior. The last class of conjugacy (which we haven’t yet explored) is the combination of a normal prior with a normal likelihood for a normal posterior.</p>
+<p>In the simplest cases of one, or perhaps two, parameters, we can combine conjugate priors and likelihoods analytically. We have already seen how simple it is to update a beta or gamma prior by adding terms to the specification of the likelihood. For relatively simple problems, this might be all that we need. But we will quickly run into problems with more realistic situations for which there are no simple analytic solutions. In those situations (which we will explore in future sections) we will have to rely on computational approaches that involve sampling from the proposed posterior distribution. This sampling may be simple, or more complex involving concepts like Markov Chain Monte Carlo using Metropolis-Hastings or Gibbs sampling.</p>
+<p>For now, we will use the relatively simpler setting of conjugate analysis to introduce some tools and concepts we will use for more complex future analyses.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 22%">
+<col style="width: 22%">
+<col style="width: 29%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Likelihood</th>
+<th>Prior</th>
+<th>Posterior</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Normal</td>
+<td>Normal</td>
+<td>Normal</td>
+</tr>
+<tr class="even">
+<td>Binomial</td>
+<td>Beta</td>
+<td>Beta</td>
+</tr>
+<tr class="odd">
+<td>Poisson</td>
+<td>Gamma</td>
+<td>Gamma</td>
+</tr>
+</tbody>
+</table>
+<p>Conjugate priors are mathematically convenient, but don’t exist for all likelihoods. Computations for non-conjugate priors are at best difficult and at worst intractable. The advent of MCMC, i.e BUGS, removed these restrictions. It is still, though, useful and appropriate to have some knowledge of conjugate analyses if only because most MCMC software still uses them when available and appropriate, to speed up analyses.</p>
+<p>##Conjugate Analysis of Binomial Data ##</p>
+<p>A lot of epidemiology involves binomial data such as proportions and risk estimates, so we begin with and spend some additional time on the topic. The data likelihood (<span class="math inline">\(Pr(y | \theta)\)</span>) for binomially distributed data is described as <em>k</em> “successes” or responses out of <em>n</em> trials or observations. The binomial probability distribution is <span class="math inline">\(\binom{n}{k} p^k q^{n-k}\)</span> where <span class="math inline">\(p\)</span> is the probability of the event occurring in a single trial, <span class="math inline">\(q\)</span> is the probability of the event not occurring (<span class="math inline">\(1-p\)</span> by the complement rule) and <span class="math inline">\(\binom{n}{k}\)</span> is the binomial expansion ’’n choose k” the formula for which is: <span class="math inline">\(\frac{n!}{k!(n-k)!}\)</span> <a href="#fn8" class="footnote-ref" id="fnref8" role="doc-noteref"><sup>8</sup></a></p>
+<p>In this example, then, <span class="math inline">\(q\)</span> is the parameter <span class="math inline">\(\theta\)</span> in which we are interested. Our prior distribution (<span class="math inline">\(Pr(\theta)\)</span>) describes how we think <span class="math inline">\(\theta\)</span> varies, or the values <span class="math inline">\(\theta\)</span> may take and how likely they are. If we think <em>all</em> values of <span class="math inline">\(\theta\)</span> are equally likely, we can use a uniform prior, which, as we have seen, we can achieve with a <span class="math inline">\(\sim Beta(1,1)\)</span>. By Bayes’ Theorem, the posterior distribution which combines our prior and our likelihood is:</p>
+<p><span class="math display">\[
+Pr(\theta|y) = Pr(\theta | k, n) \propto  (\theta^k)(1-\theta)^{n-k}*1
+\]</span></p>
+<p>It turns out that with a <span class="math inline">\(\sim Beta(a,b)\)</span> prior, the posterior is also a Beta distribution:</p>
+<p><span class="math display">\[
+Beta(a+k,b+n-k)
+\]</span></p>
+<p>Which in this case is</p>
+<p><span class="math display">\[
+\sim Beta(1+k, 1+n-k)
+\]</span></p>
+<p>We can use this distribution to assess the outcome in terms of means, medians and probability intervals.<a href="#fn9" class="footnote-ref" id="fnref9" role="doc-noteref"><sup>9</sup></a></p>
+<section id="binomial-example-drug-response" class="level3">
+<h3 class="anchored" data-anchor-id="binomial-example-drug-response">Binomial Example: Drug Response</h3>
+<p>Say we are interested in the response of patients to a drug. We believe somewhere between 0.2 and 0.6 of patients will respond, with a mean of 0.4 and a sd=0.1. In a study of 20 persons, what is the probability that 15 will respond? A Beta(9.2, 13.8) distribution will fit these parameters (we will see where this came from in a moment).</p>
+<p>It is straightforward to code this up in R. We start by running 1,000 simulations for the parameter using the <em>rbeta()</em> function, then feeding those simulations to a the <em>rbinom()</em> function to create a set of examples. We then plot the density and calculate the probability of a result greater than 15 successes.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="sourceCode numberSource r numberLines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1"></a>    N<span class="ot">=</span><span class="dv">1000</span></span>
+<span id="cb12-2"><a href="#cb12-2"></a>    theta<span class="ot">&lt;-</span><span class="fu">rbeta</span>(N,<span class="fl">9.2</span>,<span class="fl">13.8</span>)</span>
+<span id="cb12-3"><a href="#cb12-3"></a>    x<span class="ot">&lt;-</span><span class="fu">rbinom</span>(N,<span class="dv">20</span>, theta)</span>
+<span id="cb12-4"><a href="#cb12-4"></a>    y<span class="ot">&lt;-</span><span class="dv">0</span></span>
+<span id="cb12-5"><a href="#cb12-5"></a>    accept<span class="ot">&lt;-</span><span class="fu">ifelse</span>(x<span class="sc">&gt;</span><span class="fl">14.5</span>, y<span class="sc">+</span><span class="dv">1</span>, y<span class="sc">+</span><span class="dv">0</span>)</span>
+<span id="cb12-6"><a href="#cb12-6"></a>    <span class="fu">plot</span>(<span class="fu">density</span>(accept))</span>
+<span id="cb12-7"><a href="#cb12-7"></a>    (prob<span class="ot">&lt;-</span><span class="fu">sum</span>(accept)<span class="sc">/</span>N)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>As a an aside, we will soon be running models in programs like WinBUGS and JAGS. As a quick preview, here is what the model code would look like in one of those programs:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="sourceCode numberSource r numberLines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1"></a>   <span class="co">#binomial monte carlo</span></span>
+<span id="cb13-2"><a href="#cb13-2"></a>Model{</span>
+<span id="cb13-3"><a href="#cb13-3"></a>y<span class="sc">~</span><span class="fu">dbin</span>(theta , <span class="dv">20</span>)         <span class="co">#sampling distribution</span></span>
+<span id="cb13-4"><a href="#cb13-4"></a>theta <span class="sc">~</span> <span class="fu">dbeta</span> (<span class="fl">9.2</span>, <span class="fl">13.8</span>)  <span class="co">#parameter from sampling distribution</span></span>
+<span id="cb13-5"><a href="#cb13-5"></a>p.crit <span class="ot">&lt;-</span> <span class="fu">step</span>(y<span class="fl">-14.5</span>)     <span class="co"># indicator variable, 1 if y&gt;=15, 0 otherwise</span></span>
+<span id="cb13-6"><a href="#cb13-6"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>However we run the simulation, the probability is about 1.5%. Note that this answer is pure simulation or Monte Carlo, we have not (yet) included any data. We are simply drawing random samples from a distribution. Suppose that we enroll and treat 20 volunteers and 15 of them respond to the treatment? Let’s use a conjugate analysis to determine how our prior is updated to a posterior probability of the the effectiveness of the drug given these data.</p>
+<section id="analysis-with-data-for-the-likelihood" class="level4">
+<h4 class="anchored" data-anchor-id="analysis-with-data-for-the-likelihood">Analysis With Data for the Likelihood</h4>
+<p>Our prior probability is still a Beta (9.2, 13.8) density. But now that we have data, we have a likelihood. Here, the binomial probability of observing 15 successes in 20 trials. Using the conjugate approach, we update the Beta(9.2, 13.8) to a Beta (9.2+15, 13.8+20-15) = Beta (24.2, 18.8) which has a <span class="math inline">\(\mu\)</span> =24.2/24.2+18.8 = 0.56. Basically, we are taking the Beta (9.2, 13.8) probability distribution, combining it with the Binomial likelihood probability distribution of observing 15 success in 20 trials and coming up with a new, updated, Beta distribution as our posterior. We have already seen this kind of analysis when considering the proportion of African American applicants who succeeded on a promotion test, and when looking at the proportion of lab rats that developed thyroid tumors when exposed to a toxin.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="sourceCode numberSource r numberLines code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1"></a>theta.drug<span class="ot">&lt;-</span><span class="fu">rbeta</span>(<span class="dv">10000</span>, <span class="fl">24.2</span>, <span class="fl">18.8</span>)</span>
+<span id="cb14-2"><a href="#cb14-2"></a><span class="fu">mean</span>(theta.drug) <span class="co"># check mean close to analytic</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Now, suppose we are considering further development of the drug. We decide that if we see at least 25 further successes out of 40 additional patients we will continue funding drug development. How likely it be to observe 25 successes in another 40 patients? Let’s predict by by using the posterior distribution as the prior.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15"><pre class="sourceCode numberSource r numberLines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1"></a>x<span class="ot">&lt;-</span><span class="fu">rbinom</span>(N,<span class="dv">40</span>, theta.drug)</span>
+<span id="cb15-2"><a href="#cb15-2"></a>y<span class="ot">&lt;-</span><span class="dv">0</span></span>
+<span id="cb15-3"><a href="#cb15-3"></a>accept<span class="ot">&lt;-</span><span class="fu">ifelse</span>(x<span class="sc">&gt;</span><span class="fl">24.5</span>, y<span class="sc">+</span><span class="dv">1</span>, y<span class="sc">+</span><span class="dv">0</span>)</span>
+<span id="cb15-4"><a href="#cb15-4"></a>prob<span class="ot">&lt;-</span><span class="fu">sum</span>(accept)<span class="sc">/</span>N</span>
+<span id="cb15-5"><a href="#cb15-5"></a>prob</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>The probability for <span class="math inline">\(k&gt;25\)</span> is about 33%.</p>
+</section>
+<section id="sneak-peak-at-running-an-mcmc-model" class="level4">
+<h4 class="anchored" data-anchor-id="sneak-peak-at-running-an-mcmc-model">Sneak Peak at Running an MCMC Model</h4>
+<p>Let’s take a moment to see how a similar analysis might be done in one of the Markov Chain Monte Carlo (MCMC) Gibbs sampler programs we will be talking a lot more about soon. In this case we’ll be using JAGS (Just Another Gibbs Sampler). The beauty of sampling algorithms like those found in WinBUGS and JAGS is that we don’t have to be constrained to the simple situations where closed (conjugate) forms are available. Using MCMC, there is no need to explicitly specify the posterior like we do when, say, we add the Beta parameters to the Binomial likelihood. These programs have algorithms to evaluate the posterior given (almost) arbitrary specification of the prior and the likelihood. Although it’s worth noting that programs like WinBUGS and JAGS will look for conjugacy and use it if it exists. Let’s look at the the JAGS syntax for this drug investigation example.</p>
+<p>We begin by writing up the model code.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb16"><pre class="sourceCode numberSource r numberLines code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1"></a><span class="fu">cat</span>(</span>
+<span id="cb16-2"><a href="#cb16-2"></a><span class="st">"model</span></span>
+<span id="cb16-3"><a href="#cb16-3"></a><span class="st">{</span></span>
+<span id="cb16-4"><a href="#cb16-4"></a><span class="st">y~dbin(theta, m) #likelihood</span></span>
+<span id="cb16-5"><a href="#cb16-5"></a><span class="st">theta~dbeta(a,b) # prior</span></span>
+<span id="cb16-6"><a href="#cb16-6"></a><span class="st">y.pred~dbin(theta, n)  #posterior, used as predictive distribution</span></span>
+<span id="cb16-7"><a href="#cb16-7"></a><span class="st">p.crit&lt;- step(y.pred-ncrit+0.5) # if y.pred&gt;=ncrit, returns 1, otherwise 0  </span></span>
+<span id="cb16-8"><a href="#cb16-8"></a><span class="st">}"</span></span>
+<span id="cb16-9"><a href="#cb16-9"></a>,<span class="at">file=</span><span class="st">"m1.jag"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Next, we specify the data for the beta parameters, the number of trials for the likelihood and for the prediction. Note that in WinBUGS, we could write these data values into the model statement itself, but the more common approach (and one required by R2WinBUGS and R2jags) is to specify the data separately.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb17"><pre class="sourceCode numberSource r numberLines code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1"></a>m1.dat<span class="ot">&lt;-</span><span class="fu">list</span>(<span class="at">a=</span><span class="fl">9.2</span>,</span>
+<span id="cb17-2"><a href="#cb17-2"></a><span class="at">b=</span><span class="fl">13.8</span>,</span>
+<span id="cb17-3"><a href="#cb17-3"></a><span class="at">y=</span><span class="dv">15</span>,</span>
+<span id="cb17-4"><a href="#cb17-4"></a><span class="at">m=</span><span class="dv">20</span>,</span>
+<span id="cb17-5"><a href="#cb17-5"></a><span class="at">n=</span><span class="dv">40</span>,</span>
+<span id="cb17-6"><a href="#cb17-6"></a><span class="at">ncrit=</span><span class="dv">25</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Now, we run the model in JAGS, using the R2jags package to interface with the Gibbs sampler, and explore the results using both the default “rjags” object, and converting to an “mcmc” object so we can use the coda package.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb18"><pre class="sourceCode numberSource r numberLines code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1"></a><span class="fu">library</span>(R2jags)</span>
+<span id="cb18-2"><a href="#cb18-2"></a></span>
+<span id="cb18-3"><a href="#cb18-3"></a>m1<span class="ot">&lt;-</span><span class="fu">jags</span>(<span class="at">data=</span>m1.dat, <span class="at">n.chains=</span><span class="dv">1</span>,</span>
+<span id="cb18-4"><a href="#cb18-4"></a></span>
+<span id="cb18-5"><a href="#cb18-5"></a>    <span class="at">parameters.to.save=</span><span class="fu">c</span>(<span class="st">"theta"</span>, <span class="st">"p.crit"</span>), </span>
+<span id="cb18-6"><a href="#cb18-6"></a>    <span class="at">model.file=</span><span class="st">"m1.jag"</span>)</span>
+<span id="cb18-7"><a href="#cb18-7"></a></span>
+<span id="cb18-8"><a href="#cb18-8"></a><span class="fu">class</span>(m1)</span>
+<span id="cb18-9"><a href="#cb18-9"></a><span class="fu">print</span>(m1)</span>
+<span id="cb18-10"><a href="#cb18-10"></a><span class="fu">plot</span>(m1)</span>
+<span id="cb18-11"><a href="#cb18-11"></a><span class="fu">traceplot</span>(m1)</span>
+<span id="cb18-12"><a href="#cb18-12"></a></span>
+<span id="cb18-13"><a href="#cb18-13"></a>m1.mcmc<span class="ot">&lt;-</span><span class="fu">as.mcmc</span>(m1)</span>
+<span id="cb18-14"><a href="#cb18-14"></a><span class="fu">plot</span>(m1.mcmc)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>We (should) see that the simulated MCMC results for <span class="math inline">\(\theta\)</span> and for the probability of greater than 25 successes in a future study of 40 patients are the same as those from the closed-form conjugate analysis.</p>
+</section>
+<section id="beta-distribution-parameters-from-a-mean-and-standard-deviation" class="level4">
+<h4 class="anchored" data-anchor-id="beta-distribution-parameters-from-a-mean-and-standard-deviation">Beta Distribution Parameters from a Mean and Standard Deviation</h4>
+<p>In the drug response example above, we said a Beta(9.2, 13.8) distribution was consistent with a mean response proportion of 0.4 and a standard deviation of 0.1 You may be interested in where those Beta parameters came from. There are a number of ways to get at the parameters of a Beta distribution using the mean and variance. The beta.select() function in the “LearnBayes” package is one. Another, more general approach is described <a href="http://stats.stackexchange.com/questions/12232/calculating-the-parameters-of-a-beta-distribution-using-the-mean-and-variance">here</a> and involves solving for <span class="math inline">\(\mu\)</span> and <span class="math inline">\(\sigma\)</span> using <span class="math inline">\(\alpha\)</span> and <span class="math inline">\(\beta\)</span> and can be implemented with the following small function in R:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb19"><pre class="sourceCode numberSource r numberLines code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1"></a>estBetaParams <span class="ot">&lt;-</span> <span class="cf">function</span>(mu, var) {</span>
+<span id="cb19-2"><a href="#cb19-2"></a>  alpha <span class="ot">&lt;-</span> ((<span class="dv">1</span> <span class="sc">-</span> mu) <span class="sc">/</span> var <span class="sc">-</span> <span class="dv">1</span> <span class="sc">/</span> mu) <span class="sc">*</span> mu <span class="sc">^</span> <span class="dv">2</span></span>
+<span id="cb19-3"><a href="#cb19-3"></a>  beta <span class="ot">&lt;-</span> alpha <span class="sc">*</span> (<span class="dv">1</span> <span class="sc">/</span> mu <span class="sc">-</span> <span class="dv">1</span>)</span>
+<span id="cb19-4"><a href="#cb19-4"></a>  <span class="fu">return</span>(<span class="at">params =</span> <span class="fu">list</span>(<span class="at">alpha =</span> alpha, <span class="at">beta =</span> beta))</span>
+<span id="cb19-5"><a href="#cb19-5"></a>}</span>
+<span id="cb19-6"><a href="#cb19-6"></a></span>
+<span id="cb19-7"><a href="#cb19-7"></a><span class="fu">estBetaParams</span>(.<span class="dv">4</span>,(.<span class="dv">1</span>)<span class="sc">^</span><span class="dv">2</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+</section>
+<section id="binomial-example-placenta-previa" class="level3">
+<h3 class="anchored" data-anchor-id="binomial-example-placenta-previa">Binomial Example: Placenta Previa</h3>
+<p>Given the ubiquity and importance of the analysis of proportions to epidemiologists, let’s look at yet another binomial example. This one comes from the textbook <a href="http://www.amazon.com/Bayesian-Analysis-Edition-Chapman-Statistical/dp/158488388X">Bayesian Data Analysis</a> by Gelman, et al by way of <a href="http://pgh.unimelb.edu.au/about/contact/allstaff/gurrin">Lyle Guerrin</a>. I’ve changed it around a bit. I like it because it compares discrete to continuous priors, illustrates some of the “nuts and bolts” of calculating a posterior distributions, and shows the effect of the data likelihood using slightly different data in the setting of the same problem.</p>
+<p>The data involve the proportion of births with placenta previa that are female gender. A study of 980 placenta previa births found that 437 (44.6%) were female. The historical proportion of female births is 48.6%. Placenta previa is a problem in pregnancy where the placenta implants low on the uterus, potentially obstructing the birth canal. The question is whether placenta previa influences birth gender.</p>
+<p>Again, our binomial model is:</p>
+<p><span class="math display">\[
+p(y|\theta)= Bin(y|n, \theta) = \binom{n}{k} \theta^y (1-\theta)^{n-y}
+\]</span></p>
+<p>Where, <span class="math inline">\(\theta\)</span> is the proportion of female births.</p>
+<p>We’ll explore the use of a discrete prior, a continuous prior and a conjugate prior.</p>
+<section id="analysis-with-a-discrete-prior" class="level4">
+<h4 class="anchored" data-anchor-id="analysis-with-a-discrete-prior">Analysis With a Discrete Prior</h4>
+<p>We start by considering a discrete prior. This is the approach we took when we looked at the student sleep habits questions earlier. We’ll use a fake data set of 100 placenta previa births, of which 46 were female. As our discrete prior, we consider only two possible (discrete) values for <span class="math inline">\(\theta\)</span>:</p>
+<ul>
+<li><span class="math inline">\(\theta = 0.485\)</span> (our <span class="math inline">\(H_0\)</span>) or <span class="math inline">\(\theta = 0.446\)</span> (our <span class="math inline">\(H_A\)</span> based on the the study of 980 placenta previa births)</li>
+</ul>
+<p>We put all our probability (<span class="math inline">\(Pr=1\)</span>) equally into those two possible outcomes, so we believe it is equally likely (<span class="math inline">\(Pr(\theta) = 0.05\)</span>) that <span class="math inline">\(\theta\)</span> . This is our prior distribution.</p>
+<p>Because we are dealing with only two values for our prior distribution, we can do the calculations to update the prior to the posterior by hand. For each value of the parameter in the prior (0.485 and 0.446) we’ll use the binomial model (^y (1-)^{n-y}) to calculate the likelihood. <a href="#fn10" class="footnote-ref" id="fnref10" role="doc-noteref"><sup>10</sup></a> We’ll add up the total likelihood and calculate the posterior as the proportion of the total likelihood for each value of the parameter.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 16%">
+<col style="width: 16%">
+<col style="width: 44%">
+<col style="width: 20%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>parameter</th>
+<th>prior</th>
+<th>likelihood</th>
+<th>posterior</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>(<span class="math inline">\(\theta\)</span> )</td>
+<td>(<span class="math inline">\(p(\theta)\)</span>)</td>
+<td>(<span class="math inline">\(p(y|\theta)= \theta^y (1-\theta)^{n-y}\)</span>)</td>
+<td>(<span class="math inline">\(p(\theta|y)\)</span>)</td>
+</tr>
+<tr class="even">
+<td>0.485</td>
+<td>0.5</td>
+<td><span class="math inline">\(1.018 * 10^{-30}\)</span></td>
+<td>0.48</td>
+</tr>
+<tr class="odd">
+<td>0.446</td>
+<td>0.5</td>
+<td><span class="math inline">\(1.297 * 10^{-30}\)</span></td>
+<td>0.52</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>total likelihood = <span class="math inline">\(1.018 * 10^{-30}\)</span> + <span class="math inline">\(1.297 * 10^{-30}\)</span> = <span class="math inline">\(2.003*10^{-30}\)</span></li>
+<li>posterior = ratio of the individual likelihoods to total likelihood
+<ul>
+<li><span class="math inline">\(1.018 * 10^{-30} / 2.003*10^{-30} = 0.48\)</span></li>
+<li><span class="math inline">\(1.297 * 10^{-30} / 2.003*10^{-30} = 0.52\)</span></li>
+</ul></li>
+</ul>
+<p>The calculations are:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb20"><pre class="sourceCode numberSource r numberLines code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1"></a>H0<span class="ot">&lt;-</span>((<span class="fl">0.485</span>)<span class="sc">^</span><span class="dv">46</span>)<span class="sc">*</span>((<span class="dv">1</span><span class="fl">-0.485</span>)<span class="sc">^</span>(<span class="dv">100-46</span>))</span>
+<span id="cb20-2"><a href="#cb20-2"></a>H1<span class="ot">&lt;-</span>((<span class="fl">0.446</span>)<span class="sc">^</span><span class="dv">46</span>)<span class="sc">*</span>((<span class="dv">1</span><span class="fl">-0.446</span>)<span class="sc">^</span>(<span class="dv">100-46</span>))</span>
+<span id="cb20-3"><a href="#cb20-3"></a>H0<span class="sc">/</span>(H0<span class="sc">+</span>H1)</span>
+<span id="cb20-4"><a href="#cb20-4"></a>H1<span class="sc">/</span>(H0<span class="sc">+</span>H1)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>We can see that the data from the likelihood do not exert too much influence on the prior. The update from a probability of 0.5 to 0.48 or 0.52, is not very convincing for one value or the other.</p>
+<p>What if we had 1000 observations, 460 of which were female?</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb21"><pre class="sourceCode numberSource r numberLines code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1"></a>H0<span class="ot">&lt;-</span>((<span class="fl">0.485</span>)<span class="sc">^</span><span class="dv">460</span>)<span class="sc">*</span>((<span class="dv">1</span><span class="fl">-0.485</span>)<span class="sc">^</span>(<span class="dv">1000-460</span>))</span>
+<span id="cb21-2"><a href="#cb21-2"></a>H1<span class="ot">&lt;-</span>((<span class="fl">0.446</span>)<span class="sc">^</span><span class="dv">460</span>)<span class="sc">*</span>((<span class="dv">1</span><span class="fl">-0.446</span>)<span class="sc">^</span>(<span class="dv">1000-460</span>))</span>
+<span id="cb21-3"><a href="#cb21-3"></a>H0<span class="sc">/</span>(H0<span class="sc">+</span>H1)</span>
+<span id="cb21-4"><a href="#cb21-4"></a>H1<span class="sc">/</span>(H0<span class="sc">+</span>H1)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>The results of which are: <a href="#fn11" class="footnote-ref" id="fnref11" role="doc-noteref"><sup>11</sup></a></p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 16%">
+<col style="width: 16%">
+<col style="width: 44%">
+<col style="width: 20%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>parameter</th>
+<th>prior</th>
+<th>likelihood</th>
+<th>posterior</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>(<span class="math inline">\(\theta\)</span> )</td>
+<td>(<span class="math inline">\(p(\theta)\)</span>)</td>
+<td>($logPr(y|)</td>
+<td>(<span class="math inline">\(p(\theta|y)\)</span>)</td>
+</tr>
+<tr class="even">
+<td>0.485</td>
+<td>0.5</td>
+<td><span class="math inline">\(-691.1967\)</span></td>
+<td>0.30</td>
+</tr>
+<tr class="odd">
+<td>0.446</td>
+<td>0.5</td>
+<td><span class="math inline">\(-690.3396\)</span></td>
+<td>0.70</td>
+</tr>
+</tbody>
+</table>
+<p>Because of the larger number of observations, the likelihood is exerting a greater influence on the updated posterior, and the evidence is now pointing more in the direction of a difference in the proportion of female births in placenta previa deliveries. We may start to appreciate, though, that a discrete prior for a continuous parameter like <span class="math inline">\(\theta\)</span> is not a very informative approach.</p>
+</section>
+<section id="analysis-with-a-uniform-continuous-prior" class="level4">
+<h4 class="anchored" data-anchor-id="analysis-with-a-uniform-continuous-prior">Analysis With a Uniform Continuous Prior</h4>
+<p>As we have seen in previous examples, we are by no means restricted to defining a prior with discrete values. We may believe (perhaps wrongly) that <span class="math inline">\(\theta\)</span> can be <em>any</em> value between 0 and 1. A uniform prior on the interval (0,1) <span class="math inline">\(Pr(\theta) \sim Unif(0,1)\)</span> would reflect this. We proceed as with the discrete prior, with the likelihood calculation of <span class="math inline">\(p(\theta|y)= \theta^y (1-\theta)^{n-y}\)</span>. As before, <span class="math inline">\(\binom{n}{k}\)</span> drops out as a normalizing constant that doesn’t affect the calculation of the ratio of likelihoods. But, in this special case, <span class="math inline">\(Pr(\theta)\)</span> also drops out because…</p>
+<ul>
+<li>the uniform (0,1) is equivalent to <span class="math inline">\(Beta(y+1, n-y+1)\)</span>, and…</li>
+<li><span class="math inline">\(Pr(\theta)\)</span> in this case is <span class="math inline">\(Pr(\theta|\alpha , \beta) = \theta^{\alpha-1} * (1-\theta)^{\beta-1} = \theta^{0} * (1-\theta)^{0} = 1*1 = 1\)</span></li>
+</ul>
+<p>The posterior results for the uniform prior then are:</p>
+<ul>
+<li><span class="math inline">\(\mu = \frac{y+1}{n+2}\)</span></li>
+<li><span class="math inline">\(\sigma^2 = \frac{(y+1)(n-y+1)}{(n+2^2)(n+3)}\)</span></li>
+</ul>
+<p>We again see the Posterior distribution as a compromise between the prior and the likelihood (data), e.g.&nbsp;prior <span class="math inline">\(\mu=1/2\)</span> to posterior <span class="math inline">\(\mu=\frac{y+1}{y+2}\)</span> is a compromise between the prior and the sample proportion of $</p>
+<p>This is, in fact, the conjugate Beta results we have already been working with. The posterior distribution has same parametric form as the prior because the Beta distribution is a conjugate family for the binomial likelihood. The Beta-binomial posterior is:</p>
+<ul>
+<li><span class="math inline">\(\sim Beta(\alpha+y, \beta+n-y)\)</span></li>
+</ul>
+<p>While we have been relying primarily on simulations, there are in fact closed analytic solutions to the parameters for a Beta distribution:</p>
+<ul>
+<li><span class="math inline">\(\mu = \frac{\alpha+y}{\alpha+\beta+n}\)</span></li>
+<li><span class="math inline">\(\sigma^2 = \frac{(\alpha+y)(\beta+n-y)}{(\alpha+\beta+n)^2(\alpha+\beta+n+1)}\)</span> = <span class="math inline">\(\frac{\mu(1-\mu)}{(\alpha+\beta+n+1)}\)</span></li>
+</ul>
+<p>Let’s apply the Beta(1,1) prior to the three data sets we’ve been considering, and calculate a posterior 95% probability interval for each:</p>
+<p>For the fake 100 observation data set (46 of which were female):</p>
+<ul>
+<li>Uniform prior <span class="math inline">\(Pr(theta|y) \to Beta(47,55)\)</span></li>
+<li><span class="math inline">\(\mu= 47/(47+55) 0.460\)</span>, <span class="math inline">\(\sigma^2= ((0.46)*(1-0.46))/(47+55+100+1) = 0.001\)</span></li>
+<li>central 95% posterior interval = (0.38,0.54)</li>
+</ul>
+<p>For the fake 1000 observation data set (460 of which were female):</p>
+<ul>
+<li>Uniform prior <span class="math inline">\(Pr(theta|y) \to Beta(461,541)\)</span></li>
+<li><span class="math inline">\(\mu= 461/(461+541) 0.460\)</span>, <span class="math inline">\(\sigma^2= ((0.46)*(1-0.46))/(461+541+1000+1) = 0.0001\)</span></li>
+<li>central 95% posterior interval = (0.43,0.48)</li>
+</ul>
+<p>For the actual data 900 observations of placenta previa, 437 of which were female:</p>
+<ul>
+<li>Uniform prior <span class="math inline">\(Pr(theta|y) \to Beta(538,544)\)</span></li>
+<li><span class="math inline">\(\mu=0.446\)</span>, <span class="math inline">\(\sigma=0.016\)</span></li>
+<li>central 95% posterior interval = (0.41,0.47)</li>
+</ul>
+</section>
+</section>
+<section id="conjugate-analysis-of-poisson-data" class="level2">
+<h2 class="anchored" data-anchor-id="conjugate-analysis-of-poisson-data">Conjugate Analysis of Poisson Data</h2>
+<p>After binomial data and proportions, the next most common type of data with which epidemiologists are involved are count data. Count data are often assumed to follow a Poisson distribution, $Pr[k]= e^{-} * ^{k} /k! $, where, $ = ^2 = $. A Poisson likelihood is conjugate to a Gamma(a,b) prior for <span class="math inline">\(\lambda\)</span>, with <span class="math inline">\(\mu = \frac{a}{b}\)</span> and <span class="math inline">\(\sigma^2 = \frac{a}{b^2}\)</span>, which results in a posterior with the form <span class="math inline">\(Gamma(a+n\bar{x}, b+n)\)</span>, that reflects the posterior mean (<span class="math inline">\(\frac{a+n\bar{x}}{b+n}\)</span>) as a compromise between the prior mean (<span class="math inline">\(\frac{a}{b}\)</span>) and the MLE of the mean from the likelihood (<span class="math inline">\(\bar{x}\)</span>)</p>
+<section id="poisson-example-london-bombings-during-wwii" class="level3">
+<h3 class="anchored" data-anchor-id="poisson-example-london-bombings-during-wwii">Poisson Example: London Bombings during WWII</h3>
+<p>The following data describe the number of bomb hits in a <span class="math inline">\(36km^2\)</span> area of South London during World War II, partitioned into <span class="math inline">\(0.25km^2\)</span> grid squares:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 11%">
+<col style="width: 11%">
+<col style="width: 15%">
+<col style="width: 14%">
+<col style="width: 14%">
+<col style="width: 14%">
+<col style="width: 14%">
+</colgroup>
+<tbody>
+<tr class="odd">
+<td>Hits (x)</td>
+<td>0</td>
+<td>1</td>
+<td>2</td>
+<td>3</td>
+<td>4</td>
+<td>7</td>
+</tr>
+<tr class="even">
+<td>Areas (n)</td>
+<td>229</td>
+<td>211</td>
+<td>93</td>
+<td>35</td>
+<td>7</td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+<p>You can think of it as 537 events (<span class="math inline">\(\Sigma x_i * n_i=537\)</span> total hits), over 576 observations (<span class="math inline">\(\Sigma n_i=576\)</span> areas) with a mean of <span class="math inline">\(\bar{x}=537/576=0.93\)</span>. If the hits are randomly distributed, then a Poisson distribution with a hit rate of <span class="math inline">\(\theta = \lambda\)</span> should fit the data. The Jeffreys prior for a Poisson distribution with <span class="math inline">\(\theta = \lambda\)</span> is $p() , which is equivalent to an (improper) Gamma (0.5, 0) distribution. Substituting as described above:</p>
+<p><span class="math display">\[
+p(\theta | y) = \Gamma(a+n\bar{x}, b+n) = \Gamma(537.5, 576) \\
+\mu = 537.5/ 576 = 0.933 \\
+\sigma^2 = 537.5/ 576^2 = 0.0016
+\]</span></p>
+<p>The prior in this case exerts very little influence on the mean we would have obtained from the data alone. In general, as the sample size increases, the posterior mean approaches the MLE mean, and the posterior s.d. approaches the MLE s.d.</p>
+</section>
+<section id="poisson-example-heart-transplant-mortality" class="level3">
+<h3 class="anchored" data-anchor-id="poisson-example-heart-transplant-mortality">Poisson Example: Heart Transplant Mortality</h3>
+<p>One more conjugate Poisson example (again, from <a href="http://bayes.bgsu.edu/">Jim Albert</a>). Say we are interested in heart transplant success in a particular hospital, as measured by 30-day mortality. Over the course of a year we collect the number of transplant surgeries <span class="math inline">\(n\)</span> and the number of deaths, <span class="math inline">\(y\)</span>, within 30-days of surgery for the target hospital and for a number of near-by hospitals. We also have a individual-level risk estimate for the probability of death for a patient based on demographic characteristics and medical history which allows us to estimate the expected number of deaths in a hospital, <span class="math inline">\(e\)</span>. We are interested in the ratio of observed to expected deaths, or Standardized Mortality Ratio (SMR). These data can be modeled as a Poisson process.</p>
+<p>The standard estimate for the SMR is <span class="math inline">\(\lambda = \frac{y}{e}\)</span>. This estimate can be unstable when the expected number of outcomes or denominator is very rare and the variance is appreciably larger than the mean.. A Bayesian approach allows us to use existing evidence about mortality in comparable hospitals to inform our estimate. We can use a <span class="math inline">\(Gamma(\alpha, \beta)\)</span> prior to add this information to our estimate, where the <span class="math inline">\(\alpha\)</span> term is the sum of 30-day post-transplant deaths in a group of 10 nearby comparable hospitals, and <span class="math inline">\(\beta\)</span> is the sum of procedures performed in those hospitals.</p>
+<p>We look at the experience of two hospitals. Hospital A performs few surgeries. Hospital B performs many surgeries. Hospital A, had 1 death in 66 surgeries; Hospital B, experienced 4 deaths in 1767 surgeries. A comparison group of 10 nearby hospitals had 16 deaths in 15,174 procedures.</p>
+<p>We start by calculating the unadjusted MLE estimates for each hospital, which are 1.5% (95% CI 0.08%, 9.3%) for hospital A, and 0.2% (95% CI 0.07%, 0.6%). We then define a gamma distribution for the posterior distribution for each hospital using data from the target and comparison hospitals and take 10,000 samples from each. Summary comparisons for the two <span class="math inline">\(\lambda\)</span> estimates, while statistically significant because of the large number of samples, don’t indicate too much difference between the two hospitals. Plots of the two posterior distributions indicate that the prior has more influence on the estimate for hospital A than it does for hospital B. The posterior for Hospital A looks more like the prior. The posterior for hospital B look more like the data likelihood. This make sense because hospital A has appreciably less information (66 surgeries) on which to base the estimate, compared to hospital B (1,767 surgeries).</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb22"><pre class="sourceCode numberSource r numberLines code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1"></a> <span class="co"># unadjusted estimates</span></span>
+<span id="cb22-2"><a href="#cb22-2"></a>y_A<span class="ot">&lt;-</span><span class="dv">1</span></span>
+<span id="cb22-3"><a href="#cb22-3"></a>n_A<span class="ot">&lt;-</span><span class="dv">66</span></span>
+<span id="cb22-4"><a href="#cb22-4"></a><span class="fu">prop.test</span>(y_A, n_A)</span>
+<span id="cb22-5"><a href="#cb22-5"></a></span>
+<span id="cb22-6"><a href="#cb22-6"></a>y_B<span class="ot">&lt;-</span><span class="dv">4</span></span>
+<span id="cb22-7"><a href="#cb22-7"></a>n_B<span class="ot">&lt;-</span><span class="dv">1767</span></span>
+<span id="cb22-8"><a href="#cb22-8"></a><span class="fu">prop.test</span>(y_B, n_B)</span>
+<span id="cb22-9"><a href="#cb22-9"></a></span>
+<span id="cb22-10"><a href="#cb22-10"></a>y_T<span class="ot">&lt;-</span><span class="dv">16</span></span>
+<span id="cb22-11"><a href="#cb22-11"></a>n_T<span class="ot">&lt;-</span><span class="dv">15174</span></span>
+<span id="cb22-12"><a href="#cb22-12"></a><span class="fu">prop.test</span>(y_T, n_T)</span>
+<span id="cb22-13"><a href="#cb22-13"></a></span>
+<span id="cb22-14"><a href="#cb22-14"></a> <span class="co"># conjugate analysis</span></span>
+<span id="cb22-15"><a href="#cb22-15"></a></span>
+<span id="cb22-16"><a href="#cb22-16"></a>lambda_A<span class="ot">&lt;-</span><span class="fu">rgamma</span>(<span class="dv">1000</span>, <span class="at">shape=</span>y_T<span class="sc">+</span>y_A, <span class="at">rate=</span>n_T<span class="sc">+</span>n_A)</span>
+<span id="cb22-17"><a href="#cb22-17"></a>lambda_B<span class="ot">&lt;-</span><span class="fu">rgamma</span>(<span class="dv">1000</span>, <span class="at">shape=</span>y_T<span class="sc">+</span>y_B, <span class="at">rate=</span>n_T<span class="sc">+</span>n_B)</span>
+<span id="cb22-18"><a href="#cb22-18"></a></span>
+<span id="cb22-19"><a href="#cb22-19"></a><span class="fu">summary</span>(lambda_A)</span>
+<span id="cb22-20"><a href="#cb22-20"></a><span class="fu">summary</span>(lambda_B)</span>
+<span id="cb22-21"><a href="#cb22-21"></a></span>
+<span id="cb22-22"><a href="#cb22-22"></a><span class="fu">t.test</span>(lambda_A, lambda_B)</span>
+<span id="cb22-23"><a href="#cb22-23"></a></span>
+<span id="cb22-24"><a href="#cb22-24"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">1</span>)) </span>
+<span id="cb22-25"><a href="#cb22-25"></a><span class="fu">plot</span>(<span class="fu">density</span>(lambda_A), <span class="at">main=</span><span class="st">"HOSPITAL A"</span>, <span class="at">xlab=</span><span class="st">"lambda_A"</span>, <span class="at">lwd=</span><span class="dv">3</span>) </span>
+<span id="cb22-26"><a href="#cb22-26"></a><span class="fu">curve</span>(<span class="fu">dgamma</span>(x, <span class="at">shape =</span> y_T, <span class="at">rate =</span> n_T), <span class="at">add=</span><span class="cn">TRUE</span>) </span>
+<span id="cb22-27"><a href="#cb22-27"></a><span class="fu">legend</span>(<span class="st">"topright"</span>,<span class="at">legend=</span><span class="fu">c</span>(<span class="st">"prior"</span>,<span class="st">"posterior"</span>),<span class="at">lwd=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">3</span>)) </span>
+<span id="cb22-28"><a href="#cb22-28"></a><span class="fu">plot</span>(<span class="fu">density</span>(lambda_B), <span class="at">main=</span><span class="st">"HOSPITAL B"</span>, <span class="at">xlab=</span><span class="st">"lambda_B"</span>, <span class="at">lwd=</span><span class="dv">3</span>) </span>
+<span id="cb22-29"><a href="#cb22-29"></a><span class="fu">curve</span>(<span class="fu">dgamma</span>(x, <span class="at">shape =</span> y_T, <span class="at">rate =</span> n_T), <span class="at">add=</span><span class="cn">TRUE</span>) </span>
+<span id="cb22-30"><a href="#cb22-30"></a><span class="fu">legend</span>(<span class="st">"topright"</span>,<span class="at">legend=</span><span class="fu">c</span>(<span class="st">"prior"</span>,<span class="st">"posterior"</span>),<span class="at">lwd=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">3</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="bayes/bayes1/hospMort.jpeg" class="img-fluid figure-img"></p>
+<figcaption>Hospital Mortality Comparison</figcaption>
+</figure>
+</div>
+</section>
+</section>
+<section id="conjugate-analysis-of-normally-distributed-data" class="level2">
+<h2 class="anchored" data-anchor-id="conjugate-analysis-of-normally-distributed-data">Conjugate Analysis of Normally Distributed Data</h2>
+<p>It may appear a bit odd to place a discussion of the normal distribution after binomial and Poisson, but I have my reasons. First, I think most epidemiologists will get the most immediate use out of the martial about proportions and counts. Second, despite it’s fundamental role in statistics, the normal distribution is when we start reaching the limits of simple conjugate analyses. This may be a bit disconcerting, but not to worry. We will soon use the normal distribution as a springboard to computational approaches to more complex and realistic data problems. For now, though, let’s walk through a simple conjugate analysis of normally distributed data.</p>
+<p>When you have normally distributed data (likelihood <span class="math inline">\(x \sim Nl(\theta, \sigma^2)\)</span>), and a normally distributed prior (<span class="math inline">\(\theta \sim Nl(\mu, \sigma^2)\)</span>), the posterior is basically a weighted average of the prior mean and the parameter estimate of the data mean, weighted by their precisions. We will have to estimate an “implicit” sample size for the prior, <span class="math inline">\(n_0\)</span>, using the s.d. of the prior. You will find (and this is generally the case in Bayesian analyses) that as the sample size of the data increases, the posterior gets “swamped” by the data, and is essentially the MLE estimate.</p>
+<section id="example-thm-concentrations" class="level3">
+<h3 class="anchored" data-anchor-id="example-thm-concentrations">Example: THM Concentrations</h3>
+<p>Local public health agencies test water samples for trihalomethanes (THMs) in every supply zone a couple of times each year. We want to estimate the average concentration in a particular zone <span class="math inline">\(z\)</span> based on two measurements (<span class="math inline">\(x_{z1}\)</span> and <span class="math inline">\(x_{z2}\)</span> ) with mean <span class="math inline">\(x_{z \mu} = 130\)</span>, which has <span class="math inline">\(\sigma=5\)</span>. What is the best estimate of the mean concentration (<span class="math inline">\(\theta\)</span>)?</p>
+<p>The MLE or frequentist approach would use the mean concentration, 130, as the point estimate for <span class="math inline">\(\theta\)</span> with a s.e. of <span class="math inline">\(\sigma / \sqrt{n} = 5 / \sqrt{2} = 3.5\)</span> for a 95% CI of 130 <span class="math inline">\(\pm\)</span> 1.96 * 3.5 = 123.1, 136.9.</p>
+<p>A Bayesian approach could use information from previous years to inform the analyses. Say data from previous years indicated a THM concentration of 120 with a s.d. = 10. This suggests a prior of <span class="math inline">\(\theta \sim Nl(120,10^2)\)</span> We solve for the “implicit” sample size for the prior as <span class="math inline">\(s.d.= \sigma / \sqrt{n_0}\)</span>, <span class="math inline">\(n_0 = (\sigma / 10)^2 = .25\)</span>, or equivalent to about <span class="math inline">\(\frac{1}{4}\)</span> of an observation. The prior can be written as <span class="math inline">\(\theta \sim Nl(120, \sigma^2/.25)\)</span>, and the posterior is:</p>
+<p><span class="math display">\[
+p(\theta | x) = Nl(0.25*120 + 2*130 / 0.25 + 2, 52/0.25+2) \\
+= = Nl( 128.9, 3.332)
+\]</span></p>
+<p>and a 95% CI for <span class="math inline">\(\theta\)</span> of 122.4, 135.4</p>
+<p>In this figure, we can see the relation of the prior, the likelihood and posterior. The posterior is basically a combination of data and prior knowledge; the interval tends to be narrower than the likelihood</p>
+<p><img src="bayes/bayes1/bigBayes6.jpg" class="img-fluid"></p>
+<p>We can, as we did with the binomial and Poisson examples, make predictions based on this posterior. The predictive distribution is centered around the posterior mean with variance equal to the sum of the posterior variance and the sample variance, <span class="math inline">\(\sim Nl(\mu, \sigma^2_n + \sigma^2)\)</span> Continuing the example, suppose the water company will be fined if the THM level exceeds 145. We can calculate the probability that a future sample will exceed 145 as the posterior predictive distribution <span class="math inline">\(Nl(128.9, 3.332 + 5^2)\)</span> = <span class="math inline">\(Nl(128.9, 36.1)\)</span>, with the tail probability of a value greater than 145 = 0.004</p>
+</section>
+</section>
+</section>
+<section id="probability-distributions-used-in-bayesian-analysis" class="level1">
+<h1>Probability Distributions Used in Bayesian Analysis</h1>
+<p>As you can see, one of the hallmarks of Bayesian analysis is the explicit use of probability distributions to describe the behavior of both variables and the parameters that govern those variables. Bayesians tend to spend a lot of time thinking about which distributions most closely fit the behavior they are trying to describe. In addition to being more comfortable with probability theory in general, you will need to become more familiar with some probability distributions with which you may only have passing acquaintance. <a href="#fn12" class="footnote-ref" id="fnref12" role="doc-noteref"><sup>12</sup></a></p>
+<p>Bayesian analyses tend toward <em>flexible distributions</em>, i.e.&nbsp;the form changes based on parameters. Some important ones include:</p>
+<section id="the-beta-distribution" class="level2">
+<h2 class="anchored" data-anchor-id="the-beta-distribution">The Beta Distribution</h2>
+<p><span class="math display">\[
+\sim Beta(\alpha,\beta)\\
+\mu=\frac{\alpha}{\alpha+\beta}\\
+\sigma^2=\frac{\alpha \beta}{(\alpha \beta)^2 (\alpha + \beta) + 1}
+\]</span></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="bayes/bayes1/bigBayes17.png" class="img-fluid figure-img"></p>
+<figcaption>The Beta Distribution</figcaption>
+</figure>
+</div>
+<p>The beta distribution returns values between 0 and 1, os is often used to model proportions and probabilities. <span class="math inline">\(\alpha\)</span> is the prior number of successes, <span class="math inline">\(\beta\)</span> is the prior number of failures. As you can see from the figure, the beta distribution is quite flexible in its form, which contributes to its popularity in Bayesian analyses (It is also <em>conjugate</em> to the binomial distribution, a concept we’ll discuss shortly). For a flat prior, set both <span class="math inline">\(\alpha\)</span> and <span class="math inline">\(\beta\)</span> equal to 1. Setting both <span class="math inline">\(\alpha &gt; 0\)</span> and <span class="math inline">\(\beta &gt; 0\)</span> ensures a proper distribution that can be integrated. For a unimodal distribution, set both <span class="math inline">\(\alpha &gt; 1\)</span> and <span class="math inline">\(\beta &gt; 1\)</span>. As $, <span class="math inline">\(\beta \to \infty\)</span>, the closer the distribution approaches normality.</p>
+<p>The BUGS syntax for the beta distribution is</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb23"><pre class="sourceCode numberSource r numberLines code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1"></a><span class="fu">dbeta</span>(alpha, beta)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="the-gamma-distribution" class="level2">
+<h2 class="anchored" data-anchor-id="the-gamma-distribution">The Gamma Distribution</h2>
+<p><span class="math display">\[
+\sim \Gamma(\alpha, \beta),\\
+\mu=\frac{\alpha}{\beta} \\
+\sigma^2=\frac{\alpha}{\beta^2}
+\]</span></p>
+<p>Where, <span class="math inline">\(\alpha\)</span> is the “shape” parameter and <span class="math inline">\(\beta\)</span> is the “scale” parameter.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="bayes/bayes1/bigBayes16.png" class="img-fluid figure-img"></p>
+<figcaption>The Gamma Distribution</figcaption>
+</figure>
+</div>
+<p>Setting <span class="math inline">\(\alpha=1\)</span> results is an exponential distribution (<span class="math inline">\(\mu=1/\beta\)</span>). <span class="math inline">\(\sim \Gamma(\alpha/2, 1/2)\)</span> is <span class="math inline">\(\chi^2\)</span> with <span class="math inline">\(\alpha\)</span> d.f.</p>
+<p>Like the exponential distribution (of which it is a more general case), you can use this very flexible distribution for positive continuous variables, e.g.&nbsp;counts or time to events. (You can see why the Gamma distribution may be of considerable interest to epidemiologists). The Gamma distribution is often seen as a <em>prior for a Normal precision parameter, and prior for Beta parameters</em>.</p>
+<p>In BUGS, it is specified</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb24"><pre class="sourceCode numberSource r numberLines code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1"></a><span class="fu">dgamma</span>(alpha, beta)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>You can obtain a flat prior by setting <span class="math inline">\(\alpha\)</span> and <span class="math inline">\(\beta\)</span> to be small, eg dgamma(.001,.001)</p>
+</section>
+<section id="the-normal-distribution" class="level2">
+<h2 class="anchored" data-anchor-id="the-normal-distribution">The Normal Distribution</h2>
+<p><span class="math display">\[
+\sim Nl(\mu, \sigma^2)
+\]</span></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="bayes/bayes1/bigBayes13.png" class="img-fluid figure-img"></p>
+<figcaption>The Normal Distribution</figcaption>
+</figure>
+</div>
+<p>This is the distribution with which you are likely most familiar. It is used for both likelihoods and priors for <em>continuous variables or parameters</em>. In BUGS it is specified as:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb25"><pre class="sourceCode numberSource r numberLines code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1"></a><span class="fu">dnorm</span>(mean, precision)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Note that in BUGS, probability distributions are specified in terms of their <em>precisions</em>, <span class="math inline">\(1/\sigma^2\)</span>. So for a <em>flat</em> prior, which would have a very large variance, you would instead specify a very small precision, e.g.&nbsp;dnorm(0,.0001) , or dnorm(0,1.0E-4).</p>
+<p>You can restrict a prior to positive values (for example for a standard deviation), by using the <em>half-normal</em> prior available in BUGS:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb26"><pre class="sourceCode numberSource r numberLines code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1"></a><span class="fu">dnorm</span>(<span class="dv">0</span>,<span class="fl">1.0E-4</span>)<span class="fu">I</span>(<span class="dv">0</span>,)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>BUGS also accommodates the other two most commonly used distributions in epidemiology, the binomial and the Poisson.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb27"><pre class="sourceCode numberSource r numberLines code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1"></a><span class="fu">dbin</span>(p,n)</span>
+<span id="cb27-2"><a href="#cb27-2"></a><span class="fu">dpois</span>(lambda)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="the-uniform-distribution" class="level2">
+<h2 class="anchored" data-anchor-id="the-uniform-distribution">The Uniform Distribution</h2>
+<p><span class="math display">\[
+\sim Unif(a,b), \\
+\mu = \frac{(a+b)}{2}, \\
+\sigma^2 = \frac{(b-a)^2}{12}
+\]</span></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="bayes/bayes1/bigBayes14.png" class="img-fluid figure-img"></p>
+<figcaption>The Uniform Distribution</figcaption>
+</figure>
+</div>
+<p>Uniform distributions are useful for parameters that can only take values on a specific interval (a,b), e.g.&nbsp;standard deviations, or for proportion parameters on the interval (0,1). In BUGS it is specified:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb28"><pre class="sourceCode numberSource r numberLines code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1"></a><span class="fu">dunif</span>(a,b)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>For a “flat prior”, set the range to be large, e.g.&nbsp;dunif(-100,100) or dunif(0,100) for positive parameters</p>
+</section>
+<section id="the-exponential-distribution" class="level2">
+<h2 class="anchored" data-anchor-id="the-exponential-distribution">The Exponential Distribution</h2>
+<p><span class="math display">\[
+\sim Exp(\lambda),\\
+mu=1/\lambda,\\
+\sigma^2=1/\lambda^2
+\]</span></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="bayes/bayes1/bigBayes15.png" class="img-fluid figure-img"></p>
+<figcaption>The Exponential Distribution</figcaption>
+</figure>
+</div>
+<p>The exponential distribution can be used to model the <em>likelihood</em> for positive continuous variables, especially <em>time to events</em>, or as a <em>prior for Beta</em>-distributed parameters. For a “flat prior”, set lambda to be small, eg dexp(.01)</p>
+</section>
+<section id="the-dirichlet-distribution" class="level2">
+<h2 class="anchored" data-anchor-id="the-dirichlet-distribution">The Dirichlet Distribution</h2>
+<p><span class="math display">\[
+\sim Dirichlet(\alpha_1, ... \alpha_k)
+\]</span></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="bayes/bayes1/dirichlet.jpg" class="img-fluid figure-img"></p>
+<figcaption>The Dirichlet Distribution</figcaption>
+</figure>
+</div>
+<p>Where <span class="math inline">\(\alpha_i\)</span> is a vector of the prior number of outcomes of type i, is used for multinomial proportions or probabilities (i.e, take values between 0 and 1). It is an extension of the Beta distribution for several probability parameters that must sum to 1. For a flat prior, se alpha as a vector of 1’s: c(1,1,….,1).</p>
+<p>The BUGS syntax is</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb29"><pre class="sourceCode numberSource r numberLines code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1"></a><span class="fu">ddirch</span>(alpha[])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+
+
+</section>
+</section>
+
+
+<div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
+
+<ol>
+<li id="fn1"><p>In classical statistics, parameters are somewhat Aristotelian. We believe they exist in some perfect state, but we may never directly observe them, only the shadows they cast on our samples.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>Don’t worry if your calculus is a little rusty. The last time I took a derivative or an integral most folks still had rotary phones. A basic understanding, but not much more, is all that is required for the practical application of Bayesian statistics.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn3"><p>For a fuller description of Bayes Theorem see <a href="http://www.columbia.edu/~cjd11/charles_dimaggio/DIRE/resources/pdfs/bayesIntro.pdf">this document</a><a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn4"><p>There is a more intuitive way of making this calculation. The probability of someone having a positive test given that they have the disease is the number of positive tests over the number of people with disease. In this example, that is 498/508. In statistical terms, this approach uses the <em>marginal probability</em> of disease to simplify the calculations. We will explore and take advantage of marginal probabilities as a simplifying strategy for future, more complex situations.<a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn5"><p>The models in this section come from Dr.&nbsp;<a href="http://www-stat.wharton.upenn.edu/~stjensen/">Shane Jensen’s</a> excellent short course on Bayesian Data Analysis given through <a href="http://www.statisticalhorizons.com/">Statistical Horizons</a>. I highly recommend it.<a href="#fnref5" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn6"><p>I suppose you could, if you really tried, find out how many flights there were each year…<a href="#fnref6" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn7"><p>You may be asking yourself (as I did when I first encountered this material) why we just didn’t use a binomial prior for the binomial likelihood, or a Poisson prior for a Poisson likelihood. The short answer is that they just don’t work. The longer answer has to do with what results when you multiply one distribution by another (binomial<em>binomial and Poisson</em>Poisson are apparently particularly ugly) as well as issues with dependence of parameters that arise.<a href="#fnref7" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn8"><p>The factorial notation ! and stands for <span class="math inline">\(n x n-1 x n-2 x ... x n- (   )\)</span>)<a href="#fnref8" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn9"><p>This neat analytic approach results in a so-called “closed” result. A closed result refers to the fact that the distributions play nicely together can be integrated to a single solution, which in the case-of all probability distributions sums to one.<a href="#fnref9" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn10"><p>Note that the <span class="math inline">\(\binom{n}{k}\)</span> term drops out of the calculations because it is simply a <em>normalizing constant</em> and isn’t necessary for the calculation of ratios.<a href="#fnref10" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn11"><p>Because of the larger number of observations, we are presenting the likelihood on the log scale.<a href="#fnref11" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn12"><p>Despite the availability and popularity of some of these more exotic probability distributions, some very smart folks (like David Spiegelhalter at Cambridge) believe the majority of analyses can readily be accomplished with the 4 most common distributions: binomial, normal, poisson and uniform.<a href="#fnref12" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section></div></main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

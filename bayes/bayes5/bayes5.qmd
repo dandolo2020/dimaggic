@@ -1,0 +1,608 @@
+---
+title: "More Bayes"
+---
+
+# Bayesian Analysis for Epidemiologists Part V: Special Topics #
+
+[Approaches to Missing Data](#approaches-to-missing data)                    
+[Twin or Paired Data](#twin-or-paired data)                 
+[Comparing Clinical Measurements](#comparing-clinical-measurements)              
+
+
+
+# Approaches to Missing Data #
+
+Missing data is a frequent problem in observational epidemiology, perhaps never more so, than in this age of secondary data sets.  There is an entire field of statistical research on predicting or imputing missing values. This is the merest glimpse at a vast topic, and I look only at using MCMC and BUGS or JAGS to make such predictions. [^whyPredict] 
+
+Making predictions in the setting of MCMC is actually easy and almost automatic.  Just specify a stochastic node without a data value, and it will be imputed as part of the sampling process.  Consider for a moment the case of "forward sampling" or pure MCMC with which we introduced the concept of Monte Carlo.  Essentially all the values are predicted.  In the setting of data, we will substitute "NA" for a missing value when setting up the data object.  Because in a Bayesian approach any unknown value, be it a parameter or a data point, is a node for which a posterior distribution will be calculated,  BUGS will generate values from the posterior predictive distribution for the missing data.
+
+[^whyPredict]: Of course, missing data is only one, and perhaps not the most frequent, motivation for predicting values.  You may be interested in checking models (are the predictions similar to the observed data), filling in censored values, or perhaps just making predictions for the sake of making predictions.
+
+Note that the most important issue is not that data are missing.  It is the "mechanism" or the reason the data to be missing. If data are missing completely (or mostly) at random, it may not even be necessary to predict or replace those values.  Often, though,  data are missing in a way related to exposures, outcomes or covariates, e.g. exposed individuals may be more likely to seek care,  diseased individuals may not be able to follow up, a persons income level may affect their access to transportation.  We will frequently have to model the reason for data to be missing.
+
+## Outcome Data Missing at Random: Dugong Example ##
+
+
+As an example of assumed random missing outcome values, consider a sample of growth data for  [dugongs](http://en.wikipedia.org/wiki/Dugong) from Carlin and Gelfand (1991) that include age and length measurements.  We have 26 data points going to age 31.5.
+
+obs   age     length
+---   ---     ------
+1     1.0     1.80
+2     1.5     1.85
+3     1.5     1.87
+...
+...
+25    29.0    2.72
+26    31.5    2.57
+
+We want to predict the lengths for ages 35 and 40.  In R, we set up a data object of *29* observations, appending the ages for which we want predictions, and NA's for the lengths corresponding to those ages.
+
+
+```{.r .numberLines}
+dat<-list(x = c( 1.0,  1.5,  1.5,  1.5, 2.5,   4.0,  5.0,  5.0,  7.0,
+ 8.0,  8.5,  9.0,  9.5, 9.5,  10.0, 12.0, 12.0, 13.0,
+13.0, 14.5, 15.5, 15.5, 16.5, 17.0, 22.5, 29.0, 31.5,35,40),
+Y = c(1.80, 1.85, 1.87, 1.77, 2.02, 2.27, 2.15, 2.26, 2.47,
+2.19, 2.26, 2.40, 2.39, 2.41, 2.50, 2.32, 2.32, 2.43,
+2.47, 2.56, 2.65, 2.47, 2.64, 2.56, 2.70, 2.72, 2.57,NA,NA), N = 29)
+```
+
+
+Then in our model statement [^dugongModel] , we request calculations for those two values. Note that since we are modeling the two predicted values as stochastic nodes, they need priors. 
+
+[^dugongModel]:  Growth should, as Carlin and Gelfand did, be being modeled as a non-linear outcome.  I'm keeping it simple to focus on demonstrating the missing data prediction...
+
+```{.r .numberLines}
+cat("model{
+	for( i in 1 : N ) {
+		Y[i] ~ dnorm(mu[i], tau )
+		mu[i] <- alpha - beta *(x[i])			
+}	
+	mu35<-alpha-beta*(35)
+	mu40<-alpha-beta*(40)	
+
+    alpha ~ dunif(0, 100)
+	beta ~ dunif(0, 100)
+	tau ~ dgamma(0.001, 0.001)
+	
+	sigma <- 1 / sqrt(tau)
+	# priors on predictions
+	y35 ~ dnorm (mu35 , tau)
+    y40 ~ dnorm (mu40 , tau)
+}", file="dugong.txt")
+```
+
+We will monitor the predicted values (for simplicity sake, I am just going to allow JAGS to supply the initial values).
+
+```{.r .numberLines}
+params<-c("mu", "mu35", "mu40", "alpha", "beta")
+
+library(R2jags)
+
+dugong.mod<-jags(data = dat,
+        parameters.to.save = params,
+        model.file = "dugong.txt",
+        n.iter = 5000,
+        n.burnin = 2000,
+        n.thin = 1)
+
+print(dugong.mod)
+
+library(mcmcplots)
+caterplot(dugong.mod, parms=c("mu", "mu35", "mu40"))
+````
+
+
+The interval around the predicted values reflect both the sampling error ($\sigma$) and the uncertainty about $\tau$, and again, we are assuming the data are missing at random.  
+
+## Outcome Data Missing Not at Random: Rat Growth Example ##
+
+
+If the missing data mechanism is informative, we will need to model it, and we will often need informative priors to do this since no information exists in the data themselves (see Best, et al 1996 as an example)
+
+As a simple example (from a new [book on BUGS](http://www.mrc-bsu.cam.ac.uk/bugs/thebugsbook/) by David Spiegelhalter), assume the final weight measurement for a lab rat is missing.  But, we believe the "missingness"is related to the true weight, in that the odds of being missing increase about 2% for every additional gram of weight.  We now include an indicator variable for "missingness" ("miss[]") and specify a logistic model for the probability of "missingness" as "b=log(1.02)" to reflect our belief about the 2% increased odds for each gram of weight. In the model, we specify a  likelihood for the missing data, and place a uniform prior on the  intercept or baseline value of 250.
+
+```{.r .numberLines}
+cat("model{ 
+	for (i in 1:5) {
+y[i] ~ dnorm(mu[i], tau)
+mu[i] <- alpha + beta*(x[i] - mean(x[]))
+ 
+  # missing data likelihood
+miss[i] ~ dbern(p[i])
+logit(p[i]) <- a + b*(y[i]-250)
+}
+
+a ~ dlogis(0, 1)
+b <- log(1.02)
+
+alpha ~ dunif(0, 100)
+beta ~ dunif(0, 100)
+tau ~ dgamma(0.001, 0.001)
+}", file="rat.txt")
+
+dat<-list(y = c(177,236,285,350,NA), 
+x = c(8,15,22,29,36),
+miss = c(0,0,0,0,1))
+
+params<-c("mu", "alpha", "beta")
+
+library(R2jags)
+
+rat.mod<-jags(data = dat,
+        parameters.to.save = params,
+        model.file = "rat.txt",
+        n.iter = 5000,
+        n.burnin = 2000,
+        n.thin = 1)
+
+print(rat.mod)
+
+library(mcmcplots)
+caterplot(rat.mod, parms="mu
+```
+
+
+## Missing Exposure or Covariate Data: Malaria Example ##
+
+The approach to missing exposure or covariate data is similar to that for missing outcome data.  We denote the missing covariate data as NA's in the data list object.  And we specify a prior (for missing at random), or a likelihood and a prior (for missing not at random) for the covariate. So, for example, if the covariate is normally distributed, we could specify a $N(\mu, \sigma^2)$ likelihood and place a vague prior on $\sigma^2$.  The posterior predictive distribution for $\mu$ and $\sigma$ will be informed by the observed part of the data. Or, as in the previous example, we could build a regression model relating the missing covariate to other observed quantities.
+
+As an example, we will look at missing data in a study of childhood malaria in the Gambia.  The numbers come from Diggle et al (2002) and consist of data on 2035 children in 65 villages.  A complete version of the data can be found in the "geoR" package.  We will be work with a [truncated data](bayes/bayes5/gambiaMissing.csv) set of 805 observations with missing observations which I obtained from the website of a [course on Bayesian approaches to missing data](http://www.bias-project.org.uk/Missing2012/MissingIndex.htm) taught by Nicky Best and Alexina Mason at Imperial College in London, UK.
+
+We want to know if sleeping under bed nets prevents malaria.  The binary outcome is the presence or absence of parasites in a blood smear. The "exposure" of interest is a variable on bed net use ("BEDNET"). Covariates include age, whether a village is part of a primary health-care system ("PHC") and the greenness of the surrounding vegetation based on satellite photography ("GREEN").
+
+After reading in the data, we see that the bed net use variable is missing in nearly 40% of the observations.  Clearly not ideal, but an all-to-frequent issue in observational epidemiology, particularly in the difficult field conditions of places like Western Africa.
+
+```{.r .numberLines}
+gambiaMissing<-read.csv(".. path to your data .../gambiaMissing.csv",
+header=T, stringsAsFactors=F)
+table(gambiaMissing$BEDNET)
+sum(is.na(gambiaMissing$BEDNET))/nrow(gambiaMissing)*100
+```
+
+We can take a couple of approaches.  We might be tempted to simply omit the observations with missing data.  This would be a mistake.  Not only would our power be reduced, but our results will be biased if, as is likely, the missing observations are not missing completely at random.  We could use the imputation approaches found in standard statistical packages. Depending on the package, and the approach this could be a reasonable solution.  But it is sometimes a "black box" into which we place our data and accept the results as valid. Or we could take one of the Bayesian approaches we've been discussing.
+
+One approach is to assume a simple Bernoulli probability of 1 for all the children:
+
+$$
+BEDNET \sim Bern(q) \\
+q \sim Beta(1,1)
+$$
+
+The BUGS model for this specification is:
+
+```{.r .numberLines}
+model{
+  for (i in 1:N) {
+  Y[i] ~ dbern(p[i]) 
+  logit(p[i]) <- alpha + beta.age*[AGE[i]] 
+               + beta.bednet * BEDNET[i] + 
+   beta.green*GREEN[i] – mean(GREEN[]) 
+ + beta.phc * PHC[i] 
+}
+   # model for missing exposure variable
+For (i in 1:N) { 
+BEDNET[i] ~ dbern(q) #prior model for whether or not child
+                     # sleeps under treated bednet
+}
+
+  #vague prior (uniform) on prob of sleeping under bednet
+  q ~ dbeta (1,1) 
+
+   #vague priors on regression coefficients
+   alpha ~ dnorm(0,0.00000001)
+   beta.age ~ dnorm(0,0.00000001)     
+   beta.bednet ~ dnorm(0,0.00000001)     
+   beta.green ~ dnorm(0,0.00000001)     
+   beta.phc ~ dnorm(0,0.00000001)
+
+  # calculate odds ratios of interest
+  OR.bednet <- exp(beta.bednet) #OR of malaria for children  
+                                #using  bednets
+  PP.bednet <- step(0.8 – OR.bednet) # prob that using 
+                          # malaria bednet reduces malaria risk 
+                          #by at least 20%
+}
+```
+
+***Or***, we could model the likelihood of bed net use based on information in the data.  Perhaps we believe that bed net use depends on whether the village was part of the primary health care system:
+
+$$
+BEDNET \sim Bern(q_i) \\
+logit(q_i) = \gamma_1 + \gamma_2 * PHC_i
+$$
+
+The BUGS specification for this model, with vague priors on $\gamma_1$ and $\gamma_2$ is:
+
+```{.r .numberLines}
+model{
+  for (i in 1:N) {
+  Y[i] ~ dbern(p[i]) 
+  logit(p[i]) <- alpha + beta.age*[AGE[i]] 
++ beta.bednet * BEDNET[i] + 
+   beta.green*GREEN[i] – mean(GREEN[]) 
++ beta.phc * PHC[i] 
+}
+   # model for missing exposure variable
+For (i in 1:N) { 
+BEDNET[i] ~ dbern(q) #prior for whether or not child
+                    # i sleeps under treated bednet
+logit(q[i]) <- gamma[1] + gamma[2] * PHC #allow prob of
+           # using treated bednet to depend on whether or not
+           # village belongs to primary health system
+}
+(for k in 1:2) {
+   gamma [k] ~ dflat()
+}
+OR.bednet.phc <- exp(gamma[2])  # OR for malaria  
+                                #sleeping under bednet for 
+                                # children living in villages in the PHC
+
+   #vague priors on regression coefficients
+   alpha ~ dnorm(0,0.00000001)
+   beta.age ~ dnorm(0,0.00000001)     
+   beta.bednet ~ dnorm(0,0.00000001)     
+   beta.green ~ dnorm(0,0.00000001)     
+   beta.phc ~ dnorm(0,0.00000001)
+
+  # calculate odds ratios of interest
+  OR.bednet <- exp(beta.bednet) #OR of malaria for children  
+                                #using  bednets
+  PP.bednet <- step(0.8 – OR.bednet) # prob that using 
+                          # malaria bednet reduces malaria risk 
+                          #by at least 20%
+}
+```
+
+## Your turn... ##
+
+Try fitting informative models for missing bed net exposure variable using [these data](bayes/bayes5/gambiaMissing.csv).  First fit a model where the probability of missing data is informed solely by whether a child in part of the primary health care system. Next, try fitting a more complex model, where in addition to primary health care, the probability of missingness is also a function of the child's age and surrounding vegetation.  Compare these two models to a "complete case" model, where you simply discard the cases with missing data. Note that JAGS doesn't like missing covariate data, so you'll have to create a new, subsetted data set (don't forget to change the index value for the loop).  You can find the [code for this exercise here](bayes/bayes5/gambia.R).
+
+If you're interested, Dr. Diggle's complete 2,035-observation data set is easily available in R as the "gambia" data set in the "geoR" package.  Try running a non-Bayesian logistic regression on these complete data and compare the results to those above.
+
+# Twin or Paired Data #
+
+
+We can extend the hierarchical models we introduced in the previous section to generalized linear mixed models (GLMMs) for paired data.  Let's look at genetic data from a twin registry study. These paired data are the simplest type of correlation between measurements and lend themselves naturally to a hierarchical model. We will extend the hierarchical structure we've already seen to accommodate different kinds of correlation that arise from monozygotic (MZ) and dizygotic (DZ) twin pairs.
+
+A continuous outcome $y$ in $n$ twin pairs is indexed by $j$, so that  $y_{ij}$ is the measurement of the $j^{th}$ of two twins in the $i^{th}$ twin pair. We assume that a single pair of twins have the same mean ($E({y}_{i1}) = E({y}_{i2}) = {a}_{i}$) and a common variance ($var({y}_{i1}) = var({y}_{i2}) = {\sigma}^{2}_{e}$), and that *given the mean*, they are uncorrelated ($cov({y}_{i1}, {y}_{i2}) = 0$), i.e. they are conditionally independent
+
+Our model, then, is:
+
+$$
+\begin{eqnarray*}
+{y}_{i1} & = & {a}_{i} + {\varepsilon}_{i1}
+{y}_{i2} & = & {a}_{i} + {\varepsilon}_{i2}
+\end{eqnarray*}
+$$
+where
+$$
+var({\varepsilon}_{i1}) = var({\varepsilon}_{i2}) =
+{\sigma}^{2}_{e}
+$$
+and
+$$
+cov({\varepsilon}_{i1}, {\varepsilon}_{i2}) = 0
+$$
+
+We extend this to a hierarchical model by assuming a normally distributed population hyperparemeter for the pair-level means:
+
+$$
+\begin{equation*}
+{a}_{i} \sim {\text {N}}(\mu,{\sigma}^{2}_{a}).
+\end{equation*}
+$$
+
+
+So, the observation-level model, for j=1,2 is
+
+$$
+\begin{equation*}
+{y}_{ij} | {a}_{i}, {\sigma}^{2}_{e} \sim {\text {N}}({a}_{i},
+{\sigma}^{2}_{e})
+\end{equation*}
+$$
+
+and the pair-level mode for j=1,2 is
+
+
+$$
+\begin{equation*}
+{a}_{i} | \mu, {\sigma}^{2}_{a} \sim {\text {N}}(\mu,
+{\sigma}^{2}_{a})
+\end{equation*}
+$$
+
+The joint distribution of ${y}_{i1}$ and ${y}_{i2}$ is bivariate normal
+
+$$
+\begin{equation*}
+\left({\begin{array}{c} {y}_{i1} \\ {y}_{i2} \end{array}}\right) =
+{\text {N}}_{\text {2}} \left[{\left({\begin{array}{c} \mu
+\\ \mu \end{array}}\right),\left[{\begin{array}{cc}
+{\sigma}^{2}_{a} + {\sigma}^{2}_{e} & {\sigma}^{2}_{a} \\
+{\sigma}^{2}_{a} & {\sigma}^{2}_{a} + {\sigma}^{2}_{e}
+\end{array}}\right]}\right]
+\end{equation*}
+$$
+
+Twin data are a special case of paired data, where outcomes are possibly influenced by both genetic and environmental factors.  MZ twins share all their genes; DZ twins (like any siblings) share half their genes. If the outcome is under genetic influence *we expect less within-pair variation in DZ twins* than in MZ twins.  Assuming MZ twins exhibit the maximum covariation in traits, the fraction of covariation in DZ twins vs. MZ twins ($\rho_{DZ:MZ}$) is the ratio of covariances between DZ and MZ pairs.
+
+$$
+\begin{equation*}
+{cov}_{DZ}({y}_{i1}, {y}_{i2}) =
+{\rho}_{DZ:MZ}{cov}_{MZ}({y}_{i1}, {y}_{i2})
+\end{equation*}
+$$
+
+We use $\rho_{DZ:MZ}$ to assess genetic influence in a trait:
+
+- If $\rho_{DZ:MZ}=1$ then the outcome is not more correlated in MZ vs. DZ twins so there is no evidence of genetic influence.
+- If $\rho_{DZ:MZ}=\frac{1}{2}$ then the outcome covaries less in DZ twins (or more in MZ) and we have a so-called *additive genetic model* or "classical twin model", indicating a genetic influence on the outcome.
+- $0 < {\rho}_{DZ:MZ} < 1$ but ${\rho}_{DZ:MZ} \neq \frac{1}{2}$ indicates a non-additive genetic model (gene-gene interaction) or shared environmental influence.
+
+We use our model to incorporate this information by incorporating three random effects per twin pair: ${a}_{i1}$, ${a}_{i2}$ and ${a}_{i3}$.
+
+- Regardless of zygosity both individuals in a twin-pair share the first random effect ${a}_{i1}$.
+- Individuals in MZ pairs share the second random effect ${a}_{i2}$.
+- For DZ pairs, one member of the pair receives ${a}_{i2}$ and the other member receives ${a}_{i3}$.
+
+
+Random Effects:
+
+                           a(common)          a(MZ)       a(DZ1)        a(DZ2)
+-----       ---------    -----------      ---------     --------     ---------
+MZ          twin 1                1              1            0             0   
+MZ          twin 2                1              1            0             0   
+DZ          twin 1                1              0            1             0   
+DZ          twin 2                1              0            0             1   
+  
+
+
+where for MZ pairs
+$$
+\begin{eqnarray*}
+{y}_{i1} & = & \sqrt{\rho}~{a}_{i1} + \sqrt{1-\rho}~{a}_{i2} + {\varepsilon}_{i1} \\
+{y}_{i2} & = & \sqrt{\rho}~{a}_{i1} + \sqrt{1-\rho}~{a}_{i2} +
+{\varepsilon}_{i2}
+\end{eqnarray*}
+$$
+
+and for DZ pairs
+$$
+\begin{eqnarray*}
+{y}_{i1} & = & \sqrt{\rho}~{a}_{i1} + \sqrt{1-\rho}~{a}_{i2} + {\varepsilon}_{i1} \\
+{y}_{i2} & = & \sqrt{\rho}~{a}_{i1} + \sqrt{1-\rho}~{a}_{i3} +
+{\varepsilon}_{i2}
+\end{eqnarray*}
+$$
+
+Note the complexity for even the simple setting of twin-pair correlation.  This complexity increases when working with family-level correlations.
+
+## Example: Mammographic Density ##
+
+
+The following example was taken (as was the Raine Cohort example in the previous section) from Bendix Carson and Lyle Gurrin's course on [Practical Data Analysis Using BUGS and R](http://bendixcarstensen.com/Bayes/Cph-2012/).  Women with higher breast tissue density on mammography are at increased risk of developing breast cancer, than similarly-aged women with lower breast tissue density. In this example, we use [these data](bayes/bayes5/mgramDat.csv) from MZ and DZ twin-pair women from North America and Australia to analyze the within-pair correlation of age and weight adjusted breast density.  The following table describes the variables in the data set:
+
+------          -----------------------------------------------------
+pdens1 			Percent mammographic density twin 1
+pdens2 			Percent mammographic density twin 2
+weight1 		Weight (kg) twin 1
+weight2 		Weight (kg) twin 2
+mz 				Indicator of MZ pair (1 = MZ, 0 = DZ)
+dz 				Indicator of DZ pair (1 = DZ, 0 = MZ)
+agemgram1 		Age in years of twin 1 at mammogram
+agemgram2 		Age in years of twin 2 at mammogram
+study 			Location indicator (1 = Australia, 0 = North America)
+------          ------------------------------------------------------
+
+Here's some code for a model to analyze these data for the within-pair correlation for mammographic density.   
+
+```{.r .numberLines}
+cat( "model
+{
+for (i in 1:951)
+{
+pdens1[i] ~ dnorm(a[i],tau.e)
+pdens2[i] ~ dnorm(a[i],tau.e)
+a[i] ~ dnorm(mu,tau.a)
+}
+
+tau.a <- pow(sigma.a,-2)
+sigma.a ~ dunif(0,1000)
+
+tau.e <- pow(sigma.e,-2)
+sigma.e ~ dunif(0,1000)
+mu ~ dnorm(0,1.0E-6)
+sigma2.a <- pow(sigma.a,2)
+sigma2.e <- pow(sigma.e,2)
+}",
+file="mgram1.jag" )
+```
+
+Read in the data from the link above, and try setting up a model in JAGS to use the posterior means for $\sigma^2_a$ and $\sigma^2_e$ to estimate the within-pair correlation of $y_{i1}$ and $y_{i2}$. 
+
+
+If you're feeling particularly brave, try using the following code to extend the model to assess the role of genetic vs. environmental influences with $\rho_{DZ:MZ}$
+
+```{.r .numberLines}
+cat(
+"model
+{
+for (i in 1:951)
+{
+pdens1[i] ~ dnorm(mean.pdens1[i],tau.e)
+pdens2[i] ~ dnorm(mean.pdens2[i],tau.e)
+mean.pdens1[i] <- b.int + sqrt(rho)*a1[i] + sqrt(1-rho)*a2[i]
+mean.pdens2[i] <- b.int + sqrt(rho)*a1[i] + mz[i]*sqrt(1-rho)*a2[i] + dz[i]*sqrt(1-rho)*a3[i]
+a1[i] ~ dnorm(0,tau.a)
+a2[i] ~ dnorm(0,tau.a)
+a3[i] ~ dnorm(0,tau.a)
+}
+
+rho ~ dunif(0,1)
+
+b.int ~ dnorm(0,0.0001)
+
+tau.a <- pow(sigma.a,-2)
+sigma.a ~ dunif(0,1000)
+
+tau.e <- pow(sigma.e,-2)
+sigma.e ~ dunif(0,1000)
+
+sigma2.a <- pow(sigma.a,2)
+sigma2.e <- pow(sigma.e,2)
+}",
+file="mgram2.jag" )  
+```
+
+If you must, peak at the answers [here](bayes/bayes5/twinSyntax.R)
+
+
+# Comparing Clinical Measurements #
+
+## Bland Altman ##
+
+ In 1986, Martin Bland and Douglas Altman wrote a paper [^BlandAltman1986] about statistical approaches to comparing clinical measurements that has been called [the most cited highly cited statistical paper ever](http://www-users.york.ac.uk/~mb55/meas/history.htm).  As of 2007, it had been cited over [11,500 times](http://bja.oxfordjournals.org/content/99/3/309.full).  For that reason alone, it worth spending a little time considering the subject.  It also turns out that Bayesian approaches can expand on Bland and Altman's approach, in particular to address the issue of *replicate measurements* and *measurements on different scales*.  
+
+[^BlandAltman1986]:  Bland JM, Altman DG (1986). Statistical methods for assessing agreement between two methods of clinical measurement. Lancet 327 (8476): 307–10.
+
+The following figure (from Bendix Carstensen) plots human milk fat content measurements by two methods (Gerber vs. Ting).
+
+
+![Figure: Human Milk Fat Content Measurement by Two Methods](bayes/bayes5/measure1.jpg)
+
+While informative, Bland and Altman pointed out that these kinds of comparisons are essentially *correlations* and that (1) since they are measuring the same thing, they are likely to be correlated, and (2)  dispersed sample values will only add to that correlation (see [Anscombe's quartet](http://en.wikipedia.org/wiki/Anscombe's_quartet)...).  It does not, however, tell us very much about how closely the two measurements *agree*, or whether they are close enough in value so one can reasonably replace the other.  For that, Bland and Altman recommended plotting the differences between the two different measurements of a sample ($D_i=y_{2i}-y_{1i}$) against the average value of the two measurements for that sample ($\frac {y_{2i}+y_{1i}}{2}$).  We then place two confidence bands on the upper and lower 95% values based on the summary estimate of the differences ($\bar{D} \pm s.d(D)$). [^badIdea] , and ask ourselves, "Are the limits of agreement narrow enough that either method acceptable?".  The evaluation is is informed primarily by this graphical tool.
+
+[^badIdea]: Hypothesis testing for a difference = 0 is usually a bad idea, since the result is too sensitive to sample size.
+
+![Figure: Bland Altman Plot of Milk Fat Content Data](bayes/bayes5/measure2.jpg)
+
+
+### Basic Model ###
+
+The underlying model for the limits of agreement is:
+
+- individual measurement = difference between methods + "true" measurement + measurement error
+
+Where, for method "m", and measurement "i", 
+
+- $y_{mi} = \alpha_m + \mu_i + e_{mi}$
+	- (constant) difference between methods $\alpha_m$
+	- $e_{mi} \sim N(0, \sigma^2_m)$
+
+
+The $\beta$ coefficient for this general model converts one measurement scale to the other:
+
+- $y_{1i} = \alpha_1 + \beta_1\mu_i + e_{1i}$
+- $y_{2i} = \alpha_2 + \beta_2\mu_i + e_{2i}$
+
+With the error specifications:
+
+-  $e_{1i} \sim N(0, \sigma^2_1)$
+-  $e_{2i} \sim N(0, \sigma^2_2)$
+
+We can use the conversion equations with 2 s.d. prediction limits to relate methods.  So, for example, we see in the figure below that a capillary glucose  measure of 10 maps to venous glucose measure of 10 to 14.  Conversely, a venous measure of 10 maps to capillary measure of 7 to 10
+
+![Figure: Converting one measurement to another](bayes/bayes5/measure3.jpg)
+
+## Replicate Measurements ##
+
+Bland-Altman has clearly been quite useful and extra-ordinarily influential.  But, is has also been used in settings for which it was not intended, for example, [replicate measurements](http://bja.oxfordjournals.org/content/99/3/309.full).  For example, 2 blood pressure measurements on the same patient at different times, or repeated measurements comparing pulse oximetry and pulse rates.  As discussed in the section on Bayesian hierarchical modeling, repeated measurements are exchangeable in that they are linked, but not paired.
+
+We can extend the limits-of-agreement model above to exchangeable replicates:
+
+- $y_{mi} = \alpha_m + \mu_i + c_{mi} + e_{mir}$
+
+Where, assuming exchangeability for replicates within same method,  $c_{mi}$ is a random effect term for the method with a standard deviation or "matrix effect" $\tau_m$, and the error term ($e_{mir}$) is expanded to include the error for combination of replicate and method.  
+
+We can further expand the replicate limits-of-agreement model to *linked* replicates (i.e. replicates within an individual are made under similar conditions for all methods):
+
+- $y_{mir} = \alpha_m + \mu_i + a_{ir} + c_{mi} + e_{mir}$
+
+Where $a_{ir}$ is a random effect term for how a measure varies within subject, and we now view the "true" measurement as $\mu_i + a{ir}$, i.e. "true" mean effect plus replicate variation (which is the same across methods), and the standard deviation for $a_{ir}$ is $\omega$
+
+
+## Measurements on Different Scales ##
+
+Sometimes the methods we wish to compare are measured on different scales, e.g. from pulse oximetry to an arterial blood gas.  We can scale one method to another:
+
+$y_{mir} = \alpha_m + \beta_m \mu_i + a_{ir} + c_{mi} + e_{mir}$
+
+Which is essentially the same as the previous model, but $\beta_mu$ allows transformation from one scale to another.  The multiplication of measurements from one scale to the other does not change the results of the analysis.  In terms of variance components,  transforming from one scale to another is a function of $\mu$,  $a$  and $c$, or $y_{mi} = \alpha_m + \beta_m (\mu_i + a_{ir} + c_{mi}) + e_{mir}$.  This kind of model, (multiplying random effects by a coefficient) can't be coded in standard software, but is relatively straight-forward with Bayesian MCMC methods.
+
+## The "MethComp" Package ##
+
+These transformations, statistics and plots can be implemented in the R package "MethComp", by Bendix Carstensen, University of Copenhhagen. [^BendixCarstensen] Functions in the package will:
+
+- read the (correctly structured) data into R,
+- transform the data to a "Meth" object,
+- and conduct analyses, do transformations, plot results
+
+[^BendixCarstensen]:  From whom the material in this section is taken
+
+It is all still, basically, Bland-Altman, but uses Bayesian approaches to address the issues of replicate measurements and scalability, where, in summary, if you wanted to predict method 2 from method 1:	
+
+- $y_{1ir} = \alpha_1 + \beta_1 (\mu_i + a{ir} + c_{1i}) + e_{1ir}$
+- and, $y_{2ir} = \alpha_2 + \beta_2 (\mu_i + a{ir} + c_{2i}) + e_{2ir}$
+- so, $y_{2ir} = \alpha_2 + \frac{\beta_2}{\beta_1}(y_{1ir}-\alpha_1-e_{1ir}) + \beta_2(-c_{1i} + c_{1i})$
+	- random effect have $E=0$, and after some algebra
+- $Ey_{2i}|Ey_{1i}= y_{2i}= \alpha_2 + \frac{\beta_2}{\beta_1}(y_{1i}-\alpha_1)$
+
+Here is a brief illustration of the package
+
+
+```{.r .numberLines}
+
+ #MEASUREMENT COMPARISON IN OXIMETRY
+
+ # install and start up package
+
+install.packages("BRugs")
+install.packages("MethComp")
+library(MethComp)
+
+ # load and look at pulse oximetry data
+data(ox)
+?ox
+head(ox)
+
+ # transform to a "Meth" object
+ox<-Meth(ox)
+names(ox)
+table(ox$meth)
+
+ #  some plots
+BA.plot(ox) #basic Bland-Altman
+BA.plot(ox, repl.conn=T) # connect linked measurements
+#  # plot meth1 vs. meth2 instead of BA differences
+BA.plot(ox, repl.conn=T, pl.type="conv")
+
+
+ # variance components model that assumes constant difference between methods
+ # i.e. simple Bland Altman y_mi = alpha_m + mu_i + e_mi
+BA.est(ox)
+
+ # mixed model for replicates using mcmc
+ # y_{mir} = \beta_m(\mu_i + a_{ir} + c{mi}) + e{mir}
+Jox<-MCmcmc(ox, program="JAGS", n.iter=200)
+
+ # note "model.txt object in workspace has the model code"
+Jox
+ # e.g. CO = -6.633 + 1.078*pulse \pm 4.712
+
+# summarize conversion equations
+MethComp(Jox)
+
+ # fit model to logit-transformed data
+BA.plot(ox, Transform="pctlogit", repl.conn=T, axlim=c(0,100), xaxs="i") # first look at the transformed data
+tJox<-Jox<-MCmcmc(ox, program="JAGS", n.iter=200, Transform="pctlogit")
+tJox
+MethComp(tJox)
+
+```
+
+
+
+
+
