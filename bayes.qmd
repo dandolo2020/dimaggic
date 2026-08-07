@@ -1,6 +1,0 @@
----
-title: "Bayes"
-editor: visual
----
-
-Bayesian statistics are a method of calculating estimates of the kinds of probabilities in which epidemiologists are often interested. We can directly estimate the probability of parameters like relative risks and odds ratios. We can predict future data values by explicitly conditioning our predictions on the existing evidence. Perhaps most compellingly, Bayesian analysis offers an attractively intuitive, yet methodologically rigorous way to update our knowledge. If our existing knowledge is scant or non-existent, and if we have a lot of data, our conclusions will be based almost entirely on the evidence at hand. But, if we have some pre-existing knowledge, say a strong intuition based on years of observation and experience, or if we’ve already conducted a number of experiments and have accumulated some results, Bayesian analysis allow us to use our knowledge. Bayesian analysis is about rational thought, and rational thought is at its core a matter of learning from observation and updating our conclusions about the world around us.

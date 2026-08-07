@@ -1,0 +1,64 @@
+---
+Title: "Introduction to Epidemiology"
+---
+
+# Introduction to Epidemiology
+
+This material serves as brief overview and an introduction to the uses, methodology and clinical application of epidemiology. The main goals are to:
+
+* State the main applications and uses of epidemiology
+* Identify the most commonly used study designs
+* Understand the advantages and limitations of epidemiological measurements
+* Apply the knowledge gained by critically evaluating the medical literature
+* Define evidence-based medicine
+* Create a clinical query based on a patient’s chief complaint
+* Apply the knowledge gained by effectively searching medical databases to answer clinical queries.
+
+# Course Outline
+
+## Epidemiology
+
+[Introduction](/epidemiology/durbanIntroduction.pdf): 
+
+* History of Epidemiology
+* Concepts in Infectious Disease Epidemiology
+* Introduction to Biostatistical Concepts
+
+[Study Designs I](/epidemiology/durbanStudiesI.pdf): 
+
+* Randomized Controlled Trials
+* Cohort Studies
+
+[Study Designs II](/epidemiology/durbanStudiesII.pdf): 
+
+* Case-Control Studies
+* Ecologic Studies
+* Cross-Sectional Studies
+
+[Threats to Validity](/epidemiology/durbanValidity.pdf): 
+
+* Confounding and Bias
+
+[Interaction](/epidemiology/intxPresent.pdf):
+
+* Approaches in SAS
+
+
+## Evidence-Based Medicine
+
+[Introduction](/epidemiology/durbanEBMIntro.pdf): 
+
+* Definitions
+* Elements of EBM
+* PICO, Sources and Searches
+
+[Diagnosis](/epidemiology/durbanEBMDx.pdf): 
+
+* Sensitivity, Specificity,
+* Positive and Negative Predictive Values
+* Likelihood Ratios, SNout, SPin
+
+[Treatment](/epidemiology/durbanEBMTx.pdf): 
+
+* Number Needed to Treat / Harm
+

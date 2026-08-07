@@ -608,5 +608,35 @@
     "title": "R Screencasts",
     "section": "Survival Analysis",
     "text": "Survival Analysis\nAn overview of the fundamental difference between disease risk and disease rates, and the implication of this difference for modeling time to event data. \nA description of the assumptions underlying binomial models and exponential models of disease risk, and the role of Kaplan-Meier and the product limit estimator when those assumptions can not be reasonably met. \nA description of the Kaplan-Meier method and illustration of how it can be implemented with basic R code. \nAn overview of how survival methods can be implemented in R using functions in the “survival” package."
+  },
+  {
+    "objectID": "epidemiology/introEpi.html",
+    "href": "epidemiology/introEpi.html",
+    "title": "Introduction to Epidemiology",
+    "section": "",
+    "text": "This material serves as brief overview and an introduction to the uses, methodology and clinical application of epidemiology. The main goals are to:\n\nState the main applications and uses of epidemiology\nIdentify the most commonly used study designs\nUnderstand the advantages and limitations of epidemiological measurements\nApply the knowledge gained by critically evaluating the medical literature\nDefine evidence-based medicine\nCreate a clinical query based on a patient’s chief complaint\nApply the knowledge gained by effectively searching medical databases to answer clinical queries.",
+    "crumbs": [
+      "Introduction to Epidemiology"
+    ]
+  },
+  {
+    "objectID": "epidemiology/introEpi.html#epidemiology",
+    "href": "epidemiology/introEpi.html#epidemiology",
+    "title": "Introduction to Epidemiology",
+    "section": "Epidemiology",
+    "text": "Epidemiology\nIntroduction:\n\nHistory of Epidemiology\nConcepts in Infectious Disease Epidemiology\nIntroduction to Biostatistical Concepts\n\nStudy Designs I:\n\nRandomized Controlled Trials\nCohort Studies\n\nStudy Designs II:\n\nCase-Control Studies\nEcologic Studies\nCross-Sectional Studies\n\nThreats to Validity:\n\nConfounding and Bias\n\nInteraction:\n\nApproaches in SAS",
+    "crumbs": [
+      "Introduction to Epidemiology"
+    ]
+  },
+  {
+    "objectID": "epidemiology/introEpi.html#evidence-based-medicine",
+    "href": "epidemiology/introEpi.html#evidence-based-medicine",
+    "title": "Introduction to Epidemiology",
+    "section": "Evidence-Based Medicine",
+    "text": "Evidence-Based Medicine\nIntroduction:\n\nDefinitions\nElements of EBM\nPICO, Sources and Searches\n\nDiagnosis:\n\nSensitivity, Specificity,\nPositive and Negative Predictive Values\nLikelihood Ratios, SNout, SPin\n\nTreatment:\n\nNumber Needed to Treat / Harm",
+    "crumbs": [
+      "Introduction to Epidemiology"
+    ]
   }
 ]

@@ -1,8 +1,0 @@
----
-title: "About"
----
-
-*Welcome to CUIRE, Curriculum for Urban Injury Research and Epidemiology.*
-
-Injuries exact an enormous toll on population health and well-being. Clinicians and epidemiologists can contribute to controlling and preventing the physical and social consequences of injuries by collecting, analyzing and interpreting data to help guide control and preparedness efforts. As public health practitioners we are challenged to more broadly define injuries to include behavioral and mental health outcomes, utilize non-traditional and forward-thinking research methods, and structure innovative control and treatment programs based on evidence. This site contributes to this by presenting injury-related background material, methods, data sets, injury-related studies, presentations and lectures, descriptions of and links to related sites and epidemiological tools. You will also find a material for workshops I teach on epidemiology and related methods.
-

@@ -10,8 +10,9 @@ website:
         text: " "
         icon: house-door-fill
       - sidebar:bayes
+      - sidebar:epidemiology
       - rCourse.qmd
-      
+
   sidebar:
     - id: bayes
       title: "Bayes"
@@ -24,6 +25,15 @@ website:
           - bayes/bayes3/bayes3.qmd
           - bayes/bayes4/bayes4.qmd
           - bayes/bayes5/bayes5.qmd
+
+    - id: epidemiology
+      title: "Epidemiology"
+      style: "docked"
+      background: light
+      collapse-level: 2
+      contents:
+          - epidemiology/introEpi.qmd
+          - epidemiology/injuryDisaster.qmd
 
 format:
   html:

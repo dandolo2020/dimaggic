@@ -1,0 +1,21 @@
+---
+Title: "Injuries and Disasters"
+---
+
+# Injury Epidemiology
+
+[Brief Introduction to Injury Epidemiology(/epidemiology/injuryOverview.pdf)]
+
+A quick overview of injury epidemiology basics based on one of the introductory chapters from my disertation on pediatric pedestrian injuries.
+
+[Slides](/epidemiology/hsphInjury3.pdf) for a (somewhat) more recent talk on injury epidemiology.
+
+
+# Disaster Epidemiology
+
+Brief [overview](/epidemiology/briefIntroDisEpi.pdf) of disaster epidemiology.
+
+
+
+
+
