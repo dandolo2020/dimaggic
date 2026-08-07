@@ -16,25 +16,6 @@ I am indebted to the following individuals upon who's work the material in these
 [Shane Jensen](http://www-stat.wharton.upenn.edu/~stjensen/) and [Statistical Horizons](http://www.statisticalhorizons.com/)  
 
 
-#Sections
-
-[I. Grid Sampling](#grid-sampling)      
-[1. The Multi-Parameter Normal Model](##the-multi-parameter-normal-model)     
-[2. Random Sampling From a Standard Distribution](##random-sampling-from-a-standard-distribution)    
-[3. Grid Sampling From a Non-Standard Distribution](##Grid-sampling-from-a-non-standard-distribution)      
-[4. Grid Sampling for Airline Crash Example](##grid-sampling-for-airline-crash-example)   
-
-[II. MCMC](#MCMC)         
-[1. Introduction to Monte Carlo](##introduction-to-monte-carlo)     
-[2. Introduction to Markov Chain Monte Carlo](##introduction-to-markov-chain-monte-carlo)     
-[3. The Metropolis Algorithm](###the-metropolis-algorithm)            
-[4. Gibbs Sampling](###gibbs-sampling)                
-[5. Running MCMC in BUGS](##running-mcmc-in-bugs)              
-      
-
-
-
-
 # Grid Sampling# 
 
 In the [first part](/bayes/bayes1/bayes1.qmd) of this discussion, we considered relatively simple one-parameter models and conjugate analysis.  Before we move on to the kinds of Markov Chain Monte Carlo methods in common use for more complex problems, we'll take some first steps toward realistic problems that require computational methods. The first such method is called grid sampling, which we present in the setting of both normal and Poisson models.  

@@ -1,0 +1,400 @@
+"date","start_name","start_lon","start_lat","end_name","end_lon","end_lat"
+"2009-05-09 00:00:00","Fulton St and Lawrence St, Brooklyn, NY",-73.9864335,40.6910807,"Fulton St and Bridge St, Brooklyn, NY",-73.985358,40.6906554
+"2009-05-21 00:00:00","Fulton St and Lawrence St, Brooklyn, NY",-73.9864335,40.6910807,"Fulton St and Bridge St, Brooklyn, NY",-73.985358,40.6906554
+"2009-05-30 00:00:00","37th Av and 73rd St, Queens, NY",-73.8927059,40.7488734,"37th Av and 74th St, Queens, NY",-73.8917887,40.7489574
+"2009-06-04 00:00:00","37th Av and 73rd St, Queens, NY",-73.8927059,40.7488734,"37th Av and 74th St, Queens, NY",-73.8917887,40.7489574
+"2009-05-30 00:00:00","Fresh Pond Rd and Cypress Hills St, Queens, NY",-73.895418,40.703199,"Fresh Pond Rd and 70th Av, Queens, NY",-73.895202,40.702593
+"2009-06-04 00:00:00","Fresh Pond Rd and Cypress Hills St, Queens, NY",-73.895418,40.703199,"Fresh Pond Rd and 70th Av, Queens, NY",-73.895202,40.702593
+"2009-05-23 00:00:00","Trinity Pl and Rector St, New York, NY",-74.0129696,40.707776,"Trinity Pl and Thames St, New York, NY",-74.0121268,40.7089922
+"2009-06-03 00:00:00","Trinity Pl and Rector St, New York, NY",-74.0129696,40.707776,"Trinity Pl and Thames St, New York, NY",-74.0121268,40.7089922
+"2009-06-16 00:00:00","Prince St and 37th Av, Queens, NY",-73.832741,40.7609372,"Prince St and 38th Av, Queens, NY",-73.8326174,40.7601691
+"2009-06-06 00:00:00","Prince St and 37th Av, Queens, NY",-73.832741,40.7609372,"Prince St and 38th Av, Queens, NY",-73.8326174,40.7601691
+"2009-06-10 00:00:00","Forest Av and Regan Av, Staten Island, NY",-74.1089129,40.6301259,"Forest Av and Davis Av, Staten Island, NY",-74.1082945,40.6302444
+"2009-06-13 00:00:00","Forest Av and Regan Av, Staten Island, NY",-74.1089129,40.6301259,"Forest Av and Davis Av, Staten Island, NY",-74.1082945,40.6302444
+"2009-06-13 00:00:00","Victory Blvd and Bay St, Staten Island, NY",-74.0768692,40.6377491,"Victory Blvd and Van Duzer St, Staten Island, NY",-74.0778996,40.6380943
+"2009-06-18 00:00:00","Victory Blvd and Bay St, Staten Island, NY",-74.0768692,40.6377491,"Victory Blvd and Van Duzer St, Staten Island, NY",-74.0778996,40.6380943
+"2009-06-13 00:00:00","Pedestrian Walkway from Ferry Terminal and 50' N of Richmond Te, Staten Island, NY",-74.1502007,40.5795317,"Pedestrian Walkway from Ferry Terminal and 0, Staten Island, NY",-74.1502007,40.5795317
+"2009-06-18 00:00:00","Pedestrian Walkway from Ferry Terminal and 50' N of Richmond Te, Staten Island, NY",-74.1502007,40.5795317,"Pedestrian Walkway from Ferry Terminal and 0, Staten Island, NY",-74.1502007,40.5795317
+"2009-05-09 00:00:00","86th St and 4th Av, Brooklyn, NY",-74.0283731,40.6227982,"86th St and 5th Av, Brooklyn, NY",-74.0262112,40.6214868
+"2009-05-19 00:00:00","86th St and 4th Av, Brooklyn, NY",-74.0283731,40.6227982,"86th St and 5th Av, Brooklyn, NY",-74.0262112,40.6214868
+"2009-05-05 00:00:00","5th Av and 51st St, Brooklyn, NY",-74.010902,40.644547,"5th Av and 52nd St, Brooklyn, NY",-74.0114771,40.6439853
+"2009-05-09 00:00:00","5th Av and 51st St, Brooklyn, NY",-74.010902,40.644547,"5th Av and 52nd St, Brooklyn, NY",-74.0114771,40.6439853
+"2009-05-21 00:00:00","Van Brunt St and Beard St, Brooklyn, NY",-74.0154118,40.675196,"Van Brunt St and Van Dike St, Brooklyn, NY",-74.0147965,40.6757316
+"2009-05-23 00:00:00","Van Brunt St and Beard St, Brooklyn, NY",-74.0154118,40.675196,"Van Brunt St and Van Dike St, Brooklyn, NY",-74.0147965,40.6757316
+"2009-05-09 00:00:00","7th Av and 9th St, Brooklyn, NY",-73.98159,40.6668949,"7th Av and 8th St, Brooklyn, NY",-73.98108,40.6675087
+"2009-05-19 00:00:00","7th Av and 9th St, Brooklyn, NY",-73.98159,40.6668949,"7th Av and 8th St, Brooklyn, NY",-73.98108,40.6675087
+"2009-05-05 00:00:00","5th Av and Union St, Brooklyn, NY",-73.980459,40.6764097,"5th Av and President St, Brooklyn, NY",-73.9808862,40.6757759
+"2009-05-09 00:00:00","5th Av and Union St, Brooklyn, NY",-73.980459,40.6764097,"5th Av and President St, Brooklyn, NY",-73.9808862,40.6757759
+"2009-05-21 00:00:00","Broadway and Morris St, New York, NY",-74.0132953,40.7058852,"Broadway and Exchange Pl, New York, NY",-74.0125033,40.7067527
+"2009-05-23 00:00:00","Broadway and Morris St, New York, NY",-74.0132953,40.7058852,"Broadway and Exchange Pl, New York, NY",-74.0125033,40.7067527
+"2009-05-21 00:00:00","Broad St and Marketfield St, New York, NY",-74.0115808,40.7047001,"Broad St and South William St, New York, NY",-74.0115913,40.7042279
+"2009-05-23 00:00:00","Broad St and Marketfield St, New York, NY",-74.0115808,40.7047001,"Broad St and South William St, New York, NY",-74.0115913,40.7042279
+"2009-05-23 00:00:00","Wall St and New St, New York, NY",-74.011272,40.7074989,"Wall St and Nassau St, New York, NY",-74.0107108,40.7071433
+"2009-05-27 00:00:00","Wall St and New St, New York, NY",-74.011272,40.7074989,"Wall St and Nassau St, New York, NY",-74.0107108,40.7071433
+"2009-05-23 00:00:00","Chambers St and W Broadway, New York, NY",-74.0092304,40.7155172,"Chambers St and Greenwich St, New York, NY",-74.0109403,40.7162918
+"2009-05-27 00:00:00","Chambers St and W Broadway, New York, NY",-74.0092304,40.7155172,"Chambers St and Greenwich St, New York, NY",-74.0109403,40.7162918
+"2009-05-23 00:00:00","Fulton St  and Broadway, New York, NY",-74.0090837,40.7109267,"Fulton St  and Nassau St , New York, NY",-74.0077407,40.7102288
+"2009-05-28 00:00:00","Fulton St  and Broadway, New York, NY",-74.0090837,40.7109267,"Fulton St  and Nassau St , New York, NY",-74.0077407,40.7102288
+"2009-05-23 00:00:00","Fulton St   and Cliff St, New York, NY",-74.0047919,40.7083979,"Fulton St   and Pearl St, New York, NY",-74.0040953,40.7074172
+"2009-05-28 00:00:00","Fulton St  and Cliff St, New York, NY",-74.0047919,40.7083979,"Fulton St  and Pearl St, New York, NY",-74.0040953,40.7074172
+"2009-05-16 00:00:00","Montague St and Henry St, Brooklyn, NY",-73.9942953,40.6947901,"Montague St and Clinton St, Brooklyn, NY",-73.9924185,40.6942868
+"2009-05-21 00:00:00","Montague St and Henry St, Brooklyn, NY",-73.9942953,40.6947901,"Montague St and Clinton St, Brooklyn, NY",-73.9924185,40.6942868
+"2009-05-16 00:00:00","Old Fulton St and Elizabeth Pl, Brooklyn, NY",-73.9937792,40.7026958,"Old Fulton St and Everit St, Brooklyn, NY",-73.9942187,40.7027513
+"2009-05-21 00:00:00","Old Fulton St and Elizabeth Pl, Brooklyn, NY",-73.9937792,40.7026958,"Old Fulton St and Everit St, Brooklyn, NY",-73.9942187,40.7027513
+"2009-05-23 00:00:00","Forsyth St  and Canal St , New York, NY",-73.994273,40.7156061,"Forsyth St  and Division St , New York, NY",-73.9941851,40.7142758
+"2009-05-28 00:00:00","Forsyth St  and Canal St , New York, NY",-73.994273,40.7156061,"Forsyth St  and Division St , New York, NY",-73.9941851,40.7142758
+"2009-05-09 00:00:00","Court St and Atlantic Av, Brooklyn, NY",-73.9923561,40.6896809,"Court St and Pacific St, Brooklyn, NY",-73.992623,40.689161
+"2009-05-20 00:00:00","Court St and Atlantic Av, Brooklyn, NY",-73.9923561,40.6896809,"Court St and Pacific St, Brooklyn, NY",-73.992623,40.689161
+"2009-06-10 00:00:00","Manhattan Bridge - South Path and MIDPOINT, NA, NY",-74.0059413,40.7127837,"Manhattan Bridge - South Path and NA, NA, NY",-74.0059413,40.7127837
+"2009-06-13 00:00:00","Manhattan Bridge - South Path and MIDPOINT, NA, NY",-74.0059413,40.7127837,"Manhattan Bridge - South Path and NA, NA, NY",-74.0059413,40.7127837
+"2009-06-10 00:00:00","Manhattan Bridge - North Path and MIDPOINT, NA, NY",-74.0059413,40.7127837,"Manhattan Bridge - North Path and NA, NA, NY",-74.0059413,40.7127837
+"2009-06-13 00:00:00","Manhattan Bridge - North Path and MIDPOINT, NA, NY",-74.0059413,40.7127837,"Manhattan Bridge - North Path and NA, NA, NY",-74.0059413,40.7127837
+"2009-05-16 00:00:00","Jay St and Willoughby St, Brooklyn, NY",-73.9872938,40.6922242,"Jay St and Metrotech Walk, Brooklyn, NY",-73.987342,40.692338
+"2009-05-21 00:00:00","Jay St and Willoughby St, Brooklyn, NY",-73.9872938,40.6922242,"Jay St and Metrotech Walk, Brooklyn, NY",-73.987342,40.692338
+"2009-05-21 00:00:00","Washington St and Front St, Brooklyn, NY",-73.9896261,40.7025163,"Washington St and Water St, Brooklyn, NY",-73.9895833,40.7031992
+"2009-05-23 00:00:00","Washington St and Front St, Brooklyn, NY",-73.9896261,40.7025163,"Washington St and Water St, Brooklyn, NY",-73.9895833,40.7031992
+"2009-05-09 00:00:00","Brighton Beach Av and Brighton 4th St, Brooklyn, NY",-73.9633395,40.5772774,"Brighton Beach Av and Brighton 5th St, Brooklyn, NY",-73.9623007,40.5773567
+"2009-05-19 00:00:00","Brighton Beach Av and Brighton 4th St, Brooklyn, NY",-73.9633395,40.5772774,"Brighton Beach Av and Brighton 5th St, Brooklyn, NY",-73.9623007,40.5773567
+"2009-05-21 00:00:00","Sheepshead Bay Rd and E 14th St, Brooklyn, NY",-73.9552308,40.5876819,"Sheepshead Bay Rd and E 15th St, Brooklyn, NY",-73.9542477,40.5873729
+"2009-05-23 00:00:00","Sheepshead Bay Rd and E 14th St, Brooklyn, NY",-73.9552308,40.5876819,"Sheepshead Bay Rd and E 15th St, Brooklyn, NY",-73.9542477,40.5873729
+"2009-05-16 00:00:00","Kings Hwy and E 13th St, Brooklyn, NY",-73.9600353,40.6080221,"Kings Hwy and E 14th St, Brooklyn, NY",-73.9591638,40.6083569
+"2009-05-21 00:00:00","Kings Hwy and E 13th St, Brooklyn, NY",-73.9600353,40.6080221,"Kings Hwy and E 14th St, Brooklyn, NY",-73.9591638,40.6083569
+"2009-05-09 00:00:00","Cortelyou Rd and Argyle Rd, Brooklyn, NY",-73.9661686,40.6404382,"Cortelyou Rd and Rugby Rd, Brooklyn, NY",-73.9652999,40.6408302
+"2009-05-19 00:00:00","Cortelyou Rd and Argyle Rd, Brooklyn, NY",-73.9661686,40.6404382,"Cortelyou Rd and Rugby Rd, Brooklyn, NY",-73.9652999,40.6408302
+"2009-05-09 00:00:00","Flatbush Av and Martense St, Brooklyn, NY",-73.958956,40.6511931,"Flatbush Av and Church Av, Brooklyn, NY",-73.9587094,40.6503908
+"2009-05-20 00:00:00","Flatbush Av and Martense St, Brooklyn, NY",-73.958956,40.6511931,"Flatbush Av and Church Av, Brooklyn, NY",-73.9587094,40.6503908
+"2009-05-09 00:00:00","Church Av and Nostrand Av, Brooklyn, NY",-73.949542,40.6508296,"Church Av and E 31st St, Brooklyn, NY",-73.9485975,40.6508754
+"2009-05-19 00:00:00","Church Av and Nostrand Av, Brooklyn, NY",-73.949542,40.6508296,"Church Av and E 31st St, Brooklyn, NY",-73.9485975,40.6508754
+"2009-05-09 00:00:00","Flatbush Av and St. Marks Avenue, Brooklyn, NY",-73.97431,40.679735,"Flatbush Av and Prospect Place, Brooklyn, NY",-73.9735131,40.678638
+"2009-05-20 00:00:00","Flatbush Av and St. Marks Avenue, Brooklyn, NY",-73.97431,40.679735,"Flatbush Av and Prospect Place, Brooklyn, NY",-73.9735131,40.678638
+"2009-05-16 00:00:00","Myrtle Avenue and Vanderbilt Avenue, Brooklyn, NY",-73.969831,40.693135,"Myrtle Avenue and Clinton Avenue, Brooklyn, NY",-73.96881,40.693121
+"2009-05-21 00:00:00","Myrtle Avenue and Vanderbilt Avenue, Brooklyn, NY",-73.969831,40.693135,"Myrtle Avenue and Clinton Avenue, Brooklyn, NY",-73.96881,40.693121
+"2009-05-09 00:00:00","Grand St and Manhattan Av, Brooklyn, NY",-73.9455959,40.7114761,"Grand St and Graham Av, Brooklyn, NY",-73.9439094,40.7116489
+"2009-05-21 00:00:00","Grand St and Manhattan Av, Brooklyn, NY",-73.9455959,40.7114761,"Grand St and Graham Av, Brooklyn, NY",-73.9439094,40.7116489
+"2009-05-23 00:00:00","W 14th St and Hudson St, New York, NY",-74.0051793,40.74085,"W 14th St and Eighth Av, New York, NY",-74.0025294,40.7397433
+"2009-06-03 00:00:00","W 14th St and Hudson St, New York, NY",-74.0051793,40.74085,"W 14th St and Eighth Av, New York, NY",-74.0025294,40.7397433
+"2009-05-09 00:00:00","E 8th St and University Pl, New York, NY",-73.9948012,40.731582,"E 8th St and Greene St, New York, NY",-73.9940545,40.731264
+"2009-05-27 00:00:00","E 8th St and University Pl, New York, NY",-73.9948012,40.731582,"E 8th St and Greene St, New York, NY",-73.9940545,40.731264
+"2009-05-23 00:00:00","E 14th St and Fifth Av, New York, NY",-73.9936331,40.7360158,"E 14th St and University Pl, New York, NY",-73.9917371,40.7351977
+"2009-05-27 00:00:00","E 14th St and Fifth Av, New York, NY",-73.9936331,40.7360158,"E 14th St and University Pl, New York, NY",-73.9917371,40.7351977
+"2009-05-23 00:00:00","Seventh Av  and W 32nd St, New York, NY",-73.991556,40.7497096,"Seventh Av  and W 33rd St, New York, NY",-73.9911014,40.7503293
+"2009-05-28 00:00:00","Seventh Av  and W 32nd St, New York, NY",-73.991556,40.7497096,"Seventh Av  and W 33rd St, New York, NY",-73.9911014,40.7503293
+"2009-05-23 00:00:00","W 34th St and Broadway, New York, NY",-73.9879826,40.7498844,"W 34th St and Seventh Av, New York, NY",-73.990624,40.7510161
+"2009-06-03 00:00:00","W 34th St and Broadway, New York, NY",-73.9879826,40.7498844,"W 34th St and Seventh Av, New York, NY",-73.990624,40.7510161
+"2009-05-23 00:00:00","Eighth Av and W 44th St, New York, NY",-73.9888398,40.7585406,"Eighth Av and W 45th St, New York, NY",-73.988378,40.7591625
+"2009-05-27 00:00:00","Eighth Av and W 44th St, New York, NY",-73.9888398,40.7585406,"Eighth Av and W 45th St, New York, NY",-73.988378,40.7591625
+"2009-05-30 00:00:00","Broadway and 50th St, New York, NY",-73.9841062,40.7614492,"Broadway and 51st St, New York, NY",-73.9836763,40.7620705
+"2009-06-02 00:00:00","Broadway and 50th St, New York, NY",-73.9841062,40.7614492,"Broadway and 51st St, New York, NY",-73.9836763,40.7620705
+"2009-05-30 00:00:00","Seventh Av and 50th St, New York, NY",-73.983275,40.7611038,"Seventh Av and 51st St, New York, NY",-73.9828123,40.7617278
+"2009-06-02 00:00:00","Seventh Av and 50th St, New York, NY",-73.983275,40.7611038,"Seventh Av and 51st St, New York, NY",-73.9828123,40.7617278
+"2009-05-30 00:00:00","Eighth Av and 50th St, New York, NY",-73.9861066,40.7622891,"Eighth Av and 51st St, New York, NY",-73.985647,40.762915
+"2009-06-02 00:00:00","Eighth Av and 50th St, New York, NY",-73.9861066,40.7622891,"Eighth Av and 51st St, New York, NY",-73.985647,40.762915
+"2009-05-23 00:00:00","W 40th St and Avenue of the Americas, New York, NY",-73.985043,40.753554,"W 40th St and Fifth Av, New York, NY",-73.9818336,40.7522003
+"2009-06-03 00:00:00","W 40th St and Avenue of the Americas, New York, NY",-73.985043,40.753554,"W 40th St and Fifth Av, New York, NY",-73.9818336,40.7522003
+"2009-05-30 00:00:00","Sixth Av and 50th St, New York, NY",-73.9804421,40.7598896,"Sixth Av and 51st St, New York, NY",-73.9799752,40.7605396
+"2009-06-02 00:00:00","Sixth Av and 50th St, New York, NY",-73.9804421,40.7598896,"Sixth Av and 51st St, New York, NY",-73.9799752,40.7605396
+"2009-05-09 00:00:00","Bedford Av and N 7th St, Brooklyn, NY",-73.9577271,40.7178424,"Bedford Av and N 6th St, Brooklyn, NY",-73.9583298,40.7172906
+"2009-05-19 00:00:00","Bedford Av and N 7th St, Brooklyn, NY",-73.9577271,40.7178424,"Bedford Av and N 6th St, Brooklyn, NY",-73.9583298,40.7172906
+"2009-05-23 00:00:00","E 42nd St and Park Av, New York, NY",-73.9778018,40.7521624,"E 42nd St and Lexington Av, New York, NY",-73.9760699,40.7514591
+"2009-05-27 00:00:00","E 42nd St and Park Av, New York, NY",-73.9778018,40.7521624,"E 42nd St and Lexington Av, New York, NY",-73.9760699,40.7514591
+"2009-05-23 00:00:00","W 47th St and Avenue of the Americas, New York, NY",-73.9818061,40.7580271,"W 47th St and Fifth Av, New York, NY",-73.9785674,40.7566601
+"2009-06-03 00:00:00","W 47th St and Avenue of the Americas, New York, NY",-73.9818061,40.7580271,"W 47th St and Fifth Av, New York, NY",-73.9785674,40.7566601
+"2009-05-30 00:00:00","Fifth Av and 50th St, New York, NY",-73.9771993,40.7585457,"Fifth Av and 51st St, New York, NY",-73.976748,40.759166
+"2009-06-02 00:00:00","Fifth Av and 50th St, New York, NY",-73.9771993,40.7585457,"Fifth Av and 51st St, New York, NY",-73.976748,40.759166
+"2009-05-30 00:00:00","Lexington Av and 50th St, New York, NY",-73.9723706,40.756502,"Lexington Av and 51st St, New York, NY",-73.971932,40.7571166
+"2009-06-02 00:00:00","Lexington Av and 50th St, New York, NY",-73.9723706,40.756502,"Lexington Av and 51st St, New York, NY",-73.971932,40.7571166
+"2009-05-30 00:00:00","Madison Av and 50th St, New York, NY",-73.9755929,40.7578607,"Madison Av and 51st St, New York, NY",-73.9751335,40.758487
+"2009-06-02 00:00:00","Madison Av and 50th Str, New York, NY",-73.9755929,40.7578607,"Madison Av and 51st St, New York, NY",-73.9751335,40.758487
+"2009-05-23 00:00:00","Fifth Av  and E 54th St , New York, NY",-73.975373,40.7610362,"Fifth Av  and E  55th St , New York, NY",-73.9749136,40.761667
+"2009-05-27 00:00:00","Fifth Av and E 54th St, New York, NY",-73.975373,40.7610362,"Fifth Av and E 55th St , New York, NY",-73.9749136,40.761667
+"2009-05-30 00:00:00","Third Av and 50th St, New York, NY",-73.9707582,40.7558255,"Third Av and 51st St, New York, NY",-73.9703087,40.7564542
+"2009-06-02 00:00:00","Third Av and 50th St, New York, NY",-73.9707582,40.7558255,"Third Av and 51st St, New York, NY",-73.9703087,40.7564542
+"2009-05-30 00:00:00","Second Av and 50th St, New York, NY",-73.9685187,40.7548795,"Second Av and 51st St, New York, NY",-73.968065,40.7555055
+"2009-06-02 00:00:00","Second Av and 50th St, New York, NY",-73.9685187,40.7548795,"Second Av and 51st St, New York, NY",-73.968065,40.7555055
+"2009-05-23 00:00:00","Lexington Av  and E 57th St, New York, NY",-73.9691296,40.7609254,"Lexington Av  and E 58th St, New York, NY",-73.9686328,40.7615968
+"2009-05-28 00:00:00","Lexington Av  and E 57th St, New York, NY",-73.9691296,40.7609254,"Lexington Av  and E 58th St, New York, NY",-73.9686328,40.7615968
+"2009-05-23 00:00:00","Columbus Av and W 75th St, New York, NY",-73.977369,40.779364,"Columbus Av and W 76th St, New York, NY",-73.976903,40.779997
+"2009-05-27 00:00:00","Columbus Av and W 75th St, New York, NY",-73.977369,40.779364,"Columbus Av and W 76th St, New York, NY",-73.976903,40.779997
+"2009-05-23 00:00:00","Madison Av  and E 71st St, New York, NY",-73.9659328,40.7710974,"Madison Av  and E 72nd St, New York, NY",-73.9654418,40.771783
+"2009-05-28 00:00:00","Madison Av  and E 71st St, New York, NY",-73.9659328,40.7710974,"Madison Av  and E 72nd St, New York, NY",-73.9654418,40.771783
+"2009-05-16 00:00:00","Pitkin Av and Bristol St, Brooklyn, NY",-73.9126255,40.6694003,"Pitkin Av and Hopkinson Av, Brooklyn, NY",-73.9135787,40.6692495
+"2009-05-21 00:00:00","Pitkin Av and Bristol St, Brooklyn, NY",-73.9126255,40.6694003,"Pitkin Av and Hopkinson Av, Brooklyn, NY",-73.9135787,40.6692495
+"2009-05-09 00:00:00","Graham Av and Moore St, Brooklyn, NY",-73.942614,40.703764,"Graham Av and Varet St, Brooklyn, NY",-73.942495,40.703053
+"2009-05-21 00:00:00","Graham Av and Moore St, Brooklyn, NY",-73.942614,40.703764,"Graham Av and Varet St, Brooklyn, NY",-73.942495,40.703053
+"2009-06-16 00:00:00","Myrtle Av and Palmetto St, Queens, NY",-73.911003,40.699642,"Myrtle Av and Woodbine St (Plaza), Queens, NY",-73.9096327,40.699736
+"2009-06-06 00:00:00","Myrtle Av and Weirfield St, Queens, NY",-73.9025138,40.7004707,"Myrtle Av and Centre St, Queens, NY",-73.901405,40.7004847
+"2009-06-16 00:00:00","Myrtle Av and Weirfield St, Queens, NY",-73.9025138,40.7004707,"Myrtle Av and Centre St, Queens, NY",-73.901405,40.7004847
+"2009-06-06 00:00:00","Jamaica Av and 86th St, Queens, NY",-73.8581469,40.6925755,"Jamaica Av and 87th St, Queens, NY",-73.8573956,40.692623
+"2009-06-09 00:00:00","Jamaica Av and 86th St, Queens, NY",-73.8581469,40.6925755,"Jamaica Av and 87th St, Queens, NY",-73.8573956,40.692623
+"2009-06-06 00:00:00","Sutphin Blvd and 89th Av, Queens, NY",-73.8087891,40.703816,"Sutphin Blvd and 90th Av, Queens, NY",-73.8084494,40.7030224
+"2009-06-17 00:00:00","Sutphin Blvd and 89th Avenue, Queens, NY",-73.8087891,40.703816,"Sutphin Blvd and 90th Av, Queens, NY",-73.8084494,40.7030224
+"2009-05-30 00:00:00","Jamaica Av and 148th St, Queens, NY",-73.8063382,40.701788,"Jamaica Av and 149th St, Queens, NY",-73.8055124,40.7018795
+"2009-06-09 00:00:00","Jamaica Av and 148th St, Queens, NY",-73.8063382,40.701788,"Jamaica Av and 149th St, Queens, NY",-73.8055124,40.7018795
+"2009-06-06 00:00:00","Jamaica Av and 162nd St, Queens, NY",-73.7976996,40.704317,"Jamaica Av and Guy R. Brewer Blvd, Queens, NY",-73.7970106,40.7046058
+"2009-06-09 00:00:00","Jamaica Av and 162nd St, Queens, NY",-73.7976996,40.704317,"Jamaica Av and Guy R. Brewer Blvd, Queens, NY",-73.7970106,40.7046058
+"2009-05-30 00:00:00","165th St and 89th Av, Queens, NY",-73.796317,40.707723,"165th St and Jamaica Av, Queens, NY",-73.7948936,40.7054598
+"2009-06-04 00:00:00","165th St and 89th Av, Queens, NY",-73.796317,40.707723,"165th St and Jamaica Av, Queens, NY",-73.7948936,40.7054598
+"2009-05-30 00:00:00","Hillside Av and 169th St, Queens, NY",-73.7930267,40.7106687,"Hillside Av and 170th St, Queens, NY",-73.7920569,40.7111147
+"2009-06-04 00:00:00","Hillside Av and 169th St, Queens, NY",-73.7930267,40.7106687,"Hillside Av and 170th St, Queens, NY",-73.7920569,40.7111147
+"2009-06-06 00:00:00","Mott Av and Smith Pl, Queens, NY",-73.7521229,40.6038028,"Mott Av and Central Av, Queens, NY",-73.7528694,40.6042229
+"2009-06-06 00:00:00","Mott Av and Smith Pl, Queens, NY",-73.7521229,40.6038028,"Mott Av and Central Av, Queens, NY",-73.7528694,40.6042229
+"2009-06-16 00:00:00","Mott Av and Smith Pl, Queens, NY",-73.7521229,40.6038028,"Mott Av and Central Av, Queens, NY",-73.7528694,40.6042229
+"2009-05-30 00:00:00","Jackson Av and Queens St, Queens, NY",-73.9397449,40.7480198,"Jackson Av and 42nd Rd, Queens, NY",-73.9391794,40.748275
+"2009-06-09 00:00:00","Jackson Av and Queens St, Queens, NY",-73.9397449,40.7480198,"Jackson Av and 42nd Rd, Queens, NY",-73.9391794,40.748275
+"2009-05-30 00:00:00","Steinway St and 31st Av, Queens, NY",-73.9171048,40.7613374,"Steinway St and Broadway, Queens, NY",-73.9190184,40.7589806
+"2009-06-03 00:00:00","Steinway St and 31st Av, Queens, NY",-73.9171048,40.7613374,"Steinway St and Broadway, Queens, NY",-73.9190184,40.7589806
+"2009-05-05 00:00:00","Wards Island Bridge and MIDPOINT, NA, NY",-74.0059413,40.7127837,"Wards Island Bridge and NA, NA, NY",-74.0059413,40.7127837
+"2009-05-23 00:00:00","Wards Island Bridge and MIDPOINT, NA, NY",-74.0059413,40.7127837,"Wards Island Bridge and NA, NA, NY",-74.0059413,40.7127837
+"2009-05-02 00:00:00","Third Av and E 150th St, Bronx, NY",-73.9167772,40.81653,"Third Av and E 151st St, Bronx, NY",-73.9159687,40.8172247
+"2009-05-05 00:00:00","Third Av and E 150th St, Bronx, NY",-73.9167772,40.81653,"Third Av and E 151st St, Bronx, NY",-73.9159687,40.8172247
+"2009-05-23 00:00:00","W 181st St and St. Nicholas Av, New York, NY",-73.933745,40.8493135,"W 181st St and Wadsworth Av, New York, NY",-73.9349493,40.8498755
+"2009-06-03 00:00:00","W 181st St and St. Nicholas Av, New York, NY",-73.933745,40.8493135,"W 181st St and Wadsworth Av, New York, NY",-73.9349493,40.8498755
+"2009-05-02 00:00:00","Grand Concourse and E 164th St, Bronx, NY",-73.9209898,40.8295692,"Grand Concourse and E 165th St, Bronx, NY",-73.9204863,40.830947
+"2009-05-05 00:00:00","Grand Concourse and E 164th St, Bronx, NY",-73.9209898,40.8295692,"Grand Concourse and E 165th St, Bronx, NY",-73.9204863,40.830947
+"2009-06-13 00:00:00","University Heights Bridge and MIDPOINT, NA, NY",-74.0059413,40.7127837,"University Heights Bridge and NA, NA, NY",-74.0059413,40.7127837
+"2009-06-16 00:00:00","University Heights Bridge and MIDPOINT, NA, NY",-74.0059413,40.7127837,"University Heights Bridge and NA, NA, NY",-74.0059413,40.7127837
+"2009-05-30 00:00:00","82nd St and 37th Av, Queens, NY",-73.8842941,40.7497539,"82nd St and Roosevelt Av, Queens, NY",-73.8839418,40.7476372
+"2009-06-04 00:00:00","82nd St and 37th Av, Queens, NY",-73.8842941,40.7497539,"82nd St and Roosevelt Av, Queens, NY",-73.8839418,40.7476372
+"2009-05-02 00:00:00","E Tremont Av and Prospect Av, Bronx, NY",-73.8889541,40.84438,"E Tremont Av and Clinton Av, Bronx, NY",-73.890062,40.8449251
+"2009-05-05 00:00:00","E Tremont Av and Prospect Av, Bronx, NY",-73.8889541,40.84438,"E Tremont Av and Clinton Av, Bronx, NY",-73.890062,40.8449251
+"2009-05-02 00:00:00","Broadway and West 231st St, Bronx, NY",-73.9047946,40.878934,"Broadway and Naples Te, Bronx, NY",-73.9044325,40.8794461
+"2009-05-05 00:00:00","Broadway and West 231st St, Bronx, NY",-73.9047946,40.878934,"Broadway and Naples Te, Bronx, NY",-73.9044325,40.8794461
+"2009-05-02 00:00:00","E Fordham Rd and Valentine Av, Bronx, NY",-73.8958937,40.8622688,"E Fordham Rd and Tiebout Av, Bronx, NY",-73.8948047,40.8620701
+"2009-05-05 00:00:00","E Fordham Rd and Valentine Av, Bronx, NY",-73.8958937,40.8622688,"E Fordham Rd and Tiebout Av, Bronx, NY",-73.8948047,40.8620701
+"2009-05-02 00:00:00","East Gun Hill Rd and Bainbridge Av, Bronx, NY",-73.8784896,40.8810739,"East Gun Hill Rd and Rochambeau Av, Bronx, NY",-73.8793807,40.8815239
+"2009-05-05 00:00:00","East Gun Hill Rd and Bainbridge Av, Bronx, NY",-73.8784896,40.8810739,"East Gun Hill Rd and Rochambeau Av, Bronx, NY",-73.8793807,40.8815239
+"2009-05-30 00:00:00","Austin St and 71st Av, Queens, NY",-73.8448004,40.7201635,"Austin St and 70th Rd, Queens, NY",-73.8458961,40.7205705
+"2009-06-04 00:00:00","Austin St and 71st Av, Queens, NY",-73.8448004,40.7201635,"Austin St and 70th Rd, Queens, NY",-73.8458961,40.7205705
+"2009-06-13 00:00:00","Yellowstone Blvd and Queens Blvd, Queens, NY",-73.8474907,40.722916,"Yellowstone Blvd and Gerard Pl, Queens, NY",-73.8491869,40.7226096
+"2009-06-17 00:00:00","Yellowstone Blvd and Queens Blvd, Queens, NY",-73.8474907,40.722916,"Yellowstone Blvd and Gerard Pl, Queens, NY",-73.8491869,40.7226096
+"2009-05-02 00:00:00","White Plains Rd and Pelham Pkwy S, Bronx, NY",-73.867633,40.856614,"White Plains Rd and Lydig Av, Bronx, NY",-73.867704,40.8544969
+"2009-05-05 00:00:00","White Plains Rd and Pelham Pkwy S, Bronx, NY",-73.867633,40.856614,"White Plains Rd and Lydig Av, Bronx, NY",-73.867704,40.8544969
+"2009-06-06 00:00:00","Main St and 37th Av, Queens, NY",-73.8311294,40.7615513,"Main St and 38th Av, Queens, NY",-73.8307509,40.7608224
+"2009-06-11 00:00:00","Main St and 37th Av, Queens, NY",-73.8311294,40.7615513,"Main St and 38th Av, Queens, NY",-73.8307509,40.7608224
+"2009-06-06 00:00:00","Roosevelt Av and Main St, Queens, NY",-73.8301324,40.7595662,"Roosevelt Av and Union St, Queens, NY",-73.826525,40.7604656
+"2009-06-17 00:00:00","Roosevelt Av and Main St, Queens, NY",-73.8301324,40.7595662,"Roosevelt Av and Union St, Queens, NY",-73.826525,40.7604656
+"2009-05-30 00:00:00","Bell Blvd and 40th Av, Queens, NY",-73.7713288,40.7642682,"Bell Blvd and 41st Av, Queens, NY",-73.7709587,40.7635916
+"2009-06-04 00:00:00","Bell Blvd and 40th Av, Queens, NY",-73.7713288,40.7642682,"Bell Blvd and 41st Av, Queens, NY",-73.7709587,40.7635916
+"2009-09-15 00:00:00","37th Av and 73rd St, Queens, NY",-73.8927059,40.7488734,"37th Av and 74th St, Queens, NY",-73.8917887,40.7489574
+"2009-09-26 00:00:00","37th Av and 73rd St, Queens, NY",-73.8927059,40.7488734,"37th Av and 74th St, Queens, NY",-73.8917887,40.7489574
+"2009-09-15 00:00:00","Fresh Pond Rd and Cypress Hills St, Queens, NY",-73.895418,40.703199,"Fresh Pond Rd and 70th Av, Queens, NY",-73.895202,40.702593
+"2009-09-26 00:00:00","Fresh Pond Rd and Cypress Hills St, Queens, NY",-73.895418,40.703199,"Fresh Pond Rd and 70th Av, Queens, NY",-73.895202,40.702593
+"2009-09-12 00:00:00","Trinity Pl and Rector St, New York, NY",-74.0129696,40.707776,"Trinity Pl and Thames St, New York, NY",-74.0121268,40.7089922
+"2009-09-23 00:00:00","Trinity Pl and Rector St, New York, NY",-74.0129696,40.707776,"Trinity Pl and Thames St, New York, NY",-74.0121268,40.7089922
+"2009-10-10 00:00:00","Prince St and 37th Av, Queens, NY",-73.832741,40.7609372,"Prince St and 38th Av, Queens, NY",-73.8326174,40.7601691
+"2009-09-16 00:00:00","Prince St and 37th Av, Queens, NY",-73.832741,40.7609372,"Prince St and 38th Av, Queens, NY",-73.8326174,40.7601691
+"2009-09-29 00:00:00","Forest Av and Regan Av, Staten Island, NY",-74.1089129,40.6301259,"Forest Av and Davis Av, Staten Island, NY",-74.1082945,40.6302444
+"2009-10-10 00:00:00","Forest Av and Regan Av, Staten Island, NY",-74.1089129,40.6301259,"Forest Av and Davis Av, Staten Island, NY",-74.1082945,40.6302444
+"2009-09-29 00:00:00","Victory Blvd and Bay St, Staten Island, NY",-74.0768692,40.6377491,"Victory Blvd and Van Duzer St, Staten Island, NY",-74.0778996,40.6380943
+"2009-10-10 00:00:00","Victory Blvd and Bay St, Staten Island, NY",-74.0768692,40.6377491,"Victory Blvd and Van Duzer St, Staten Island, NY",-74.0778996,40.6380943
+"2009-09-29 00:00:00","Pedestrian Walkway from Ferry Terminal and 50' N of Richmond Te, Staten Island, NY",-74.1502007,40.5795317,"Pedestrian Walkway from Ferry Terminal and 0, Staten Island, NY",-74.1502007,40.5795317
+"2009-10-10 00:00:00","Pedestrian Walkway from Ferry Terminal and 50' N of Richmond Te, Staten Island, NY",-74.1502007,40.5795317,"Pedestrian Walkway from Ferry Terminal and 0, Staten Island, NY",-74.1502007,40.5795317
+"2009-09-10 00:00:00","86th St and 4th Av, Brooklyn, NY",-74.0283731,40.6227982,"86th St and 5th Av, Brooklyn, NY",-74.0262112,40.6214868
+"2009-10-03 00:00:00","86th St and 4th Av, Brooklyn, NY",-74.0283731,40.6227982,"86th St and 5th Av, Brooklyn, NY",-74.0262112,40.6214868
+"2009-09-10 00:00:00","5th Av and 51st St, Brooklyn, NY",-74.010902,40.644547,"5th Av and 52nd St, Brooklyn, NY",-74.0114771,40.6439853
+"2009-10-03 00:00:00","5th Av and 51st St, Brooklyn, NY",-74.010902,40.644547,"5th Av and 52nd St, Brooklyn, NY",-74.0114771,40.6439853
+"2009-09-10 00:00:00","Van Brunt St and Beard St, Brooklyn, NY",-74.0154118,40.675196,"Van Brunt St and Van Dike St, Brooklyn, NY",-74.0147965,40.6757316
+"2009-10-03 00:00:00","Van Brunt St and Beard St, Brooklyn, NY",-74.0154118,40.675196,"Van Brunt St and Van Dike St, Brooklyn, NY",-74.0147965,40.6757316
+"2009-09-10 00:00:00","7th Av and 9th St, Brooklyn, NY",-73.98159,40.6668949,"7th Av and 8th St, Brooklyn, NY",-73.98108,40.6675087
+"2009-10-03 00:00:00","7th Av and 9th St, Brooklyn, NY",-73.98159,40.6668949,"7th Av and 8th St, Brooklyn, NY",-73.98108,40.6675087
+"2009-09-10 00:00:00","5th Av and Union St, Brooklyn, NY",-73.980459,40.6764097,"5th Av and President St, Brooklyn, NY",-73.9808862,40.6757759
+"2009-10-03 00:00:00","5th Av and Union St, Brooklyn, NY",-73.980459,40.6764097,"5th Av and President St, Brooklyn, NY",-73.9808862,40.6757759
+"2009-09-12 00:00:00","Broadway and Morris St, New York, NY",-74.0132953,40.7058852,"Broadway and Exchange Pl, New York, NY",-74.0125033,40.7067527
+"2009-09-22 00:00:00","Broadway and Morris St, New York, NY",-74.0132953,40.7058852,"Broadway and Exchange Pl, New York, NY",-74.0125033,40.7067527
+"2009-09-12 00:00:00","Broad St and Marketfield St, New York, NY",-74.0115808,40.7047001,"Broad St and South William St, New York, NY",-74.0115913,40.7042279
+"2009-09-22 00:00:00","Broad St and Marketfield St, New York, NY",-74.0115808,40.7047001,"Broad St and South William St, New York, NY",-74.0115913,40.7042279
+"2009-09-12 00:00:00","Wall St and New St, New York, NY",-74.011272,40.7074989,"Wall St and Nassau St, New York, NY",-74.0107108,40.7071433
+"2009-09-23 00:00:00","Wall St and New St, New York, NY",-74.011272,40.7074989,"Wall St and Nassau St, New York, NY",-74.0107108,40.7071433
+"2009-09-12 00:00:00","Chambers St and W Broadway, New York, NY",-74.0092304,40.7155172,"Chambers St and Greenwich St, New York, NY",-74.0109403,40.7162918
+"2009-09-22 00:00:00","Chambers St and W Broadway, New York, NY",-74.0092304,40.7155172,"Chambers St and Greenwich St, New York, NY",-74.0109403,40.7162918
+"2009-09-12 00:00:00","Fulton St  and Broadway, New York, NY",-74.0090837,40.7109267,"Fulton St  and Nassau St , New York, NY",-74.0077407,40.7102288
+"2009-09-22 00:00:00","Fulton St  and Broadway, New York, NY",-74.0090837,40.7109267,"Fulton St  and Nassau St , New York, NY",-74.0077407,40.7102288
+"2009-09-12 00:00:00","Fulton St   and Cliff St, New York, NY",-74.0047919,40.7083979,"Fulton St   and Pearl St, New York, NY",-74.0040953,40.7074172
+"2009-09-22 00:00:00","Fulton St  and Cliff St, New York, NY",-74.0047919,40.7083979,"Fulton St  and Pearl St, New York, NY",-74.0040953,40.7074172
+"2009-09-10 00:00:00","Montague St and Henry St, Brooklyn, NY",-73.9942953,40.6947901,"Montague St and Clinton St, Brooklyn, NY",-73.9924185,40.6942868
+"2009-10-03 00:00:00","Montague St and Henry St, Brooklyn, NY",-73.9942953,40.6947901,"Montague St and Clinton St, Brooklyn, NY",-73.9924185,40.6942868
+"2009-09-10 00:00:00","Old Fulton St and Elizabeth Pl, Brooklyn, NY",-73.9937792,40.7026958,"Old Fulton St and Everit St, Brooklyn, NY",-73.9942187,40.7027513
+"2009-10-03 00:00:00","Old Fulton St and Elizabeth Pl, Brooklyn, NY",-73.9937792,40.7026958,"Old Fulton St and Everit St, Brooklyn, NY",-73.9942187,40.7027513
+"2009-09-12 00:00:00","Forsyth St  and Canal St , New York, NY",-73.994273,40.7156061,"Forsyth St  and Division St , New York, NY",-73.9941851,40.7142758
+"2009-09-22 00:00:00","Forsyth St  and Canal St , New York, NY",-73.994273,40.7156061,"Forsyth St  and Division St , New York, NY",-73.9941851,40.7142758
+"2009-09-22 00:00:00","Manhattan Bridge - South Path and MIDPOINT, NA, NY",-74.0059413,40.7127837,"Manhattan Bridge - South Path and NA, NA, NY",-74.0059413,40.7127837
+"2009-10-10 00:00:00","Manhattan Bridge - South Path and MIDPOINT, NA, NY",-74.0059413,40.7127837,"Manhattan Bridge - South Path and NA, NA, NY",-74.0059413,40.7127837
+"2009-09-22 00:00:00","Manhattan Bridge - North Path and MIDPOINT, NA, NY",-74.0059413,40.7127837,"Manhattan Bridge - North Path and NA, NA, NY",-74.0059413,40.7127837
+"2009-09-26 00:00:00","Manhattan Bridge - North MIDPOINT and MIDPOINT, NA, NY",-74.0059413,40.7127837,"Manhattan Bridge - North MIDPOINT and NA, NA, NY",-74.0059413,40.7127837
+"2009-09-10 00:00:00","Washington St and Front St, Brooklyn, NY",-73.9896261,40.7025163,"Washington St and Water St, Brooklyn, NY",-73.9895833,40.7031992
+"2009-10-03 00:00:00","Washington St and Front St, Brooklyn, NY",-73.9896261,40.7025163,"Washington St and Water St, Brooklyn, NY",-73.9895833,40.7031992
+"2009-09-10 00:00:00","Brighton Beach Av and Brighton 4th St, Brooklyn, NY",-73.9633395,40.5772774,"Brighton Beach Av and Brighton 5th St, Brooklyn, NY",-73.9623007,40.5773567
+"NA","NA and NA, NA, NY",18.49041,-22.95764,"NA and NA, NA, NY",18.49041,-22.95764
+"2009-09-10 00:00:00","Sheepshead Bay Rd and E 14th St, Brooklyn, NY",-73.9552308,40.5876819,"Sheepshead Bay Rd and E 15th St, Brooklyn, NY",-73.9542477,40.5873729
+"2009-10-03 00:00:00","Sheepshead Bay Rd and E 14th St, Brooklyn, NY",-73.9552308,40.5876819,"Sheepshead Bay Rd and E 15th St, Brooklyn, NY",-73.9542477,40.5873729
+"2009-09-10 00:00:00","Church Av and Nostrand Av, Brooklyn, NY",-73.949542,40.6508296,"Church Av and E 31st St, Brooklyn, NY",-73.9485975,40.6508754
+"2009-09-12 00:00:00","W 14th St and Hudson St, New York, NY",-74.0051793,40.74085,"W 14th St and Eighth Av, New York, NY",-74.0025294,40.7397433
+"2009-09-23 00:00:00","W 14th St and Hudson St, New York, NY",-74.0051793,40.74085,"W 14th St and Eighth Av, New York, NY",-74.0025294,40.7397433
+"2009-09-12 00:00:00","E 8th St and University Pl, New York, NY",-73.9948012,40.731582,"E 8th St and Greene St, New York, NY",-73.9940545,40.731264
+"2009-09-23 00:00:00","E 8th St and University Pl, New York, NY",-73.9948012,40.731582,"E 8th St and Greene St, New York, NY",-73.9940545,40.731264
+"2009-09-12 00:00:00","E 14th St and Fifth Av, New York, NY",-73.9936331,40.7360158,"E 14th St and University Pl, New York, NY",-73.9917371,40.7351977
+"2009-09-23 00:00:00","E 14th St and Fifth Av, New York, NY",-73.9936331,40.7360158,"E 14th St and University Pl, New York, NY",-73.9917371,40.7351977
+"2009-09-12 00:00:00","Seventh Av  and W 32nd St, New York, NY",-73.991556,40.7497096,"Seventh Av  and W 33rd St, New York, NY",-73.9911014,40.7503293
+"2009-09-23 00:00:00","Seventh Av  and W 32nd St, New York, NY",-73.991556,40.7497096,"Seventh Av  and W 33rd St, New York, NY",-73.9911014,40.7503293
+"2009-09-23 00:00:00","W 34th St and Broadway, New York, NY",-73.9879826,40.7498844,"W 34th St and Seventh Av, New York, NY",-73.990624,40.7510161
+"2009-09-26 00:00:00","W 34th St and Broadway, New York, NY",-73.9879826,40.7498844,"W 34th St and Seventh Av, New York, NY",-73.990624,40.7510161
+"2009-09-12 00:00:00","Eighth Av and W 44th St, New York, NY",-73.9888398,40.7585406,"Eighth Av and W 45th St, New York, NY",-73.988378,40.7591625
+"2009-09-22 00:00:00","Eighth Av and W 44th St, New York, NY",-73.9888398,40.7585406,"Eighth Av and W 45th St, New York, NY",-73.988378,40.7591625
+"2009-09-23 00:00:00","Broadway and 50th St, New York, NY",-73.9841062,40.7614492,"Broadway and 51st St, New York, NY",-73.9836763,40.7620705
+"2009-10-10 00:00:00","Broadway and 50th St, New York, NY",-73.9841062,40.7614492,"Broadway and 51st St, New York, NY",-73.9836763,40.7620705
+"2009-09-23 00:00:00","Seventh Av and 50th St, New York, NY",-73.983275,40.7611038,"Seventh Av and 51st St, New York, NY",-73.9828123,40.7617278
+"2009-10-10 00:00:00","Seventh Av and 50th St, New York, NY",-73.983275,40.7611038,"Seventh Av and 51st St, New York, NY",-73.9828123,40.7617278
+"2009-09-23 00:00:00","Eighth Av and 50th St, New York, NY",-73.9861066,40.7622891,"Eighth Av and 51st St, New York, NY",-73.985647,40.762915
+"2009-10-10 00:00:00","Eighth Av and 50th St, New York, NY",-73.9861066,40.7622891,"Eighth Av and 51st St, New York, NY",-73.985647,40.762915
+"2009-09-23 00:00:00","W 40th St and Avenue of the Americas, New York, NY",-73.985043,40.753554,"W 40th St and Fifth Av, New York, NY",-73.9818336,40.7522003
+"2009-09-26 00:00:00","W 40th St and Avenue of the Americas, New York, NY",-73.985043,40.753554,"W 40th St and Fifth Av, New York, NY",-73.9818336,40.7522003
+"2009-09-22 00:00:00","Sixth Av and 50th St, New York, NY",-73.9804421,40.7598896,"Sixth Av and 51st St, New York, NY",-73.9799752,40.7605396
+"2009-10-10 00:00:00","Sixth Av and 50th St, New York, NY",-73.9804421,40.7598896,"Sixth Av and 51st St, New York, NY",-73.9799752,40.7605396
+"2009-09-10 00:00:00","Bedford Av and N 7th St, Brooklyn, NY",-73.9577271,40.7178424,"Bedford Av and N 6th St, Brooklyn, NY",-73.9583298,40.7172906
+"2009-10-03 00:00:00","Bedford Av and N 7th St, Brooklyn, NY",-73.9577271,40.7178424,"Bedford Av and N 6th St, Brooklyn, NY",-73.9583298,40.7172906
+"2009-09-12 00:00:00","E 42nd St and Park Av, New York, NY",-73.9778018,40.7521624,"E 42nd St and Lexington Av, New York, NY",-73.9760699,40.7514591
+"2009-09-23 00:00:00","E 42nd St and Park Av, New York, NY",-73.9778018,40.7521624,"E 42nd St and Lexington Av, New York, NY",-73.9760699,40.7514591
+"2009-09-22 00:00:00","Lexington Av and 50th St, New York, NY",-73.9723706,40.756502,"Lexington Av and 51st St, New York, NY",-73.971932,40.7571166
+"2009-09-23 00:00:00","W 47th St and Avenue of the Americas, New York, NY",-73.9818061,40.7580271,"W 47th St and Fifth Av, New York, NY",-73.9785674,40.7566601
+"2009-09-26 00:00:00","W 47th St and Avenue of the Americas, New York, NY",-73.9818061,40.7580271,"W 47th St and Fifth Av, New York, NY",-73.9785674,40.7566601
+"2009-09-22 00:00:00","Fifth Av and 50th St, New York, NY",-73.9771993,40.7585457,"Fifth Av and 51st St, New York, NY",-73.976748,40.759166
+"2009-10-10 00:00:00","Fifth Av and 50th St, New York, NY",-73.9771993,40.7585457,"Fifth Av and 51st St, New York, NY",-73.976748,40.759166
+"2009-10-10 00:00:00","Lexington Av and 50th St, New York, NY",-73.9723706,40.756502,"Lexington Av and 51st St, New York, NY",-73.971932,40.7571166
+"2009-09-22 00:00:00","Lexington Av and 50th St, New York, NY",-73.9723706,40.756502,"Lexington Av and 51st St, New York, NY",-73.971932,40.7571166
+"2009-09-22 00:00:00","Madison Av and 50th Str, New York, NY",-73.9755929,40.7578607,"Madison Av and 51st St, New York, NY",-73.9751335,40.758487
+"2009-10-10 00:00:00","Madison Av and 50th St, New York, NY",-73.9755929,40.7578607,"Madison Av and 51st St, New York, NY",-73.9751335,40.758487
+"2009-09-12 00:00:00","Fifth Av  and E 54th St , New York, NY",-73.975373,40.7610362,"Fifth Av  and E  55th St , New York, NY",-73.9749136,40.761667
+"2009-09-22 00:00:00","Fifth Av and E 54th St, New York, NY",-73.975373,40.7610362,"Fifth Av and E 55th St , New York, NY",-73.9749136,40.761667
+"2009-09-23 00:00:00","Third Av and 50th St, New York, NY",-73.9707582,40.7558255,"Third Av and 51st St, New York, NY",-73.9703087,40.7564542
+"2009-10-10 00:00:00","Third Av and 50th St, New York, NY",-73.9707582,40.7558255,"Third Av and 51st St, New York, NY",-73.9703087,40.7564542
+"2009-09-23 00:00:00","Second Av and 50th St, New York, NY",-73.9685187,40.7548795,"Second Av and 51st St, New York, NY",-73.968065,40.7555055
+"2009-10-10 00:00:00","Second Av and 50th St, New York, NY",-73.9685187,40.7548795,"Second Av and 51st St, New York, NY",-73.968065,40.7555055
+"2009-09-12 00:00:00","Lexington Av  and E 57th St, New York, NY",-73.9691296,40.7609254,"Lexington Av  and E 58th St, New York, NY",-73.9686328,40.7615968
+"2009-09-22 00:00:00","Lexington Av  and E 57th St, New York, NY",-73.9691296,40.7609254,"Lexington Av  and E 58th St, New York, NY",-73.9686328,40.7615968
+"2009-09-12 00:00:00","Columbus Av and W 75th St, New York, NY",-73.977369,40.779364,"Columbus Av and W 76th St, New York, NY",-73.976903,40.779997
+"2009-09-22 00:00:00","Columbus Av and W 75th St, New York, NY",-73.977369,40.779364,"Columbus Av and W 76th St, New York, NY",-73.976903,40.779997
+"2009-09-12 00:00:00","Madison Av  and E 71st St, New York, NY",-73.9659328,40.7710974,"Madison Av  and E 72nd St, New York, NY",-73.9654418,40.771783
+"2009-09-23 00:00:00","Madison Av  and E 71st St, New York, NY",-73.9659328,40.7710974,"Madison Av  and E 72nd St, New York, NY",-73.9654418,40.771783
+"2009-09-26 00:00:00","Bell Blvd and 40th Av, Queens, NY",-73.7713288,40.7642682,"Bell Blvd and 41st Av, Queens, NY",-73.7709587,40.7635916
+"2009-09-10 00:00:00","Pitkin Av and Bristol St, Brooklyn, NY",-73.9126255,40.6694003,"Pitkin Av and Hopkinson Av, Brooklyn, NY",-73.9135787,40.6692495
+"2009-10-03 00:00:00","Pitkin Av and Bristol St, Brooklyn, NY",-73.9126255,40.6694003,"Pitkin Av and Hopkinson Av, Brooklyn, NY",-73.9135787,40.6692495
+"2009-09-16 00:00:00","Myrtle Av and Palmetto St, Queens, NY",-73.911003,40.699642,"Myrtle Av and Woodbine St (Plaza), Queens, NY",-73.9096327,40.699736
+"2009-10-10 00:00:00","Myrtle Av and Palmetto St, Queens, NY",-73.911003,40.699642,"Myrtle Av and Woodbine St (Plaza), Queens, NY",-73.9096327,40.699736
+"2009-09-16 00:00:00","Myrtle Av and Weirfield St, Queens, NY",-73.9025138,40.7004707,"Myrtle Av and Centre St, Queens, NY",-73.901405,40.7004847
+"2009-10-10 00:00:00","Myrtle Av and Weirfield St, Queens, NY",-73.9025138,40.7004707,"Myrtle Av and Centre St, Queens, NY",-73.901405,40.7004847
+"2009-09-16 00:00:00","Jamaica Av and 86th St, Queens, NY",-73.8581469,40.6925755,"Jamaica Av and 87th St, Queens, NY",-73.8573956,40.692623
+"2009-09-26 00:00:00","Jamaica Av and 86th St, Queens, NY",-73.8581469,40.6925755,"Jamaica Av and 87th St, Queens, NY",-73.8573956,40.692623
+"2009-09-16 00:00:00","Sutphin Blvd and 89th Avenue, Queens, NY",-73.8087891,40.703816,"Sutphin Blvd and 90th Av, Queens, NY",-73.8084494,40.7030224
+"2009-10-10 00:00:00","Sutphin Blvd and 89th Av, Queens, NY",-73.8087891,40.703816,"Sutphin Blvd and 90th Av, Queens, NY",-73.8084494,40.7030224
+"2009-09-16 00:00:00","Jamaica Av and 148th St, Queens, NY",-73.8063382,40.701788,"Jamaica Av and 149th St, Queens, NY",-73.8055124,40.7018795
+"2009-09-26 00:00:00","Jamaica Av and 148th St, Queens, NY",-73.8063382,40.701788,"Jamaica Av and 149th St, Queens, NY",-73.8055124,40.7018795
+"2009-09-16 00:00:00","Jamaica Av and 162nd St, Queens, NY",-73.7976996,40.704317,"Jamaica Av and Guy R. Brewer Blvd, Queens, NY",-73.7970106,40.7046058
+"2009-09-26 00:00:00","Jamaica Av and 162nd St, Queens, NY",-73.7976996,40.704317,"Jamaica Av and Guy R. Brewer Blvd, Queens, NY",-73.7970106,40.7046058
+"2009-09-15 00:00:00","165th St and 89th Av, Queens, NY",-73.796317,40.707723,"165th St and Jamaica Av, Queens, NY",-73.7948936,40.7054598
+"2009-10-10 00:00:00","165th St and 89th Av, Queens, NY",-73.796317,40.707723,"165th St and Jamaica Av, Queens, NY",-73.7948936,40.7054598
+"2009-09-15 00:00:00","Hillside Av and 169th St, Queens, NY",-73.7930267,40.7106687,"Hillside Av and 170th St, Queens, NY",-73.7920569,40.7111147
+"2009-09-26 00:00:00","Hillside Av and 169th St, Queens, NY",-73.7930267,40.7106687,"Hillside Av and 170th St, Queens, NY",-73.7920569,40.7111147
+"2009-09-16 00:00:00","Mott Av and Smith Pl, Queens, NY",-73.7521229,40.6038028,"Mott Av and Central Av, Queens, NY",-73.7528694,40.6042229
+"2009-10-10 00:00:00","Mott Av and Smith Pl, Queens, NY",-73.7521229,40.6038028,"Mott Av and Central Av, Queens, NY",-73.7528694,40.6042229
+"2009-09-15 00:00:00","Jackson Av and Queens St, Queens, NY",-73.9397449,40.7480198,"Jackson Av and 42nd Rd, Queens, NY",-73.9391794,40.748275
+"2009-09-26 00:00:00","Jackson Av and Queens St, Queens, NY",-73.9397449,40.7480198,"Jackson Av and 42nd Rd, Queens, NY",-73.9391794,40.748275
+"2009-09-16 00:00:00","Steinway St and 31st Av, Queens, NY",-73.9171048,40.7613374,"Steinway St and Broadway, Queens, NY",-73.9190184,40.7589806
+"2009-10-10 00:00:00","Steinway St and 31st Av, Queens, NY",-73.9171048,40.7613374,"Steinway St and Broadway, Queens, NY",-73.9190184,40.7589806
+"2009-09-30 00:00:00","Wards Island Bridge and MIDPOINT, NA, NY",-74.0059413,40.7127837,"Wards Island Bridge and NA, NA, NY",-74.0059413,40.7127837
+"2009-10-10 00:00:00","Wards Island Bridge and MIDPOINT, NA, NY",-74.0059413,40.7127837,"Wards Island Bridge and NA, NA, NY",-74.0059413,40.7127837
+"2009-09-10 00:00:00","Third Av and E 150th St, Bronx, NY",-73.9167772,40.81653,"Third Av and E 151st St, Bronx, NY",-73.9159687,40.8172247
+"2009-09-26 00:00:00","Third Av and E 150th St, Bronx, NY",-73.9167772,40.81653,"Third Av and E 151st St, Bronx, NY",-73.9159687,40.8172247
+"2009-09-12 00:00:00","W 181st St and St. Nicholas Av, New York, NY",-73.933745,40.8493135,"W 181st St and Wadsworth Av, New York, NY",-73.9349493,40.8498755
+"2009-09-23 00:00:00","W 181st St and St. Nicholas Av, New York, NY",-73.933745,40.8493135,"W 181st St and Wadsworth Av, New York, NY",-73.9349493,40.8498755
+"2009-09-10 00:00:00","Grand Concourse and E 164th St, Bronx, NY",-73.9209898,40.8295692,"Grand Concourse and E 165th St, Bronx, NY",-73.9204863,40.830947
+"2009-09-26 00:00:00","Grand Concourse and E 164th St, Bronx, NY",-73.9209898,40.8295692,"Grand Concourse and E 165th St, Bronx, NY",-73.9204863,40.830947
+"2009-09-23 00:00:00","University Heights Bridge and MIDPOINT, NA, NY",-74.0059413,40.7127837,"University Heights Bridge and NA, NA, NY",-74.0059413,40.7127837
+"2009-10-10 00:00:00","University Heights Bridge and MIDPOINT, NA, NY",-74.0059413,40.7127837,"University Heights Bridge and NA, NA, NY",-74.0059413,40.7127837
+"2009-09-15 00:00:00","82nd St and 37th Av, Queens, NY",-73.8842941,40.7497539,"82nd St and Roosevelt Av, Queens, NY",-73.8839418,40.7476372
+"2009-09-26 00:00:00","82nd St and 37th Av, Queens, NY",-73.8842941,40.7497539,"82nd St and Roosevelt Av, Queens, NY",-73.8839418,40.7476372
+"2009-09-10 00:00:00","Broadway and West 231st St, Bronx, NY",-73.9047946,40.878934,"Broadway and Naples Te, Bronx, NY",-73.9044325,40.8794461
+"2009-09-26 00:00:00","Broadway and West 231st St, Bronx, NY",-73.9047946,40.878934,"Broadway and Naples Te, Bronx, NY",-73.9044325,40.8794461
+"2009-09-10 00:00:00","E Fordham Rd and Valentine Av, Bronx, NY",-73.8958937,40.8622688,"E Fordham Rd and Tiebout Av, Bronx, NY",-73.8948047,40.8620701
+"2009-09-26 00:00:00","E Fordham Rd and Valentine Av, Bronx, NY",-73.8958937,40.8622688,"E Fordham Rd and Tiebout Av, Bronx, NY",-73.8948047,40.8620701
+"2009-09-10 00:00:00","East Gun Hill Rd and Bainbridge Av, Bronx, NY",-73.8784896,40.8810739,"East Gun Hill Rd and Rochambeau Av, Bronx, NY",-73.8793807,40.8815239
+"2009-09-26 00:00:00","East Gun Hill Rd and Bainbridge Av, Bronx, NY",-73.8784896,40.8810739,"East Gun Hill Rd and Rochambeau Av, Bronx, NY",-73.8793807,40.8815239
+"2009-09-15 00:00:00","Austin St and 71st Av, Queens, NY",-73.8448004,40.7201635,"Austin St and 70th Rd, Queens, NY",-73.8458961,40.7205705
+"2009-09-26 00:00:00","Austin St and 71st Av, Queens, NY",-73.8448004,40.7201635,"Austin St and 70th Rd, Queens, NY",-73.8458961,40.7205705
+"2009-09-16 00:00:00","Yellowstone Blvd and Queens Blvd, Queens, NY",-73.8474907,40.722916,"Yellowstone Blvd and Gerard Pl, Queens, NY",-73.8491869,40.7226096
+"2009-10-10 00:00:00","Yellowstone Blvd and Queens Blvd, Queens, NY",-73.8474907,40.722916,"Yellowstone Blvd and Gerard Pl, Queens, NY",-73.8491869,40.7226096
+"2009-09-10 00:00:00","White Plains Rd and Pelham Pkwy S, Bronx, NY",-73.867633,40.856614,"White Plains Rd and Lydig Av, Bronx, NY",-73.867704,40.8544969
+"2009-09-26 00:00:00","White Plains Rd and Pelham Pkwy S, Bronx, NY",-73.867633,40.856614,"White Plains Rd and Lydig Av, Bronx, NY",-73.867704,40.8544969
+"2009-09-16 00:00:00","Main St and 37th Av, Queens, NY",-73.8311294,40.7615513,"Main St and 38th Av, Queens, NY",-73.8307509,40.7608224
+"2009-09-26 00:00:00","Main St and 37th Av, Queens, NY",-73.8311294,40.7615513,"Main St and 38th Av, Queens, NY",-73.8307509,40.7608224
+"2009-09-16 00:00:00","Roosevelt Av and Main St, Queens, NY",-73.8301324,40.7595662,"Roosevelt Av and Union St, Queens, NY",-73.826525,40.7604656
+"2009-10-10 00:00:00","Roosevelt Av and Main St, Queens, NY",-73.8301324,40.7595662,"Roosevelt Av and Union St, Queens, NY",-73.826525,40.7604656
+"2009-09-15 00:00:00","Bell Blvd and 40th Av, Queens, NY",-73.7713288,40.7642682,"Bell Blvd and 41st Av, Queens, NY",-73.7709587,40.7635916
+"2009-06-10 00:00:00","New Dorp Lane and Hylan Blvd, Staten Island, NY",-74.109697,40.570467,"New Dorp Lane and Clawson St, Staten Island, NY",-74.111876,40.5716347
+"2009-06-13 00:00:00","New Dorp Lane and Hylan Blvd, Staten Island, NY",-74.109697,40.570467,"New Dorp Lane and Clawson St, Staten Island, NY",-74.111876,40.5716347
+"2009-09-29 00:00:00","New Dorp Lane and Hylan Blvd, Staten Island, NY",-74.109697,40.570467,"New Dorp Lane and Clawson St, Staten Island, NY",-74.111876,40.5716347
+"2009-10-10 00:00:00","New Dorp Lane and Hylan Blvd, Staten Island, NY",-74.109697,40.570467,"New Dorp Lane and Clawson St, Staten Island, NY",-74.111876,40.5716347
+"2009-06-06 00:00:00","Queens Blvd and 50' E of 80th Rd, Queens, NY",-73.8300588,40.7140155,"Queens Blvd and 0, Queens, NY",-73.8848903,40.7378545
+"2009-06-16 00:00:00","Queens Blvd and 50' E of 80th Rd, Queens, NY",-73.8300588,40.7140155,"Queens Blvd and 0, Queens, NY",-73.8848903,40.7378545
+"2009-09-16 00:00:00","Queens Blvd and E of 80th Rd, Queens, NY",-73.8300588,40.7140155,"Queens Blvd and 0, Queens, NY",-73.8848903,40.7378545
+"2009-10-10 00:00:00","Queens Blvd and E of 80th Rd, Queens, NY",-73.8300588,40.7140155,"Queens Blvd and 0, Queens, NY",-73.8848903,40.7378545
+"2009-06-10 00:00:00","Brooklyn Bridge and MIDPOINT, NA, NY",-74.0059413,40.7127837,"Brooklyn Bridge and NA, NA, NY",-74.0059413,40.7127837
+"2009-06-13 00:00:00","Brooklyn Bridge and MIDPOINT, NA, NY",-74.0059413,40.7127837,"Brooklyn Bridge and NA, NA, NY",-74.0059413,40.7127837
+"2009-09-10 00:00:00","Brooklyn Bridge and MIDPOINT, NA, NY",-74.0059413,40.7127837,"Brooklyn Bridge and NA, NA, NY",-74.0059413,40.7127837
+"2009-09-26 00:00:00","Brooklyn Bridge and MIDPOINT, NA, NY",-74.0059413,40.7127837,"Brooklyn Bridge and NA, NA, NY",-74.0059413,40.7127837
+"2009-05-09 00:00:00","Atlantic Av and Boerum Pl, Brooklyn, NY",-73.9904754,40.6890694,"Atlantic Av and Smith St, Brooklyn, NY",-73.9891815,40.6886246
+"2009-05-19 00:00:00","Atlantic Av and Boerum Pl, Brooklyn, NY",-73.9904754,40.6890694,"Atlantic Av and Smith St, Brooklyn, NY",-73.9891815,40.6886246
+"2009-09-10 00:00:00","Atlantic Av and Boerum Pl, Brooklyn, NY",-73.9904754,40.6890694,"Atlantic Av and Smith St, Brooklyn, NY",-73.9891815,40.6886246
+"2009-05-09 00:00:00","Eastern Pkwy and Plaza St E, Brooklyn, NY",-73.968864,40.6729947,"Eastern Pkwy and Underhill Av, Brooklyn, NY",-73.967469,40.6728096
+"2009-05-20 00:00:00","Eastern Pkwy and Plaza St E, Brooklyn, NY",-73.968864,40.6729947,"Eastern Pkwy and Underhill Av, Brooklyn, NY",-73.967469,40.6728096
+"2009-05-07 00:00:00","Williamsburg Bridge and MIDPOINT, NA, NY",-74.0059413,40.7127837,"Williamsburg Bridge and NA, NA, NY",-74.0059413,40.7127837
+"2009-06-13 00:00:00","Williamsburg Bridge and MIDPOINT, NA, NY",-74.0059413,40.7127837,"Williamsburg Bridge and NA, NA, NY",-74.0059413,40.7127837
+"2009-09-23 00:00:00","Williamsburg Bridge and MIDPOINT, New York, NY",-74.0059413,40.7127837,"Williamsburg Bridge and NA, New York, NY",-73.9731078,40.71403
+"2009-05-23 00:00:00","Delancey St and Orchard St, New York, NY",-73.9898099,40.718962,"Delancey St and Ludlow St, New York, NY",-73.9890522,40.7187313
+"2009-05-27 00:00:00","Delancey St and Orchard St, New York, NY",-73.9898099,40.718962,"Delancey St and Ludlow St, New York, NY",-73.9890522,40.7187313
+"2009-09-12 00:00:00","Delancey St and Orchard St, New York, NY",-73.9898099,40.718962,"Delancey St and Ludlow St, New York, NY",-73.9890522,40.7187313
+"2009-09-22 00:00:00","Delancey St and Orchard St, New York, NY",-73.9898099,40.718962,"Delancey St and Ludlow St, New York, NY",-73.9890522,40.7187313
+"NA","Hudson River Greenway and 50th St, New York, NY",-73.9872089,40.7627781,"Hudson River Greenway and 51st St, New York, NY",-73.985647,40.762915
+"2009-06-02 00:00:00","Hudson River Greenway and 50th St, New York, NY",-73.9872089,40.7627781,"Hudson River Greenway and 51st St, New York, NY",-73.985647,40.762915
+"2009-09-23 00:00:00","Hudson River Greenway and 50th St, New York, NY",-73.9872089,40.7627781,"Hudson River Greenway and 51st St, New York, NY",-73.985647,40.762915
+"2009-10-10 00:00:00","Hudson River Greenway and 50th St, New York, NY",-73.9872089,40.7627781,"Hudson River Greenway and 51st St, New York, NY",-73.985647,40.762915
+"2009-05-21 00:00:00","Broadway and W 63rd St, New York, NY",-73.9820677,40.7713586,"Broadway and W 64th St, New York, NY",-73.9820878,40.7721863
+"2009-05-23 00:00:00","Broadway and W 63rd St, New York, NY",-73.9820677,40.7713586,"Broadway and W 64th St, New York, NY",-73.9820878,40.7721863
+"2009-09-12 00:00:00","Broadway and W 63rd St, New York, NY",-73.9820677,40.7713586,"Broadway and W 64th St, New York, NY",-73.9820878,40.7721863
+"2009-09-22 00:00:00","Broadway and W 63rd St, New York, NY",-73.9820677,40.7713586,"Broadway and W 64th St, New York, NY",-73.9820878,40.7721863
+"2009-05-30 00:00:00","Park Av and 50th St, New York, NY",-73.9738891,40.7571383,"Park Av and 51st St, New York, NY",-73.9734239,40.7577598
+"2009-06-02 00:00:00","Park Av and 50th St, New York, NY",-73.9738891,40.7571383,"Park Av and 51st St, New York, NY",-73.9734239,40.7577598
+"2009-09-22 00:00:00","Park Av and 50th St, New York, NY",-73.9738891,40.7571383,"Park Av and 51st St, New York, NY",-73.9734239,40.7577598
+"2009-10-10 00:00:00","Park Av and 50th St, New York, NY",-73.9738891,40.7571383,"Park Av and 51st St, New York, NY",-73.9734239,40.7577598
+"2009-06-09 00:00:00","Queensboro Bridge and MIDPOINT, NA, NY",-74.0059413,40.7127837,"Queensboro Bridge and NA, NA, NY",-74.0059413,40.7127837
+"2009-06-13 00:00:00","Queensboro Bridge and MIDPOINT, NA, NY",-74.0059413,40.7127837,"Queensboro Bridge and NA, NA, NY",-74.0059413,40.7127837
+"2009-09-22 00:00:00","Queensboro Bridge and MIDPOINT, NA, NY",-74.0059413,40.7127837,"Queensboro Bridge and NA, NA, NY",-74.0059413,40.7127837
+"2009-10-10 00:00:00","Queensboro Bridge and MIDPOINT, NA, NY",-74.0059413,40.7127837,"Queensboro Bridge and NA, NA, NY",-74.0059413,40.7127837
+"2009-05-23 00:00:00","W 125th St and Adam C. Powell Blvd, New York, NY",-73.9482477,40.8089533,"W 125th St and Lenox Av, New York, NY",-73.9455473,40.8078142
+"2009-06-03 00:00:00","W 125th St and Adam C. Powell Blvd, New York, NY",-73.9482477,40.8089533,"W 125th St and Lenox Av, New York, NY",-73.9455473,40.8078142
+"2009-09-12 00:00:00","W 125th St and Adam C. Powell Blvd, New York, NY",-73.9482477,40.8089533,"W 125th St and Lenox Av, New York, NY",-73.9455473,40.8078142
+"2009-09-23 00:00:00","W 125th St and Adam C. Powell Blvd, New York, NY",-73.9482477,40.8089533,"W 125th St and Lenox Av, New York, NY",-73.9455473,40.8078142
+"2009-05-09 00:00:00","Flatbush Av and 80' S of Av U, Brooklyn, NY",-73.9263241,40.6130016,"Flatbush Av and Avenue V, Brooklyn, NY",-73.9412954,40.6267766
+"2009-05-20 00:00:00","Flatbush Av and 80' S of Av U, Brooklyn, NY",-73.9263241,40.6130016,"Flatbush Av and Avenue V, Brooklyn, NY",-73.9412954,40.6267766
+"2009-06-13 00:00:00","Richmond Hill Road and 400' W of Country Dr W, Staten Island, NY",-74.1648429,40.587365,"Richmond Hill Road and 0, Staten Island, NY",-74.1465728,40.5728671
+"2009-06-18 00:00:00","Richmond Hill Road and 400' W of Country Dr W, Staten Island, NY",-74.1648429,40.587365,"Richmond Hill Road and 0, Staten Island, NY",-74.1465728,40.5728671
+"2009-09-29 00:00:00","Richmond Hill Road and 400' W of Country Dr W, Staten Island, NY",-74.1648429,40.587365,"Richmond Hill Road and 0, Staten Island, NY",-74.1465728,40.5728671
+"2009-10-10 00:00:00","Richmond Hill Road and 400' W of Country Dr W, Staten Island, NY",-74.1648429,40.587365,"Richmond Hill Road and 0, Staten Island, NY",-74.1465728,40.5728671
+"2009-06-06 00:00:00","Queens Plaza N & S and Crescent St, Queens, NY",-73.7948516,40.7282239,"Queens Plaza N & S and 27th St, Queens, NY",-73.7948516,40.7282239
+"2009-06-17 00:00:00","Queens Plaza N & S and Crescent St, Queens, NY",-73.7948516,40.7282239,"Queens Plaza N & S and 27th St, Queens, NY",-73.7948516,40.7282239
+"2009-09-16 00:00:00","Queens Plaza N & S and Crescent St, Queens, NY",-73.7948516,40.7282239,"Queens Plaza N & S and 27th St, Queens, NY",-73.7948516,40.7282239
+"2009-10-10 00:00:00","Queens Plaza N & S and Crescent St, Queens, NY",-73.7948516,40.7282239,"Queens Plaza N & S and 27th St, Queens, NY",-73.7948516,40.7282239
+"2009-05-02 00:00:00","E 161st St and Grand Concourse, Bronx, NY",-73.9227761,40.8267604,"E 161st St and Sheridan Av, Bronx, NY",-73.9211695,40.8264031
+"2009-05-05 00:00:00","E 161st St and Grand Concourse, Bronx, NY",-73.9227761,40.8267604,"E 161st St and Sheridan Av, Bronx, NY",-73.9211695,40.8264031
+"2009-09-10 00:00:00","E 161st St and Grand Concourse, Bronx, NY",-73.9227761,40.8267604,"E 161st St and Sheridan Av, Bronx, NY",-73.9211695,40.8264031
+"2009-09-26 00:00:00","E 161st St and Grand Concourse, Bronx, NY",-73.9227761,40.8267604,"E 161st St and Sheridan Av, Bronx, NY",-73.9211695,40.8264031
+"2009-06-06 00:00:00","Queens Blvd and Woodhaven Blvd, Queens, NY",-73.8703472,40.7337255,"Queens Blvd and 90th St, Queens, NY",-73.8720519,40.7342278
+"2009-06-17 00:00:00","Queens Blvd and Woodhaven Blvd, Queens, NY",-73.8703472,40.7337255,"Queens Blvd and 90th St, Queens, NY",-73.8720519,40.7342278
+"2009-09-16 00:00:00","Queens Blvd and Woodhaven Blvd, Queens, NY",-73.8703472,40.7337255,"Queens Blvd and 90th St, Queens, NY",-73.8720519,40.7342278
+"2009-10-10 00:00:00","Queens Blvd and Woodhaven Blvd, Queens, NY",-73.8703472,40.7337255,"Queens Blvd and 90th St, Queens, NY",-73.8720519,40.7342278
+"2009-06-06 00:00:00","Northern Blvd and 50' E of 161st St, Queens, NY",-73.80466,40.7625625,"Northern Blvd and 0, Queens, NY",-73.9236262,40.7523822
+"2009-06-16 00:00:00","Northern Blvd and 50' E of 161st St, Queens, NY",-73.80466,40.7625625,"Northern Blvd and 0, Queens, NY",-73.9236262,40.7523822
+"2009-09-16 00:00:00","Northern Blvd and 50' E of 161st St, Queens, NY",-73.80466,40.7625625,"Northern Blvd and 0, Queens, NY",-73.9236262,40.7523822
+"2009-06-06 00:00:00","Merrick Blvd and 108 Dr, Queens, NY",-73.7849268,40.6974959,"Merrick Blvd and 169 Pl, Queens, NY",-73.7868334,40.6982864
+"2009-06-16 00:00:00","Merrick Blvd and 108 Dr, Queens, NY",-73.7849268,40.6974959,"Merrick Blvd and 169 Pl, Queens, NY",-73.7868334,40.6982864
+"2009-09-16 00:00:00","Merrick Blvd and 108 Dr, Queens, NY",-73.7849268,40.6974959,"Merrick Blvd and 169 Pl, Queens, NY",-73.7868334,40.6982864
+"2009-09-26 00:00:00","Merrick Blvd and 108 Dr, Queens, NY",-73.7849268,40.6974959,"Merrick Blvd and 169 Pl, Queens, NY",-73.7868334,40.6982864

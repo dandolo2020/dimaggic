@@ -559,5 +559,54 @@
     "crumbs": [
       "Bayes Regression"
     ]
+  },
+  {
+    "objectID": "rCourse.html",
+    "href": "rCourse.html",
+    "title": "Intro to R Course",
+    "section": "",
+    "text": "Intro to R Course\nThis is an R course for epidemiologists insomuch as I am an epidemiologist who uses R. This material is intended for students or practitioners who want to use R to apply the basic epidemiological or biostatistical methods they have learned or are currently learning. As much as possible, I emphasize the kinds of data and computational issues epidemiologists are likely to confront, and how they can be solved with R.\nThere’s a bit of learning curve with R. But it is very much worth the effort. You don’t need to be a computer programmer (though I imagine it surely helps…) but you should be familiar with your operating system (Windows, OS X, or LINUX), its file structure, and how to download, install and transfer files.\nMy overarching goal is to introduce participants to R programming skills so they can (1) use those skills to answer epidemiological questions, and (2) develop their own tools to apply epidemiological methods. By the end of the course you will, at a minimum, be able to:\n\nUnderstand R data objects and how they are used for epidemiologic analysis\nEnter and manipulate data in R in a way that makes epidemiologic sense\nUse R to calculate risks and rates, analyze survival data, and calculate confidence intervals\nWrite your own simple functions to calculate rates, ratios, and measures of association\nPlot data using R base graphics capabilities, and be aware of additional capabilities such as ggplot2\n\nThe primary software tool we will be using is R, a multi-platform (Windows, Mac, Linux) free, open-source, user-maintained advanced statistical and scientific computing platform based on the S-plus language. In addition to the thousands of user-contributed packages, the language is easily extendable though simple object-based programming and can interface with other sophisticated free open-source statistical programs.\n\nThe material is almost exclusively (and unapologetically) in Base R. There are some powerful iterations of R, like Tidyvers and data.table, and AI-driven search engines make coding almost excessively available. But if you understand and can code in Base R, those tools will be even more powerful in your hands.\n\nAdditional material is available on topics like Bayesian and spatial analyses, and power calculations.\nLinks to slides, exercises, data sets and screen casts follow below.\n\n\nDownload and install R\n\nGo to the R Project home page.\nClick the CRAN (Comprehensive R Archive Network) link from the left-hand menu, under Download Packages.\nClick on a link to one of the mirror servers listed on this page. I usually choose a site that is geographically close.\nFrom the box at the top of the page titled “Download and Install R. Precompiled binary distributions….” and select your * operating system.\nChoose “base” for Windows or the latest “.pkg” for Mac (If you’re a Linux user, I’m * assuming you’re already smarter than me about the software repository that came with your distro)\nDownload the file\nRun the installation program accepting defaults\n\n\n\nDownload and Install RStudio\nThough not strictly necessary, take a moment to download and install R-Studio. It is acts like kind of a wrapper to create a neat working environment that looks and acts the same across platforms. I’m happy enough with my own text editor as an interface to R, but I find that RStudio can smooth the transition from more integrated programs like SAS and STATA to the command-line world of R.\n\n\nSlides\n\nIntroduction to R\nThe Basics\nFunctions\nPackages\nGraphics\nData\nVariables\nggmap\nSpatial Analysis\n\n\n\nVideos\nScreencast Videos arranged by topic.\n\n\nData Sets\nLinks to data sets used in examples and exercises:\n\ncars\ntitanic\nzip codes\nsparcs\ndig\nbirths\nugdp\npopes\ncholera\nsuicides\ncholera background image\ndaytime\nsegment summary\nbrfss14\nbinary\n\n\n\nAcknowledgements\nI am indebted to these authors and practitioners from whom I’ve borrowed extensively and shamelessly:\n\nAn Introduction to R This deceptively short overview by Venebles and Smith continues to amaze me for its ability to answer almost every question about how to use R.\nApplied Epidemiology Using R. Tomas Aragon is one of my heros. He is a physician and epidemiologist who also has the ability to demystify even the most arcane aspects of statistical computing. I have based large chunks of this course (particularly the material on R objects) on Dr. Aragon’s book. He tends to update his website, so you may need to search for this book. Do so.\nAn Introduction to Statistical Computing in R by the late Dr. John Fox is another wonderful resource from which I’ve stolen liberally. It is now, I believe updated as An R Companion to Applied Regression\nFinally, Data Manipulation with R by Phil Spector is a book every R programmer should read."
+  },
+  {
+    "objectID": "R/rVideos.html",
+    "href": "R/rVideos.html",
+    "title": "R Screencasts",
+    "section": "",
+    "text": "Why R? \nInstalling R. \nUsing R as a Calculator. \nThe R Text Editor. \nA Birds-Eye View of R Part 1 \nA Birds-Eye View of R Part 2 \nR Help \nSaving your files \nR packages: How to find, install find help and update packages from the command line."
+  },
+  {
+    "objectID": "R/rVideos.html#x2-table-analysis-and-odds-ratios",
+    "href": "R/rVideos.html#x2-table-analysis-and-odds-ratios",
+    "title": "R Screencasts",
+    "section": "2x2 Table Analysis and Odds Ratios",
+    "text": "2x2 Table Analysis and Odds Ratios\nAn introduction to 2x2 table analysis in R using epitab() from Tomas Aragon’s “epitools” package. \nThe Mantel-Haenszel adjusted odds ratio using the cc() and mhor() from Virasakdi Chongsuvivatwong’s “epicalc” package."
+  },
+  {
+    "objectID": "R/rVideos.html#linear-regression",
+    "href": "R/rVideos.html#linear-regression",
+    "title": "R Screencasts",
+    "section": "Linear Regression",
+    "text": "Linear Regression\nA linear regression example using data from John Fox’s “car” package and the lm() function including simple residual analysis and how to update a model."
+  },
+  {
+    "objectID": "R/rVideos.html#logistic-regression",
+    "href": "R/rVideos.html#logistic-regression",
+    "title": "R Screencasts",
+    "section": "Logistic Regression",
+    "text": "Logistic Regression\nA brief review of odds, log odds and the logistic model followed by a logistic regression example using the glm() function."
+  },
+  {
+    "objectID": "R/rVideos.html#poisson",
+    "href": "R/rVideos.html#poisson",
+    "title": "R Screencasts",
+    "section": "Poisson",
+    "text": "Poisson\nA review of the Poisson model, offset variables and the predictive interpretation of Poisson regression coefficients. \nA Poisson regression example using traffic fatality data from Achim Zeileis’s “AER” package. \nApproaches to assessing and adjusting for overdispersion in Poisson models."
+  },
+  {
+    "objectID": "R/rVideos.html#survival-analysis",
+    "href": "R/rVideos.html#survival-analysis",
+    "title": "R Screencasts",
+    "section": "Survival Analysis",
+    "text": "Survival Analysis\nAn overview of the fundamental difference between disease risk and disease rates, and the implication of this difference for modeling time to event data. \nA description of the assumptions underlying binomial models and exponential models of disease risk, and the role of Kaplan-Meier and the product limit estimator when those assumptions can not be reasonably met. \nA description of the Kaplan-Meier method and illustration of how it can be implemented with basic R code. \nAn overview of how survival methods can be implemented in R using functions in the “survival” package."
   }
 ]

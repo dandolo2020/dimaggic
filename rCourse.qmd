@@ -1,0 +1,106 @@
+---
+Title: "Intro to R Course"
+---
+# Intro to R Course
+
+This is an R course for epidemiologists insomuch as I am an epidemiologist who uses R. This material is intended for students or practitioners who want to use R to apply the basic epidemiological or biostatistical methods they have learned or are currently learning. As much as possible, I emphasize the kinds of data and computational issues epidemiologists are likely to confront, and how they can be solved with R. 
+
+There’s a bit of learning curve with R. But it is very much worth the effort. You don’t need to be a computer programmer (though I imagine it surely helps...) but you should be familiar with your operating system (Windows, OS X, or LINUX), its file structure, and how to download, install and transfer files.
+
+My overarching goal is to introduce participants to R programming skills so they can (1) use those skills to answer epidemiological questions, and (2) develop their own tools to apply epidemiological methods. By the end of the course you will, at a minimum, be able to:
+
+* Understand R data objects and how they are used for epidemiologic analysis
+* Enter and manipulate data in R in a way that makes epidemiologic sense
+* Use R to calculate risks and rates, analyze survival data, and calculate confidence intervals
+* Write your own simple functions to calculate rates, ratios, and measures of association
+* Plot data using R base graphics capabilities, and be aware of additional capabilities such as ggplot2
+
+
+The primary software tool we will be using is R, a multi-platform (Windows, Mac, Linux) free, open-source, user-maintained advanced statistical and scientific computing platform based on the S-plus language. In addition to the thousands of user-contributed packages, the language is easily extendable though simple object-based programming and can interface with other sophisticated free open-source statistical programs.
+
+
+<center>**The material is almost exclusively (and unapologetically) in Base R**. There are some powerful iterations of R, like [Tidyvers](https://tidyverse.org) and [data.table](https://r-datatable.com), and AI-driven search engines make coding almost excessively available. But if you understand and can code in Base R, those tools will be even more powerful in your hands.</center>
+
+Additional material is available on topics like Bayesian and spatial analyses, and power calculations.
+
+Links to slides, exercises, data sets and screen casts follow below.
+
+
+# Download and install R
+
+* Go to the R Project home page.
+* Click the CRAN (Comprehensive R Archive Network) link from the left-hand menu, under Download Packages.
+* Click on a link to one of the mirror servers listed on this page. I usually choose a site that is geographically close.
+* From the box at the top of the page titled “Download and Install R. Precompiled binary distributions....” and select your * operating system.
+* Choose “base” for Windows or the latest ".pkg" for Mac (If you’re a Linux user, I’m * assuming you’re already smarter than me about the software repository that came with your distro)
+* Download the file
+* Run the installation program accepting defaults
+
+
+# Download and Install RStudio
+
+Though not strictly necessary, take a moment to download and install R-Studio. It is acts like kind of a wrapper to create a neat working environment that looks and acts the same across platforms. I'm happy enough with my own text editor as an interface to R, but I find that RStudio can smooth the transition from more integrated programs like SAS and STATA to the command-line world of R.
+
+# Slides
+
+* [Introduction to R](/R/intro.pdf)
+* [The Basics](/R/foundations.pdf)
+* [Functions](/R/functions.pdf)
+* [Packages](/R/packages.pdf)
+* [Graphics](/R/graph.pdf)
+* [Data](/R/data.pdf)
+* [Variables](/R/vars.pdf)
+* [ggmap](/R/ggmap.pdf)
+* [Spatial Analysis](/R/spatialSlidy.html)
+
+
+
+# Videos
+
+Screencast [Videos](/R/rVideos.qmd) arranged by topic.
+
+
+# Data Sets
+
+Links to data sets used in examples and exercises:
+
+* [cars](Data/cars.txt)
+* [titanic](Data/titanic.csv)
+* [zip codes](Data/deathZIPs.csv)
+* [sparcs](Data/sparcsShort.csv)
+* [dig](Data/dig.csv)
+* [births](Data/births.csv)
+* [ugdp](Data/ugdp.txt)
+* [popes](Data/popeSurvival.RData)
+* [cholera](Data/Cholera_Deaths.zip)
+* [suicides](Data/)
+* [cholera background image](Data/)
+* [daytime](Data/LDNSuicides.zip)
+* [segment summary](Data/SegmentSummary.csv)
+* [brfss14](Data/brfss_14.rds)
+* [binary](Data/binary.csv)
+
+# Acknowledgements
+
+I am indebted to these authors and practitioners from whom I’ve borrowed extensively and shamelessly:
+
+* [An Introduction to R](https://cran.r-project.org/doc/manuals/R-intro.pdf) This deceptively short overview by Venebles and Smith continues to amaze me for its ability to answer almost every question about how to use R.
+
+* [Applied Epidemiology Using R.](https://tbrieder.org/epidata/course_reading/e_aragon.pdf) [Tomas Aragon](https://publichealth.berkeley.edu/people/tomas-aragon) is one of my heros. He is a physician and epidemiologist who also has the ability to demystify even the most arcane aspects of statistical computing. I have based large chunks of this course (particularly the material on R objects) on Dr. Aragon’s book. He tends to update his website, so you may need to search for this book. Do so.
+
+* An Introduction to Statistical Computing in R by the late Dr. John Fox is another wonderful resource from which I’ve stolen liberally. It is now, I believe updated as [An R Companion to Applied Regression](https://www.john-fox.ca/Companion/)
+
+* Finally, [Data Manipulation with R](https://www.google.com/books/edition/Data_Manipulation_with_R/grfuq1twFe4C?hl=en&gbpv=1&printsec=frontcover) by Phil Spector is a book every R programmer should read.
+
+
+
+
+
+
+
+
+
+
+
+
+

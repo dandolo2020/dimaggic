@@ -18,28 +18,6 @@ title: "Bayes Regression"
 [Shane Jensen](http://www-stat.wharton.upenn.edu/~stjensen/) and [Statistical Horizons](http://www.statisticalhorizons.com/)  
 
 
-#Sections
- 
-  
-[I. Introduction to Bayesian Regression Modeling](#introduction-to-bayesian-regression-modeling)           
-[1. Normal Model with Non-Informative Prior (Ridge or Penalized Regression)](#normal-model-with-non-informative-prior-(ridge-or-penalized-regression))             
-[2. Normal Model with Informative Priors  (Lasso Regression)](#normal-model-with-informative-priors-(lasso-regression))                
-[3. Mixture Models (Expectation-Maximization)](#mixture-models-(expectation-maximization))                 
-
-
-
-[II. Bayesian Regression Modeling with BUGS or JAGS](#bayesian-regression-modeling-with-bugs-or-jags)  
-[1. Linear Regression](#linear-regression)              
-[2. Logistic Regression](#logistic-regression)             
-[3. Other Models](#other-models)              
-[4. Hierarchical Models](#hierarchical-models)                
-
-[III. Model Checking](#model-checking)
-
-
-
-
-
 #Introduction to Bayesian Regression Modeling  
 
 

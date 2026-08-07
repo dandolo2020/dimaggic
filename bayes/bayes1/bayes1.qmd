@@ -19,38 +19,7 @@ I am indebted to the following individuals upon who's work the material in these
 
 
 
-
-
-# Contents
-
-[I. THE BAYESIAN WAY](#the-bayesian-way)           
-[1. Why Bayes?](##why-bayes)           
-[bayes vs. classical](###bayes-vs-classical)           
-[the benefits of bayes](###the-benefits-of-bayes)           
-[2. Bayes Theorem](##bayes-theorem)           
-[example: positive predictive value](###example-positive-predictive-value)           
-[example: student sleep habits](###example-student-sleep-habits)           
-
-[II. SINGLE PARAMETER PROBLEMS](#single-parameter-problems)           
-[1. Single Parameter Binomial Example: Race and Promotion at a State Agency](##single-parameter-binomial-example:-race-and-promotion-at-a-state-agency)                  
-[2. Single Parameter Binomial Example: Perchlorate and Thyroid Tumors](##single-parameter-binomial-example:-perchlorate-and-thyroid-tumors)            
-[3. Single Parameter Poisson Example: Airline Crashes](##single-parameter-poisson-example:-airline-crashes)           
-[4. Single Parameter Normal Model](##single-parameter-normal-model)           
-
-[III. CONJUGATE ANALYSES](#conjugate-analyses)           
-[1. Conjugate Analysis of Binomial Data](##conjugate-analysis-of-binomial-data)           
-[binomial example: drug response](###binomial-example:-drug-response)           
-[binomial example: placenta previa](###binomial-example:-placenta-previa)           
-[2. Conjugate Analysis of Poisson Data](##conjugate-analysis-of-poisson-data)           
-[poisson example: London bombings during WWII](###poisson-example:-london-bombings-during-wwii)           
-[poisson example: heart transplant mortality](###poisson-example:-heart-transplant-mortality)           
-[3. Conjugate Analysis of Normally Distributed Data](##conjugate-analysis-of-normally-distributed-data)           
-[example: THM concentrations](###example:-thm-concentrations)           
-
-[IV. PROBABILITY DISTRIBUTIONS USED IN BAYESIAN ANALYSIS](#probability-distributions-used-in-bayesian-analysis)           
-
-
-[Link to Slides](bayes/bayes1/bayesWebPt1Rev1Beamer.pdf)
+[Link to Slides](/bayes/bayes1/bayesWebPt1Rev1Beamer.pdf)
 
 
 

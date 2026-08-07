@@ -1,0 +1,188 @@
+---
+title: "R Screencasts"
+format: html
+---
+
+# Introductory Material
+
+Why R?
+{{< video https://www.youtube.com/watch?v=ABb0m3EA3m4&t=18s >}}
+
+Installing R.
+{{< video https://www.youtube.com/watch?v=xkPMKGxqons >}}
+
+Using R as a Calculator.
+{{< video https://www.youtube.com/watch?v=bWUstA20gso >}}
+
+The R Text Editor.
+{{< video https://www.youtube.com/watch?v=FXLA2YKofDE >}}
+
+A Birds-Eye View of R Part 1
+{{< video https://www.youtube.com/watch?v=EF3Zk7rNz98 >}}
+
+A Birds-Eye View of R Part 2
+{{< video https://www.youtube.com/watch?v=0vzJ3TepN2k >}}
+
+R Help
+{{< video https://www.youtube.com/watch?v=393XnZhjn2M >}}
+
+Saving your files
+{{< video https://www.youtube.com/watch?v=1mFMIgJn-Oo >}}
+
+
+R packages: How to find, install find help and update packages from the command line.
+{{< video https://www.youtube.com/watch?v=ZVGouZyCu4A >}}
+
+
+
+# All About R Objects
+
+This screencast defines 5 R objects: vectors, matrices, arrays, lists and data frames, and describes why they are important for epidemiologists.
+{{< video https://www.youtube.com/watch?v=Pl6d75Wbbb4 >}}
+
+
+A continuation of the description of R objects of interest to epidemiologists and the fucntions used to create them.
+{{< video https://www.youtube.com/watch?v=a2YflEFzOx8 >}}
+
+
+A description of what object modes and classes are, the difference between atomic and recursive objects, and how R can change or coerce data.
+{{< video https://www.youtube.com/watch?v=ayH1hvclLFY >}}
+
+
+Numeric vectors are the basic building block of R data structures. How to create and index them.
+{{< video https://www.youtube.com/watch?v=hrt3EBPcsuI >}}
+
+
+
+The difference between sorting and ordering R vectors, and how to use the order() function to arrange one vector according to the levels of another vector.
+{{< video https://www.youtube.com/watch?v=gW-UVSAF4u0 >}}
+
+
+Logical are created using conditional operators. They are the key to indexing, and indexing is the key to manipulating data in R. This screencast introduces how logical are created, and can be used to index other vectors.
+{{< video https://www.youtube.com/watch?v=lwBkIDPoR-I >}}
+
+
+This screencast introduces the R matrix, which is essentially a 2-dimensional vector, and forms the basis for tabular epidemiologic analyses in epidemiology. It shows how to create matrices with the matrix() function for summary data and with the table() function for individual-level data, as well as how to index arrays.
+{{< video https://www.youtube.com/watch?v=vBG_xgbnkjc >}}
+
+
+R arrays are n-dimensional vectors that correspond to stratified tables in epidemiologic analysis. This screencast shows how to create arrays with the array() function for summary data, and with the tables() and xtab() functions for individual-level data. It also introduces how to index arrays.
+{{< video https://www.youtube.com/watch?v=hjGMkr8c4xo >}}
+
+
+
+A list can be made up of different kinds of R data types. Many functions return results as lists, and it is the basis for R data frames It can be created using the list() function.
+{{< video https://www.youtube.com/watch?v=Dr6ohXgoORg >}}
+
+
+Data frames are flexible in how they can be indexed and manipulated. The three main approaches consist of indexing by position, by name and by logical vector.
+{{< video https://www.youtube.com/watch?v=gVAUol5S13U >}}
+
+
+This screencast presents a short but non-trivial example of using logical indexing to manipulate an R data frame of hospital discharge data.
+{{< video https://www.youtube.com/watch?v=3V30B5MC_SY >}}
+
+
+This screencast introduces the read.table() function and it's read.csv() convenience wrapper version as the most effective means of reading data into an R data frame.
+{{< video https://www.youtube.com/watch?v=A4MTqUGbjqw >}}
+
+
+
+
+
+# Stratified and Crosstabular Analyses
+
+
+Using the base R apply() function on matrices and arrays to conduct marginal summary analyses like calculating row and column statistics.
+{{< video https://www.youtube.com/watch?v=9GxRwNVLyVk >}}
+
+
+Using lapply(), sapply() and mapply() to conduct marginal summary analyses on more complex R objects like lists.
+{{< video https://www.youtube.com/watch?v=jtNZ4ITzULY >}}
+
+
+
+Using the base R functions tapply(), by() and aggregate() to group observations and conduct stratified analyses.
+{{< video https://www.youtube.com/watch?v=iW3xqmVZw2Q >}}
+
+
+
+
+Using the base R function table() to count frequencies and cross tabulate counts and proportions of categorical variables. Introduction to the CrossTable() function in the "gmodels" to return frequency and cross tabulations formatted like SAS PROC FREQ.
+{{< video https://www.youtube.com/watch?v=L8niRM4Cnvw >}}
+
+
+## 2x2 Table Analysis and Odds Ratios
+An introduction to 2x2 table analysis in R using epitab() from Tomas Aragon's "epitools" package.
+{{< video https://www.youtube.com/watch?v=3pH9o08Ogus >}}
+
+
+The Mantel-Haenszel adjusted odds ratio using the cc() and mhor() from Virasakdi Chongsuvivatwong's "epicalc" package.
+{{< video https://www.youtube.com/watch?v=dFwQLiqvK3Q >}}
+
+
+# Indexing and Data Manipulation
+
+
+How to index vectors by position, logical expression and name. Using conditional expressions and logical indexes to identify and select one vector against another. Using logical indexing to categorize a variable into mutually exclusive groups.
+{{< video https://www.youtube.com/watch?v=v-RDycYD9pk >}}
+
+
+How to index matrices and arrays by position, name and logical expression.
+{{< video https://www.youtube.com/watch?v=N0K_I8YtfC8 >}}
+
+
+How to index lists by position using the double bracket notation, by logical expression, and by name. Using indexing to extract results from functions that return lists.
+{{< video https://www.youtube.com/watch?v=kvR-XaVt4_4 >}}
+
+
+How to index data frame observations (rows) and variables (columns) by position, name and logical expressions to manipulate and recode or replace data elements.
+{{< video https://www.youtube.com/watch?v=v9tCiW0wXjU >}}
+
+
+Subsetting a data frame using indexing and logical expressions to restrict rows and variables. Introduction to the base R function subset() as an alternative to indexing.
+{{< video https://www.youtube.com/watch?v=ECE4ChfBjKQ >}}
+
+
+# Statistics and Modeling
+
+An overview of a few of the many statistical functions that come with base R, including summary(), barplot(), t.test() and wilcox.test(), and how to extract information from the results of statistical function.
+{{< video https://www.youtube.com/watch?v=N4C6TdSqWcU >}}
+
+## Linear Regression
+A linear regression example using data from John Fox's "car" package and the lm() function including simple residual analysis and how to update a model.
+{{< video https://www.youtube.com/watch?v=HhE8sB6cfRI >}}
+
+## Logistic Regression
+A brief review of odds, log odds and the logistic model followed by a logistic regression example using the glm() function.
+{{< video https://www.youtube.com/watch?v=YlAtIr1UQOk >}}
+
+## Poisson
+A review of the Poisson model, offset variables and the predictive interpretation of Poisson regression coefficients.
+{{< video https://www.youtube.com/watch?v=FHAHqIq3oJE >}}
+
+A Poisson regression example using traffic fatality data from Achim Zeileis's "AER" package.
+{{< video https://www.youtube.com/watch?v=cT-hT1Yg8l8 >}}
+
+
+Approaches to assessing and adjusting for overdispersion in Poisson models.
+{{< video https://www.youtube.com/watch?v=QY2ChtYw0p8 >}}
+
+
+## Survival Analysis
+
+An overview of the fundamental difference between disease risk and disease rates, and the implication of this difference for modeling time to event data.
+{{< video https://www.youtube.com/watch?v=uPXkwgstAII >}}
+
+
+A description of the assumptions underlying binomial models and exponential models of disease risk, and the role of Kaplan-Meier and the product limit estimator when those assumptions can not be reasonably met.
+{{< video https://www.youtube.com/watch?v=cgVP2XB9AjQ >}}
+
+A description of the Kaplan-Meier method and illustration of how it can be implemented with basic R code.
+{{< video https://www.youtube.com/watch?v=glITGsTyCKg >}}
+
+An overview of how survival methods can be implemented in R using functions in the "survival" package.
+{{< video https://www.youtube.com/watch?v=V-wdGPGzcNg >}}
+
+
+

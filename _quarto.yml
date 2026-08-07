@@ -10,6 +10,7 @@ website:
         text: " "
         icon: house-door-fill
       - sidebar:bayes
+      - rCourse.qmd
       
   sidebar:
     - id: bayes
