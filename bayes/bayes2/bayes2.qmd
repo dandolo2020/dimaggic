@@ -37,12 +37,12 @@ I am indebted to the following individuals upon who's work the material in these
 
 # Grid Sampling# 
 
-In the [first part](http://www.columbia.edu/~cjd11/charles_dimaggio/DIRE/styled-4/styled-11/code-4/) of this discussion, we considered relatively simple one-parameter models and conjugate analysis.  Before we move on to the kinds of Markov Chain Monte Carlo methods in common use for more complex problems, we'll take some first steps toward realistic problems that require computational methods. The first such method is called grid sampling, which we present in the setting of both normal and Poisson models.  
+In the [first part](/bayes/bayes1/bayes1.qmd) of this discussion, we considered relatively simple one-parameter models and conjugate analysis.  Before we move on to the kinds of Markov Chain Monte Carlo methods in common use for more complex problems, we'll take some first steps toward realistic problems that require computational methods. The first such method is called grid sampling, which we present in the setting of both normal and Poisson models.  
 
 ## The Multi-Parameter Normal Model
 
  
-In our [introduction](lhttp://www.columbia.edu/~cjd11/charles_dimaggio/DIRE/styled-4/styled-11/code-4/) to the single-parameter normal model, we assumed (somewhat unrealistically) that we didn't know the mean, but somehow did know the variance.  We now take the more real-world stance that both the mean and the variance are unknown.  So now, $\sigma^2$ doesn't drop out of the model specification, making the Bayesian calculations more complicated. You may begin to appreciate that even for this relatively simple model, the simple analytic approaches we've seen in the previous conjugate analyses become increasingly more difficult to apply, and we begin to see the need for computational approaches.[^Suspect]
+In our [introduction](/bayes/bayes1/bayes1.qmd) to the single-parameter normal model, we assumed (somewhat unrealistically) that we didn't know the mean, but somehow did know the variance.  We now take the more real-world stance that both the mean and the variance are unknown.  So now, $\sigma^2$ doesn't drop out of the model specification, making the Bayesian calculations more complicated. You may begin to appreciate that even for this relatively simple model, the simple analytic approaches we've seen in the previous conjugate analyses become increasingly more difficult to apply, and we begin to see the need for computational approaches.[^Suspect]
 
 [^Suspect]: In fact, I suspect the primary motivation for presenting non-computational approaches to realistic models is to persuade the reader that they would not want to use them. I considered not including this material, but for completeness sake, and because it illustrates some important concepts leading to the more commonly used computational approaches I decided to include it.  
 
