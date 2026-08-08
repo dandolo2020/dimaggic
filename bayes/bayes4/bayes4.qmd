@@ -414,7 +414,7 @@ We see that hospital 12, appears to be an outlier...
 
 ![](bayes/bayes4/caterpillar.jpg)
 
-This tool can also be used to create Forest plots for your meta analysis, though there are probably better tools in packages like "meta" and "rmeta" that you can feed your results to.  I tend to hand code my Forest plots.  Here is a [template](bayes/bayes4/forestPlot.r) based on some code [Alex Sutton](http://www2.le.ac.uk/departments/health-sciences/research/biostats/staff-pages/ajs22) was kind enough to share with me. I used it to create figure 1 in [this paper](http://academiccommons.columbia.edu/catalog/ac%3A149270).  It is a bit of a hack, but you can adapt it to your needs.[^letMeKnow]
+This tool can also be used to create Forest plots for your meta analysis, though there are probably better tools in packages like "meta" and "rmeta" that you can feed your results to.  I tend to hand code my Forest plots.  Here is a [template](bayes/bayes4/forestPlot.txt) based on some code [Alex Sutton](http://www2.le.ac.uk/departments/health-sciences/research/biostats/staff-pages/ajs22) was kind enough to share with me. I used it to create figure 1 in [this paper](http://academiccommons.columbia.edu/catalog/ac%3A149270).  It is a bit of a hack, but you can adapt it to your needs.[^letMeKnow]
 
 [^letMeKnow]: If you come up with something nice, do let me know.
 

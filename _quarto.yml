@@ -34,6 +34,8 @@ website:
       contents:
           - epidemiology/introEpi.qmd
           - epidemiology/injuryDisaster.qmd
+          - epidemiology/power.qmd
+          - epidemiology/prob.qmd
 
 format:
   html:

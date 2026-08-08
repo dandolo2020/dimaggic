@@ -23,6 +23,41 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
@@ -135,7 +170,15 @@ ul.task-list li input[type="checkbox"] {
   </li>  
         <li>
     <a class="dropdown-item" href="../epidemiology/injuryDisaster.html">
- <span class="dropdown-text">Injury Epidemiology</span></a>
+ <span class="dropdown-text">Injuries and Disasters</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../epidemiology/power.html">
+ <span class="dropdown-text">Power Tools for Epidemiologists</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../epidemiology/prob.html">
+ <span class="dropdown-text">Probability and Simulations</span></a>
   </li>  
     </ul>
   </li>
@@ -154,7 +197,7 @@ ul.task-list li input[type="checkbox"] {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../epidemiology/injuryDisaster.html">Injury Epidemiology</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../epidemiology/injuryDisaster.html">Injuries and Disasters</a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
     </div>
@@ -175,7 +218,19 @@ ul.task-list li input[type="checkbox"] {
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../epidemiology/injuryDisaster.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text">Injury Epidemiology</span></a>
+ <span class="menu-text">Injuries and Disasters</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../epidemiology/power.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Power Tools for Epidemiologists</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../epidemiology/prob.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Probability and Simulations</span></a>
   </div>
 </li>
     </ul>
@@ -188,8 +243,21 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#injury-epidemiology" id="toc-injury-epidemiology" class="nav-link active" data-scroll-target="#injury-epidemiology">Injury Epidemiology</a></li>
-  <li><a href="#disaster-epidemiology" id="toc-disaster-epidemiology" class="nav-link" data-scroll-target="#disaster-epidemiology">Disaster Epidemiology</a></li>
+  <li><a href="#injuries-and-disasters" id="toc-injuries-and-disasters" class="nav-link active" data-scroll-target="#injuries-and-disasters">Injuries and Disasters</a></li>
+  <li><a href="#injury-epidemiology" id="toc-injury-epidemiology" class="nav-link" data-scroll-target="#injury-epidemiology">Injury Epidemiology</a></li>
+  <li><a href="#disaster-epidemiology" id="toc-disaster-epidemiology" class="nav-link" data-scroll-target="#disaster-epidemiology">Disaster Epidemiology</a>
+  <ul class="collapse">
+  <li><a href="#introduction" id="toc-introduction" class="nav-link" data-scroll-target="#introduction">Introduction</a></li>
+  <li><a href="#mapping-a-disaster" id="toc-mapping-a-disaster" class="nav-link" data-scroll-target="#mapping-a-disaster">Mapping a Disaster</a></li>
+  <li><a href="#hurricane-sandy-maps-for-new-york-city" id="toc-hurricane-sandy-maps-for-new-york-city" class="nav-link" data-scroll-target="#hurricane-sandy-maps-for-new-york-city">Hurricane Sandy Maps for New York City</a></li>
+  <li><a href="#preparing-the-housing-data" id="toc-preparing-the-housing-data" class="nav-link" data-scroll-target="#preparing-the-housing-data">Preparing the Housing Data</a></li>
+  <li><a href="#mapping-housing-damage" id="toc-mapping-housing-damage" class="nav-link" data-scroll-target="#mapping-housing-damage">Mapping Housing Damage</a>
+  <ul class="collapse">
+  <li><a href="#dimensional-density-map" id="toc-dimensional-density-map" class="nav-link" data-scroll-target="#dimensional-density-map">2-Dimensional Density Map</a></li>
+  <li><a href="#weather-map-effects" id="toc-weather-map-effects" class="nav-link" data-scroll-target="#weather-map-effects">“Weather Map” Effects</a></li>
+  </ul></li>
+  <li><a href="#mapping-outages" id="toc-mapping-outages" class="nav-link" data-scroll-target="#mapping-outages">Mapping Outages</a></li>
+  </ul></li>
   </ul>
 </nav>
     </div>
@@ -199,17 +267,175 @@ ul.task-list li input[type="checkbox"] {
 
 
 
+<section id="injuries-and-disasters" class="level1">
+<h1>Injuries and Disasters</h1>
+</section>
 <section id="injury-epidemiology" class="level1">
 <h1>Injury Epidemiology</h1>
-<p>[Brief Introduction to Injury Epidemiology(/epidemiology/injuryOverview.pdf)]</p>
+<p><a href="../epidemiology/injuryOverview.pdf">Brief Introduction to Injury Epidemiology</a>]</p>
 <p>A quick overview of injury epidemiology basics based on one of the introductory chapters from my disertation on pediatric pedestrian injuries.</p>
-<p><a href="../epidemiology/hsphInjury3.pdf">Slides</a> for a (somewhat) more recent talk on injury epidemiology.</p>
+<p><a href="../epidemiology/hsphInjury2.pdf">Slides</a> for a (somewhat) more recent talk on injury epidemiology.</p>
 </section>
 <section id="disaster-epidemiology" class="level1">
 <h1>Disaster Epidemiology</h1>
+<section id="introduction" class="level2">
+<h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
 <p>Brief <a href="../epidemiology/briefIntroDisEpi.pdf">overview</a> of disaster epidemiology.</p>
+<p><a href="../epidemiology/hsphInjury3.pdf">Slides</a> for a talk on disaster epidemiology.</p>
+</section>
+<section id="mapping-a-disaster" class="level2">
+<h2 class="anchored" data-anchor-id="mapping-a-disaster">Mapping a Disaster</h2>
+</section>
+<section id="hurricane-sandy-maps-for-new-york-city" class="level2">
+<h2 class="anchored" data-anchor-id="hurricane-sandy-maps-for-new-york-city">Hurricane Sandy Maps for New York City</h2>
+<p>In late October, 2012, Hurricane (later Superstorm) Sandy caused extensive damage in the North East. In New York it is very much a tale of two cities, with some areas quickly back to their stride, and other areas continuing to limp along. Here is some epidemiologic surveillance in the form of mapping housing damage and power outages in New York City.</p>
+<p>The following code maps FEMA surveillance data on housing damage and inundation and power outages in New York City a week after the storm touched down. The FEMA data are available via Google Crisis Maps <a href="http://184.72.33.183/GISData/ImageCat/">here</a>. The New York City borough boundary files are available from <a href="http://www.nyc.gov/html/dcp/html/bytes/applbyte.shtml#free">Bytes of the Big Apple</a> The outage data files are <a href="../epidemiology/conEdCoordinates.csv">here</a> and <a href="../epidemiology/conEdOutages.csv">here</a> . A full write up is <a href="../epidemiology/miseryMap2.pdf">here</a> .</p>
+</section>
+<section id="preparing-the-housing-data" class="level2">
+<h2 class="anchored" data-anchor-id="preparing-the-housing-data">Preparing the Housing Data</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode numberSource r numberLines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="fu">library</span>(maptools)</span>
+<span id="cb1-2"><a href="#cb1-2"></a><span class="fu">library</span>(rgdal)</span>
+<span id="cb1-3"><a href="#cb1-3"></a></span>
+<span id="cb1-4"><a href="#cb1-4"></a>fema.points<span class="ot">&lt;-</span><span class="fu">readOGR</span>(<span class="st">".../femaPoints/"</span>, <span class="st">"femaPoints"</span>)</span>
+<span id="cb1-5"><a href="#cb1-5"></a>boros<span class="ot">&lt;-</span><span class="fu">readOGR</span>(<span class="st">".../nybb/"</span>, <span class="st">"nybb"</span>)</span>
+<span id="cb1-6"><a href="#cb1-6"></a></span>
+<span id="cb1-7"><a href="#cb1-7"></a>fema.points<span class="ot">&lt;-</span><span class="fu">spTransform</span>(fema.points, <span class="fu">CRS</span>(<span class="st">"+proj=longlat +datum=NAD83"</span>))</span>
+<span id="cb1-8"><a href="#cb1-8"></a>boros<span class="ot">&lt;-</span><span class="fu">spTransform</span>(boros, <span class="fu">CRS</span>(<span class="st">"+proj=longlat +datum=NAD83"</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>This syntax can be used for some simple plots.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode numberSource r numberLines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a><span class="fu">plot</span>(fema.points,<span class="at">col=</span><span class="st">"red"</span>, <span class="at">pch=</span><span class="dv">20</span>, <span class="at">cex=</span>.<span class="dv">1</span>)</span>
+<span id="cb2-2"><a href="#cb2-2"></a><span class="fu">plot</span>(boros, <span class="at">add=</span>T, <span class="at">lty=</span><span class="dv">1</span>, <span class="at">lwd=</span>.<span class="dv">5</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>This syntax overlays (actually indexes) the FEMA data to NYC boundaries (see the vignette for an explanation).</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode numberSource r numberLines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a> <span class="co">#vignette("over")</span></span>
+<span id="cb3-2"><a href="#cb3-2"></a><span class="fu">plot</span>(fema.points[boros,], <span class="at">col=</span><span class="st">"red"</span>, <span class="at">pch=</span><span class="dv">20</span>, <span class="at">cex=</span>.<span class="dv">3</span>)</span>
+<span id="cb3-3"><a href="#cb3-3"></a><span class="fu">plot</span>(boros, <span class="at">add=</span>T, <span class="at">lty=</span><span class="dv">1</span>, <span class="at">lwd=</span>.<span class="dv">2</span>)</span>
+<span id="cb3-4"><a href="#cb3-4"></a><span class="fu">title</span>(<span class="at">main=</span><span class="st">"Hurricane Sandy Housing Damage"</span>, </span>
+<span id="cb3-5"><a href="#cb3-5"></a><span class="at">sub=</span><span class="st">"FEMA Flyover Data November 2012"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="mapping-housing-damage" class="level2">
+<h2 class="anchored" data-anchor-id="mapping-housing-damage">Mapping Housing Damage</h2>
+<p>These maps are for all levels of damage. You can restrict to and explore the different levels of inundation and damage using indexing and the faceting capabilities of ggplot2.</p>
+<section id="dimensional-density-map" class="level3">
+<h3 class="anchored" data-anchor-id="dimensional-density-map">2-Dimensional Density Map</h3>
+<p>The following bits of code demonstrate how to plot the points, and then develop a density map from points. First you load ggplot2, create a spatial object restricted to NYC, and (because ggplot doesn’t play nicely with spatial objects) convert the spatial object to a data frame for plotting with ggplot2.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode numberSource r numberLines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb4-2"><a href="#cb4-2"></a>fema.nyc<span class="ot">&lt;-</span>fema.points[boros,]</span>
+<span id="cb4-3"><a href="#cb4-3"></a>fema.nyc.df<span class="ot">&lt;-</span><span class="fu">as.data.frame</span>(fema.nyc)</span>
+<span id="cb4-4"><a href="#cb4-4"></a> <span class="co">#print(qplot(fema.nyc.df$LONGITUDE, fema.nyc.df$LATITUDE))</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>The qplot() function can return a quick plot.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode numberSource r numberLines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a><span class="fu">print</span>(<span class="fu">qplot</span>(LONGITUDE,LATITUDE, <span class="at">data=</span>fema.nyc.df, <span class="at">geom=</span><span class="st">'density2d'</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>The next series of code snippets builds up a density map layer by layer. First, the base map.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode numberSource r numberLines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a>p<span class="ot">&lt;-</span><span class="fu">ggplot</span>() <span class="sc">+</span></span>
+<span id="cb6-2"><a href="#cb6-2"></a><span class="fu">geom_density2d</span>(<span class="fu">aes</span>(<span class="at">x=</span>LONGITUDE, <span class="at">y=</span>LATITUDE), <span class="at">data=</span>fema.nyc.df) <span class="sc">+</span></span>
+<span id="cb6-3"><a href="#cb6-3"></a><span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">x=</span>LONGITUDE, <span class="at">y=</span>LATITUDE, <span class="at">col=</span><span class="st">"red"</span>), <span class="at">data=</span>fema.nyc.df, </span>
+<span id="cb6-4"><a href="#cb6-4"></a><span class="at">size=</span>.<span class="dv">9</span>) <span class="sc">+</span></span>
+<span id="cb6-5"><a href="#cb6-5"></a><span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_blank</span>(), <span class="at">axis.text.y =</span> <span class="fu">element_blank</span>(), </span>
+<span id="cb6-6"><a href="#cb6-6"></a><span class="at">axis.ticks =</span> <span class="fu">element_blank</span>()) <span class="sc">+</span></span>
+<span id="cb6-7"><a href="#cb6-7"></a><span class="fu">theme</span>(<span class="at">panel.background =</span> <span class="fu">element_rect</span>(<span class="at">colour =</span> <span class="cn">NA</span>)) <span class="sc">+</span></span>
+<span id="cb6-8"><a href="#cb6-8"></a><span class="fu">xlab</span>(<span class="st">""</span>)<span class="sc">+</span><span class="fu">ylab</span>(<span class="st">""</span>) <span class="sc">+</span></span>
+<span id="cb6-9"><a href="#cb6-9"></a><span class="fu">theme</span>(<span class="at">legend.position=</span><span class="st">"none"</span>) <span class="sc">+</span></span>
+<span id="cb6-10"><a href="#cb6-10"></a><span class="fu">ggtitle</span>(<span class="st">"Hurricane Sandy Housing Damage, New York City, Nov 2012"</span>)</span>
+<span id="cb6-11"><a href="#cb6-11"></a>  <span class="co"># print(p)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>To provide some reference, I overlay the borders of the NYC boros. First I use the fortify method to convert the shape files to a data frame for use with ggplot2.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode numberSource r numberLines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a><span class="fu">gpclibPermit</span>()</span>
+<span id="cb7-2"><a href="#cb7-2"></a>boros_df <span class="ot">&lt;-</span> <span class="fu">fortify</span>(boros, <span class="at">region=</span><span class="st">'BoroCode'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Now overlay the borders</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode numberSource r numberLines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a>p1<span class="ot">&lt;-</span>p<span class="sc">+</span><span class="fu">geom_polygon</span>(<span class="at">data=</span>boros_df,<span class="fu">aes</span>(long, lat,<span class="at">group=</span>group),<span class="at">fill=</span><span class="st">"NA"</span>, </span>
+<span id="cb8-2"><a href="#cb8-2"></a><span class="at">color=</span><span class="st">"#CDCDCD"</span>)</span>
+<span id="cb8-3"><a href="#cb8-3"></a> <span class="co"># print(p1)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Then some cleaning up and plotting.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode numberSource r numberLines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a>p2<span class="ot">&lt;-</span>p1<span class="sc">+</span><span class="fu">theme_bw</span>()<span class="sc">+</span></span>
+<span id="cb9-2"><a href="#cb9-2"></a><span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_blank</span>(), <span class="at">axis.text.y =</span> <span class="fu">element_blank</span>(), </span>
+<span id="cb9-3"><a href="#cb9-3"></a><span class="at">axis.ticks =</span> <span class="fu">element_blank</span>()) <span class="sc">+</span></span>
+<span id="cb9-4"><a href="#cb9-4"></a><span class="fu">theme</span>(<span class="at">panel.background =</span> <span class="fu">element_rect</span>(<span class="at">colour =</span> <span class="cn">NA</span>)) <span class="sc">+</span></span>
+<span id="cb9-5"><a href="#cb9-5"></a><span class="fu">xlab</span>(<span class="st">""</span>)<span class="sc">+</span><span class="fu">ylab</span>(<span class="st">""</span>) <span class="sc">+</span></span>
+<span id="cb9-6"><a href="#cb9-6"></a><span class="fu">theme</span>(<span class="at">legend.position=</span><span class="st">"none"</span>) <span class="sc">+</span></span>
+<span id="cb9-7"><a href="#cb9-7"></a><span class="fu">ggtitle</span>(<span class="st">"Density Map Hurricane Sandy Housing Damage, </span></span>
+<span id="cb9-8"><a href="#cb9-8"></a><span class="sc">\n</span><span class="st"> New York City FEMA Data Nov 2012 </span></span>
+<span id="cb9-9"><a href="#cb9-9"></a><span class="sc">\n</span><span class="st"> (from Center for Injury Epidemiology and </span></span>
+<span id="cb9-10"><a href="#cb9-10"></a><span class="st">Prevention Columbia University)"</span> )</span>
+<span id="cb9-11"><a href="#cb9-11"></a><span class="fu">print</span>(p2)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p><img src="../epidemiology/miseryMap-009.jpg" class="img-fluid"></p>
+</section>
+<section id="weather-map-effects" class="level3">
+<h3 class="anchored" data-anchor-id="weather-map-effects">“Weather Map” Effects</h3>
+<p>As an alternative that may be less informative, but perhaps more intuitive to interpret, I recast the density map as with smoothed “weather map” effects. (you can find a wonderful write up on the approach <a href="https://github.com/hadley/ggplot2/wiki/Crime-in-Downtown-Houston,-Texas-:-Combining-ggplot2-and-Google-Maps">here</a>) I again build up a map layer by layer. First, I establish the base layer of points. I then add a layer of density plots.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode numberSource r numberLines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1"></a>p<span class="ot">&lt;-</span><span class="fu">ggplot</span>(fema.nyc.df, <span class="fu">aes</span>(<span class="at">x=</span>LONGITUDE, <span class="at">y=</span>LATITUDE))</span>
+<span id="cb10-2"><a href="#cb10-2"></a></span>
+<span id="cb10-3"><a href="#cb10-3"></a>p1<span class="ot">&lt;-</span>p<span class="sc">+</span><span class="fu">stat_density2d</span>(<span class="fu">aes</span>(<span class="at">alpha=</span>..level..), <span class="at">geom=</span><span class="st">"polygon"</span>)</span>
+<span id="cb10-4"><a href="#cb10-4"></a> <span class="co"># print(p1)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Smooth the levels of the density polygons using the alpha function.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode numberSource r numberLines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a>p2<span class="ot">&lt;-</span>p1<span class="sc">+</span><span class="fu">scale_alpha_continuous</span>(<span class="at">limits=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">500</span>),<span class="at">breaks=</span><span class="fu">seq</span>(<span class="dv">0</span>,<span class="dv">500</span>,<span class="at">by=</span><span class="dv">50</span>))</span>
+<span id="cb11-2"><a href="#cb11-2"></a> <span class="co"># print(p2)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Overlay the locations of the points themselves, coloring them red, and blurring overlaid points with the alpha function.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="sourceCode numberSource r numberLines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1"></a>p3<span class="ot">&lt;-</span>p2<span class="sc">+</span><span class="fu">geom_point</span>(<span class="at">colour=</span><span class="st">"red"</span>,<span class="at">alpha=</span><span class="fl">0.009</span>)</span>
+<span id="cb12-2"><a href="#cb12-2"></a> <span class="co"># print(p3)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Overlay the borders.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="sourceCode numberSource r numberLines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1"></a>p4<span class="ot">&lt;-</span>p3<span class="sc">+</span><span class="fu">geom_polygon</span>(<span class="at">data=</span>boros_df,<span class="fu">aes</span>(long, lat,<span class="at">group=</span>group),<span class="at">fill=</span><span class="st">"NA"</span>, </span>
+<span id="cb13-2"><a href="#cb13-2"></a><span class="at">color=</span><span class="st">"#CDCDCD"</span>)</span>
+<span id="cb13-3"><a href="#cb13-3"></a> <span class="co"># print(p4)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Add a title and clean up the theme elements and print.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="sourceCode numberSource r numberLines code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1"></a>p5<span class="ot">&lt;-</span>p4<span class="sc">+</span><span class="fu">theme_bw</span>()<span class="sc">+</span></span>
+<span id="cb14-2"><a href="#cb14-2"></a><span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_blank</span>(), <span class="at">axis.text.y =</span> <span class="fu">element_blank</span>(), </span>
+<span id="cb14-3"><a href="#cb14-3"></a><span class="at">axis.ticks =</span> <span class="fu">element_blank</span>()) <span class="sc">+</span></span>
+<span id="cb14-4"><a href="#cb14-4"></a><span class="fu">theme</span>(<span class="at">panel.background =</span> <span class="fu">element_rect</span>(<span class="at">colour =</span> <span class="cn">NA</span>)) <span class="sc">+</span></span>
+<span id="cb14-5"><a href="#cb14-5"></a><span class="fu">xlab</span>(<span class="st">""</span>)<span class="sc">+</span><span class="fu">ylab</span>(<span class="st">""</span>) <span class="sc">+</span></span>
+<span id="cb14-6"><a href="#cb14-6"></a><span class="fu">theme</span>(<span class="at">legend.position=</span><span class="st">"none"</span>) <span class="sc">+</span></span>
+<span id="cb14-7"><a href="#cb14-7"></a><span class="fu">ggtitle</span>(<span class="st">"Hurricane Sandy Housing Damage, New York City, Nov 2012</span></span>
+<span id="cb14-8"><a href="#cb14-8"></a><span class="st"> </span><span class="sc">\n</span><span class="st"> Based on FEMA Data </span></span>
+<span id="cb14-9"><a href="#cb14-9"></a><span class="sc">\n</span><span class="st"> (from Center for Injury Epidemiology and Prevention </span></span>
+<span id="cb14-10"><a href="#cb14-10"></a><span class="st">Columbia University)"</span> )</span>
+<span id="cb14-11"><a href="#cb14-11"></a><span class="fu">print</span>(p5)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p><img src="../epidemiology/miseryMap-014.jpg" class="img-fluid"></p>
+</section>
+</section>
+<section id="mapping-outages" class="level2">
+<h2 class="anchored" data-anchor-id="mapping-outages">Mapping Outages</h2>
+<p>As I write this more than two weeks after the storm, with daylight hours shortening and temperatures dropping, there are still tens of thousands of people in the tri-state area (some my neighbors) without power.</p>
+<p>The following code will create a bubble plot of outage areas based on data one week after the storm. The map itself is ultimately unsatisfactory for a number of reasons, the most important of which is that the data come from Con Edison, which does not service the hard-hit areas of the Rockaways. Those data must be obtained from the Long Island Power Authority (LIPA) whose online data are questionable at best (some townships show more power restored than there are customers…)</p>
+<p>First prepare the data by reading in the csv files, merging the outage data with the centroids for the places, assigning a coordinate system and projection, restricting to New York City and converting to a data frame for plotting in ggplot2. The variable to be mapped is the proportion or percentage of customers in a location without power.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15"><pre class="sourceCode numberSource r numberLines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1"></a>outages<span class="ot">&lt;-</span><span class="fu">read.csv</span>(<span class="st">".../conEdOutages.csv"</span>,<span class="at">header=</span>T, <span class="at">stringsAsFactors=</span>F)</span>
+<span id="cb15-2"><a href="#cb15-2"></a>places<span class="ot">&lt;-</span><span class="fu">read.csv</span>(<span class="st">".../conEdCoordinates.csv"</span>,<span class="at">header=</span>T, <span class="at">stringsAsFactors=</span>F)</span>
+<span id="cb15-3"><a href="#cb15-3"></a></span>
+<span id="cb15-4"><a href="#cb15-4"></a>conEd<span class="ot">&lt;-</span><span class="fu">merge</span>(outages, places, <span class="at">by=</span><span class="st">"location"</span>, <span class="at">all.y=</span>T)</span>
+<span id="cb15-5"><a href="#cb15-5"></a>conEd<span class="sc">$</span>outages[<span class="fu">is.na</span>(conEd<span class="sc">$</span>outages)]<span class="ot">&lt;-</span><span class="dv">0</span></span>
+<span id="cb15-6"><a href="#cb15-6"></a>conEd<span class="sc">$</span>customers[<span class="fu">is.na</span>(conEd<span class="sc">$</span>customers)]<span class="ot">&lt;-</span>.<span class="dv">1</span></span>
+<span id="cb15-7"><a href="#cb15-7"></a>conEd<span class="sc">$</span>propOut<span class="ot">&lt;-</span>conEd<span class="sc">$</span>outages<span class="sc">/</span>conEd<span class="sc">$</span>customers<span class="sc">*</span><span class="dv">100</span></span>
+<span id="cb15-8"><a href="#cb15-8"></a><span class="fu">summary</span>(conEd<span class="sc">$</span>propOut)</span>
+<span id="cb15-9"><a href="#cb15-9"></a></span>
+<span id="cb15-10"><a href="#cb15-10"></a><span class="fu">coordinates</span>(conEd)<span class="ot">&lt;-</span><span class="er">~</span>long<span class="sc">+</span>lat</span>
+<span id="cb15-11"><a href="#cb15-11"></a><span class="fu">proj4string</span>(conEd)<span class="ot">&lt;-</span><span class="fu">CRS</span>(<span class="st">"+proj=longlat +datum=NAD83"</span>)</span>
+<span id="cb15-12"><a href="#cb15-12"></a></span>
+<span id="cb15-13"><a href="#cb15-13"></a> <span class="co"># plot(conEd[boros,],col="blue", pch=20, cex=.9)</span></span>
+<span id="cb15-14"><a href="#cb15-14"></a></span>
+<span id="cb15-15"><a href="#cb15-15"></a>conEd.nyc<span class="ot">&lt;-</span>conEd[boros,]</span>
+<span id="cb15-16"><a href="#cb15-16"></a></span>
+<span id="cb15-17"><a href="#cb15-17"></a>conEd.nyc.df<span class="ot">&lt;-</span><span class="fu">as.data.frame</span>(conEd.nyc)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Here, create the first layer mapping the coordinates to filled circles, sized by the proportion of customers without power.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb16"><pre class="sourceCode numberSource r numberLines code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1"></a>p6<span class="ot">&lt;-</span><span class="fu">ggplot</span>(conEd.nyc.df, <span class="fu">aes</span>(<span class="at">x=</span>long, <span class="at">y=</span>lat, <span class="at">size=</span>propOut, <span class="at">label=</span>location,</span>
+<span id="cb16-2"><a href="#cb16-2"></a> <span class="at">shape=</span><span class="dv">21</span>))<span class="sc">+</span><span class="fu">scale_shape_identity</span>()</span>
+<span id="cb16-3"><a href="#cb16-3"></a> <span class="co"># note need scale set to identity</span></span>
+<span id="cb16-4"><a href="#cb16-4"></a>p7<span class="ot">&lt;-</span>p6<span class="sc">+</span><span class="fu">geom_point</span>(<span class="at">color=</span><span class="st">"white"</span>, <span class="at">fill=</span><span class="st">"blue"</span>)</span>
+<span id="cb16-5"><a href="#cb16-5"></a></span>
+<span id="cb16-6"><a href="#cb16-6"></a> <span class="co"># print(p7)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>To overlay the boro boundary file, you have to turn off the ggplot feature of inheriting aesthetics from the previous map with “inherit.aes=F”</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb17"><pre class="sourceCode numberSource r numberLines code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1"></a>p8<span class="ot">&lt;-</span>p7<span class="sc">+</span><span class="fu">geom_polygon</span>(<span class="at">data=</span>boros_df,<span class="fu">aes</span>(long, lat,<span class="at">group=</span>group),<span class="at">fill=</span><span class="st">"NA"</span>, </span>
+<span id="cb17-2"><a href="#cb17-2"></a><span class="at">color=</span><span class="st">"#CDCDCD"</span>, <span class="at">inherit.aes=</span>F)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Now print the map. Note that I did not print the legend, but that is easy to do by removing the line of code “theme(legend.position=”none”)”</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb18"><pre class="sourceCode numberSource r numberLines code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1"></a>p9<span class="ot">&lt;-</span>p8<span class="sc">+</span><span class="fu">theme_bw</span>()<span class="sc">+</span></span>
+<span id="cb18-2"><a href="#cb18-2"></a><span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_blank</span>(), <span class="at">axis.text.y =</span> <span class="fu">element_blank</span>(), </span>
+<span id="cb18-3"><a href="#cb18-3"></a><span class="at">axis.ticks =</span> <span class="fu">element_blank</span>()) <span class="sc">+</span></span>
+<span id="cb18-4"><a href="#cb18-4"></a><span class="fu">theme</span>(<span class="at">panel.background =</span> <span class="fu">element_rect</span>(<span class="at">colour =</span> <span class="cn">NA</span>)) <span class="sc">+</span></span>
+<span id="cb18-5"><a href="#cb18-5"></a><span class="fu">xlab</span>(<span class="st">""</span>)<span class="sc">+</span><span class="fu">ylab</span>(<span class="st">""</span>) <span class="sc">+</span></span>
+<span id="cb18-6"><a href="#cb18-6"></a><span class="fu">theme</span>(<span class="at">legend.position=</span><span class="st">"none"</span>) <span class="sc">+</span></span>
+<span id="cb18-7"><a href="#cb18-7"></a><span class="fu">ggtitle</span>(<span class="st">"Power Outages per 10,000 Customers </span></span>
+<span id="cb18-8"><a href="#cb18-8"></a><span class="sc">\n</span><span class="st"> Based on Con Edison Data </span></span>
+<span id="cb18-9"><a href="#cb18-9"></a><span class="sc">\n</span><span class="st"> (from Center for Injury Epidemiology and Prevention </span></span>
+<span id="cb18-10"><a href="#cb18-10"></a><span class="st">Columbia University)"</span> )</span>
+<span id="cb18-11"><a href="#cb18-11"></a><span class="fu">print</span>(p9)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p><img src="../epidemiology/miseryMap-015.jpg" class="img-fluid"></p>
 
 
+</section>
 </section>
 
 </main> <!-- /main -->

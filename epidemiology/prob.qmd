@@ -1,0 +1,535 @@
+---
+title: "Probability and Simulations"
+format: html
+---
+
+# probability distributions for epidemiologists
+
+Many of the statistical approaches used to assess the role of chance in epidemiologic measurements are based on either the direct application of a probability distribution (e.g. exact methods) or on approximations to exact methods.  R makes it easy to work with probability distributions.
+
+## probability distributions in R
+
+Base R comes with a number of popular (for some of us) probability distributions. 
+
+
+| Distribution    |               |       Function(arguments)    | 
+|:----------------|:------------: |:-----------------------------|
+|   beta          |      -        | beta(shape1, shape2, ncp)   |
+|   binomial      |      -        | binom(size, prob)           |
+|   chi-squared   |      -        | chisq(df, ncp)              |
+|   exponential   |      -        | exp(rate)                   |
+|   gamma         |      -        | gamma(shape, scale)         |
+|   logistic      |      -        | logis(location, scale)      |
+|   normal        |      -        | norm(mean, sd)              |
+|   Poisson       |      -        | pois(lambda)                |
+|   Student's t   |      -        | t(df, ncp)                  |
+|   uniform       |      -        | unif(min, max)              |
+
+Placing a prefix for the distribution function changes it's behavior in the following ways:
+
+-   *dxxx(x,)*  returns the density or the value on the y-axis of a probability distribution for a discrete value of x 
+
+-   *pxxx(q,)* returns the cumulative density function (CDF) or the area under the curve to the left of an x value on a probability distribution curve 
+
+-   *qxxx(p,)* returns the quantile value, i.e. the standardized z value for x
+
+-   *rxxx(n,)* returns a random simulation of size n
+
+
+So, for example, if you wanted the values for the upper and lower limits of a 95% confidence interval, you could write:
+
+```{r eval=FALSE, echo=TRUE}
+qnorm(0.025) # returns -1.959964 
+qnorm(1-0.025) # returns 1.959964
+```
+Recalling that the standard normal distribution is centered at zero, and a little algebra, can help you return a single value for a confidence limit.
+
+```{r eval=FALSE, echo=TRUE}
+cl<-.95
+qnorm((1+cl)/2)
+1.959964
+```
+
+
+## exact vs. approximate methods
+
+These approximations were developed when computing was costly (or non-existent) to avoid the exhaustive calculations involved in some exact methods. Perhaps the most common approximations involve the normal distribution, and they are usually quite good, though they may result in some weirdness, like have negative counts when a Poisson distributed outcome is forced to be normally symmetric. You could argue that the easy availability of powerful computers and tools like R make approximations unnecessary.  For example, *binom.test()*, returns the exact results for a dichotomous outcome using the binomial formula, $latex \binom{n}{k} p^k q^{n-k}$ 
+
+```{r eval=FALSE, echo=TRUE}
+binom.test(x=39, n=215, p=.15)
+```
+Still approximations are quite popular and powerful, and you will find them in many epidemiology calculations.  One common instance is the normal approximation to confidence intervals,  $latex \mu \pm 1.96 \sigma$ , where $latex \mu$ is your point estimate, $latex \sigma$  is the standard error of your measure, and $latex \pm 1.96$ quantile values of a standard normal distribution density curve with area = 95% so that    $latex Pr[z \leq −1.96] = Pr[z \geq 1.96] = 0.025 $
+
+Since the natural scale for a rate or a risk os bounded by zero (you can't have a negative rate) the approximation involves a log transformation, which converts the measure to a symmetric, unbounded more "normal" scale.  (This is the same thinking behind logit transformations of odds ratios.)
+
+The following code demonstrates the normal approximation to a confidence interval in action. It is taken from Tomas Aragon's "epitools" package, which in turn is based on Kenneth Rothman's description in "Modern Epidemiology"
+
+```{r eval=FALSE, echo=TRUE}
+rr.wald <- function(x, conf.level = 0.95){ 
+ #prepare input 
+x1 <- x[1,1]; n1 <- sum(x[1,]) 
+x0 <- x[2,1]; n0 <- sum(x[2,]) 
+ #calculate 
+p1 <- x1/n1 ##risk among exposed 
+p0 <- x0/n0 ##risk among unexposed 
+RR <- p1/p0 
+logRR <- log(RR) 
+SElogRR <- sqrt(1/x1 - 1/n1 + 1/x0 - 1/n0)
+Z <- qnorm(0.5*(1 + conf.level)) 
+LCL <- exp(logRR - Z*SElogRR) 
+UCL <- exp(logRR + Z*SElogRR) 
+ #collect results
+list(x = x, risks = c(p1 = p1, p0 = p0), 
+    risk.ratio = RR, conf.int = c(LCL, UCL), 
+    conf.level = conf.level ) }
+```
+
+## the binomial distribution
+
+The binomial model is probably the most commonly encountered probability distribution in epidemiology, and most epidemiologists should be at least moderately familiar with it. The probability that an event occurs $k$ times in $n$ trials is described by the formula $\binom{n}{k} p^k q^{n-k}$ where $p$ is the probability of the event occurring in a single trial, $q$ is the probability of the event not occurring ($1-p$) and $\binom{n}{k}$ is the binomial expansion "n choose k" the formula for which is $latex \frac{n!}{k!(n-k)!}$
+
+We'll use the concept of an LD50 to demonstrate a binomial model. An LD50 is the dose of a drug that kills 50% of a population, and (clearly) an important pharmacologic property. In his book ["Bayesian Computation with R"](http://bayes.bgsu.edu/bcwr/) Jim Albert applies it to a population with an increased risk of blindness with increasing age.  We want to fit a logistic model in R to estimate the age at which the chance of blindness is 50%. 
+
+-    $y$ is number blind at age $x$ and $n$ is the number tested
+
+-   y has form $latex y \sim B(n, F(\beta_0 + \beta_1x)$
+
+-   where $latex F(z) = e^z / (1+e^z)$ ,i.e. logit, and
+-   LD50 = $latex \frac{-\beta}{\beta_1}$ i.e. point at which argument of the  distribution function is zero
+
+The data are: 
+
+-   Age: 20 35 45 55 70
+
+-   No. tested: 50 50 50 50 50
+
+-   No. blind: 6 17 26 37 44
+
+We begin by reading the data into R
+
+```{r eval=FALSE, echo=TRUE}
+kalythos <- data.frame(x = c(20,35,45,55,70), 
+     n = rep(50,5), y = c(6,17,26,37,44))
+```
+There are a couple of approaches to these data:
+
+-  response is a vector of 0/1 binary data
+
+-  response is a two-column matrix, with first column the number of
+    success for the trial, and the second the number of failures
+
+-  response is a factor with first level (0) failure, and all other
+    levels (1) success
+
+We'll use the second approach by adding a matrix to the data frame
+
+```{r eval=FALSE, echo=TRUE}
+kalythos$Ymat <- cbind(kalythos$y, kalythos$n - kalythos$y)
+```
+
+And then fit a binomial model using *glm()*
+
+
+```{r eval=FALSE, echo=TRUE}
+fml <- glm(Ymat ~ x, family = binomial, data = kalythos)
+```
+
+The response variable is the number of people who become blind out of the number tested.  Age is the predictor variable.  Logit is the default for the R binomial family, but you could specify a probit model with *family=binomial(link=probit)*
+
+To summarize our results:
+
+```{r eval=FALSE, echo=TRUE}
+summary(fml) # see how well model fits
+ ld50 <- function(b) {-b[1]/b[2]} # function to get LD50  
+ # invoke the function using coefficient from glm run: 
+ldl <- ld50(coef(fml))
+ldl # request the answer (get 43.6 years)
+```
+
+## the Poisson distribution
+
+After the normal and binomial distribution, the most important and commonly encountered probability distribution in epidemiology is the Poisson.  The Poisson distribution is often referred to as the "distribution of rare events", and (thankfully) most epidemiologic outcomes are rare.  It is also the distribution for count data, and epidemiologists are nothing if not counters.  
+
+The Poisson, gamma and exponential distributions are related.  Counts on a timeline tend to be Poisson distributed, $latex Pr[k]= e^{-\lambda} * \lambda^{k} /k! $.  The time periods between the counts, tend to be exponentially distributed, with a single parameter, $latex \lambda = rate = \mu = \sigma^{2}$.  The exponential distribution in turn is a instance of a *gamma* distribution.  
+
+Gamma distributions are defined as the sum of *k* independent exponentially distributed random variables with two parameters:  a scale parameter,  $latex \theta$ , and a shape parameter, $latex \kappa$. The mean for a gamma distribution is $latex \mu=\theta \kappa$.  The shape parameter $latex \kappa$ is the number of sub-states in the outcome of interest.  In an exponential distribution there is a single transition state and you are counting every observation, so $latex \kappa =1$.  If you were interested in some process where you counted every other observation on a timeline, for example if there is some incubation period, you could model it with a  $latex \thicksim \Gamma(\lambda, 2)$
+
+Because we do as epidemiologists spend a lot of time counting disease occurrences, you can get a lot of epidemiologic mileage from a Poisson distribution.  R makes working with Poisson distributed data fairly straightforward. Use *dpois()* to return the density function ($latex Pr[X=x] = \frac{x^{−\lambda} \lambda^{x}}{x!}$ , where $latex X =rv$, $x$ is the observed count, and $latex \lambda$ is the expected count) is. Use *ppois()* to return the CDG ($latex Pr[X \leq x] = \sum_{k=0}^ x \frac{k^{−\lambda} \lambda^{k}}{k!}$).
+
+Here is an example (shamelessly taken from [Tomas Aragon](http://medepi.com/), as are many other examples and material I use) of the Poisson distribution in action. Consider meningococcal disease.  The US rate of meningococcal disease is about 1 case per 100,000 population per year.  In San Francisco with a population of 800,000, we would expect 8 cases per year.  What is the probability of observing exactly 6 cases? What is the probability of observing more than 10 cases?
+
+```{r eval=FALSE, echo=TRUE}
+dpois(x = 6, lambda = 8) # 12% chance of 6 cases exactly
+
+1 - ppois(q = 10, lambda = 8) #about 18% chance of more than 10 cases, 1−Pr[X ≤ 10]
+```
+
+
+## the Poisson model
+
+To get a better sense of the Poisson model consider horse kicks in the 19th century Prussian cavalry. No really.    Simeon Denis Poisson was a student of Laplace in the 18th century who was interested in the application of probability in law enforcement and justice.  He came up with a special case of the Gaussian distribution when the probability of an outcome is very small and the number of possible trials is very large:  $latex Pr[k]= \frac{\lambda^k}{k!} e^{-\lambda}$ , where $latex \mu = \sigma^2 = \lambda$ .  He would ask questions like, "If we usually see two murders a week, how unusual is it to observe 4?"
+
+Fast forward to Ladislaus Bortkiewicz, a Polish mathematician who in his 1898 book "The Law of Small Numbers"  applied the Poisson distribution to an early and unique injury epidemiology question: horse kick injuries in the Prussian army.  He observed a total of 196 horse kick deaths over 20 years (1875-1895).  The observation period consisted of 14 troops over 20 years for a total of 280 troop-years of data, so the underlying rate was $latex \lambda = 196/280 = 0.7$  He then compared the observed number of deaths in a year to that predicted by Poisson.  For example, the probability of a single death in a year is predicted as:
+
+-   $latex Pr[1]=e^{-.7}*.7^1/1!=0.3476$
+
+-   $latex 0.3476*280=97.3$ or approximately 97 deaths
+
+Here are his results for the actual, vs the predicted number of deaths:
+
+| number of deaths    |     observed          |       predicted     | 
+|:----------------|:------------: |:-----------------------------:|
+|   0  |      144        | 139    |
+|   1  |      91         | 97.3   |
+|   2  |      32         | 34.1   |
+|   3  |      11         | 8.0    |
+|   4  |      2         |  1.4    |
+|   5 or more|      0    | 0.2    |
+
+And here is a quick R function for making these kinds of calculations.
+
+```{r eval=FALSE, echo=TRUE}
+ # factorial formula
+stirling<- function(x){ exp(-x)/(sqrt(2*pi*x ))
+
+poisson.prob<-function(k, lambda){
+     ( (exp(-lambda))* lambda^k) / sterling(k)}
+
+ # e.g. average 2 events per week
+2^0/stirling(0)*(exp(-2)); 2^1/stirling(1)*(exp(-2))
+poisson.prob(0,2); poisson.prob(1,2)
+k<-0:7; poisson.prob(k,2)
+
+ # prussion horse kicks lambda<-196/280 k<-0:4
+predicted<-(poisson.prob(k,lambda))*280
+actual<-c(144,91,32,11,2)
+cbind(predicted,actual)
+```
+
+
+### normal approximation confidence interval for Poisson data ###
+
+The Poisson distribution can also be used for rates by including a so-called "offset" variable, which divided the outcome data by a population number or (better) person-years (*py*)of observation, which is considered fixed. We can use a normal approximation to calculate a confidence interval, where 
+
+
+-   $latex \sigma_{r eval=FALSE, echo=TRUE} = \sqrt{x/py^2}$
+
+-   $latex r_{L}; r_{U} = r \pm z × \sigma_{r eval=FALSE, echo=TRUE}$
+
+For example say we observe 8 cases of cancer over 85,000 person-years of observation.  Out rate is 9.4 cases / 100,000 p-yrs.  The following code returns a 90% confidence interval:
+
+```{r eval=FALSE, echo=TRUE}
+
+ #assign input value 
+conf.level <- 0.90 
+Z <- qnorm(0.5*(1 + conf.level)) 
+x <- 8 
+py <- 85000 
+mult <- 100000 
+ #do calculations 
+r <- x/py
+SE.r <- sqrt(x/PT^2) 
+LL <- r - Z*SE.r 
+UL <- r + Z*SE.r 
+ #collect results 
+cbind(x, PT, rate=mult*r, lower=mult*LL, upper=mult*UL)
+```
+You can generalize this into a function:
+
+```{r eval=FALSE, echo=TRUE}
+cipois.norm <- function(x, py = 1, conf.level = 0.95, mult = 1)
+       {
+       Z <- qnorm(0.5*(1 + conf.level)) 
+       r <- x/PT SE.r 
+       <- sqrt(x/PT^2)
+       LL <- r - Z*SE.r 
+       UL <- r + Z*SE.r 
+       cbind(x, PT, rate=mult*r, lower=mult*LL, upper=mult*UL, 
+       conf.level=conf.level, multiplier=mult) 
+       }
+ # note we set the default py=1, and multiplier to 1 
+ # test the function
+cipois.norm(8, 85000, 0.90, 100000)
+```
+
+### exact approximation confidence interval for Poisson data ###
+
+For very small counts, you may want to consider an exact approximation rather than a normal approximation because your data may be less symmetric than than assumed by the normal approximation method.   Aragon describe Byar’s method, where 
+
+-   $r_L, r_U = (x+0.5) \left (1-\frac{1}{9(x+0.5)} \pm \frac{z}{3}
+            \sqrt{\frac{1}{x+0.5}}  \right )^3 / person-years$
+
+A 90% CI for 3 cases observed over 2,500 person-years (12/10,000 p-y) would be coded as:
+
+```{r eval=FALSE, echo=TRUE}
+ cipois.byar <- function(x, py = 1, conf.level = 0.95, 
+                         mult = 1) 
+      {
+       Z <- qnorm(0.5*(1+conf.level)) 
+       Zinsert <- (Z/3)*sqrt(1/(x+0.5)) 
+       r <- x/py
+       LL <- ((x+0.5)*(1-1/(9*(x+0.5))-Zinsert)^3)/py 
+       UL <- ((x+0.5)*(1-1/(9*(x+0.5))+Zinsert)^3)/py 
+       cbind(x, PT, rate=mult*r, lower=mult*LL, upper=mult*UL, 
+       conf.level=conf.level, multiplier=mult) 
+        }
+cipois.byar(3, 2500, 0.90, 10000)
+```
+
+### exact (tail) method confidence interval for Poisson data
+
+
+You can (again with code from Tomas Aragon) use the *uniroot()* function to calculate the exact Poisson confidence interval from the tails of the distribution.
+
+```{r eval=FALSE, echo=TRUE}
+cipois.exact <- function (x, py = 1, conf.level = 0.95, mult = 1) 
+     { 
+      f1 <- function(x, ans, alpha = alp) 
+          { ppois(x, ans) - alpha/2 
+           }
+      f2 <- function(x, ans, alpha = alp) 
+           {1 - ppois(x, ans) + dpois(x, ans) - alpha/2 
+            } 
+      alp <- 1 - conf.level 
+      interval <- c(0, x * 9) 
+      r <- x/py
+      UL <- uniroot(f1, interval = interval, x = x)$root/py 
+      if(x == 0) 
+               { LL <- 0 } 
+                else 
+               { LL <- uniroot(f2, interval = interval, x = x)$root/py 
+            } 
+      cbind(x, PT, rate=mult*r, lower=mult*LL, upper=mult*UL, 
+            conf.level=conf.level, multiplier=mul)
+```
+
+You can, alternatively use the the Daley method with the  Gamma distribution
+
+```{r eval=FALSE, echo=TRUE}
+cipois.daly <- function(x, py = 1, conf.level = 0.95, mult = 1) 
+       { 
+       r <- x/py 
+       if(x != 0)
+             { LL <- qgamma((1 - conf.level)/2, x)/py 
+              UL <- qgamma((1 + conf.level)/2, x + 1)/py 
+              } 
+       else 
+       { if(x == 0) 
+               { LL <- 0 
+               UL <- -log(1 - conf.level)/py 
+                } 
+          } 
+       cbind(x, PT, rate=mult*r, lower=mult*LL, upper=mult*UL,
+       conf.level=conf.level, multiplier=mult)
+         }
+
+ cipois.daly(3, 2500, 0.90, 10000)
+ 
+```
+
+
+## about p values
+
+I'm not a big fan of them, but no discussion of probability in epidemiology would be complete without a consideration of p values.  I'll try to remain agnostic.
+
+A p value is the probability, given the null hypothesis, of observing a result as great or more extreme than that seen.  Assuming we know the underlying distribution from which the data arose, we can ask "How compatible is the value we observed to our reference value?" Consider a clinical scenario, where 
+
+- The proportion patients with some complication is $\hat{r eval=FALSE, echo=TRUE}$ 
+- The the proportion of such outcomes we consider the upper acceptable limit is $r_{0}$
+
+We are interested in whether some observed proportion is compatible with that acceptable limit.
+
+- $H_{0}: \hat{r eval=FALSE, echo=TRUE} = r_{0}$
+- $p = Pr[r \geq \hat{r eval=FALSE, echo=TRUE} | r = r_{0}]$
+
+We can use a p value to assess the probability (p) of observing a value of $\hat{r eval=FALSE, echo=TRUE}$ more as or more extreme than expected under the null hypothesis.  The underlying assumption is that more extreme values of $\hat{r eval=FALSE, echo=TRUE}$ unlikely to occur by chance or random error alone, and a low p value indicates that our observed measure is less compatible with the null hypothesis.  Though, as most folks know, p values are sensitive to issues of sample size and need to be interpreted carefully.   
+
+Let's put some numbers on this. Is 8 complications out of 160 hospital admissions (5%) compatible with a goal or reference value of 3% or less? Assuming a binomial distribution, we can use the *binom.test()* to calculate a one-sided p value (because we are only interested in more complications), where
+
+-   n = 160 and k = 8 (binomial)
+-   $\hat{r eval=FALSE, echo=TRUE} = 8/160 = 0.05,  r_{0} = 0.03$
+-   $p = Pr[r \geq \hat{r eval=FALSE, echo=TRUE}=.05 | r_{0}=.03]$
+
+```{r eval=FALSE, echo=TRUE}
+binom.test(x=8, n=160, p=0.03, alternative = "greater")
+ # p-value = 0.1101
+```
+There is an 11% probability of observing 8 or more complications in 160 admissions. So, is a hospital complication risk of 5% compatible with a reference value (“goal”) of 3% or less?  Or to use the common terminology, is this result statistically "significant"? The answer, as is so often the case, is "It depends."  In this case, I think you can make the argument that the 8 complications could have been due to chance.  But, our p value depends on 
+
+- the magnitude of the difference (5% vs 3%)
+
+- the number of observations or hospitalizations (sample size= 160)
+
+The influence of sample size is considerable.  Here are the (same) calculations for a 5% complication rate changing the number of hospitalizations.
+
+|  (n)   |(x)   |p       |
+|:-----|:-----:|:--------:|
+|  20    |1     |0.4562  |
+|  40    |2     |0.3385  |
+|  80    |4     |0.2193  |
+|  160   |8     |0.1101  |
+|  640   |32    |0.0041  |
+
+This is something worth keeping in mind whenever evaluating p values.  The same concepts apply to common epidemiological measures like rate, risk and odds ratios, where the reference or null value is 1.
+
+Kenneth Rothman has written extensively on the pitfalls of p values in epidemiology.  One recommendation he has made is plotting a "p-value function" of two-sided p values for a sequence of alternative hypotheses.  A p-value function gives a lot of information:
+
+-   the point estimate
+
+-   the confidence interval for the estimate
+
+-   how likely or precise each value is
+
+If you were to look for a p-value function plot in some of the more popular statistical packages your search would likely be in vain. This is where a programming language like R comes into its own.  You can program it yourself or (perhaps) someone already has.  In this case Tomas Aragon (yet again) took on himself to write up R code for a p-value function.  
+
+The function uses *fisher.test()* to returns a two-sided p value for count data in a 2x2 table.  The Fisher exact test is based on a hypergeometric distribution modeling the change in the *a* cell.  We will feed a range of odds ratio values to fisher.test().
+
+```{r eval=FALSE, echo=TRUE}
+dat<-matrix(c(12, 2, 7,9), 2, 2) #create 2x2 table data object
+cases<-seq(0, 65, 1) # create numeric range of test ORs from 0-65
+nn<-length(cases) # little housekeeping to get length of that vector
+p.vals<-rep(NA, nn) #empty vector to hold p values
+for(i in 1:nn){
+   p.val[i]<-fisher.test(dat, or=cases[i]$p.value    
+ #note only indexing one thing from the fisher.test output object
+}
+plot(cases, p.value, cex=0.5, log="x" ,#convert x axis to log scale
+              ylab="Cases (log scale), ylab = "p value")
+abline( v=  * ,  h= 0.05, lty=2)  # * put your point estimate here
+abline (v=1) # null hypothesis
+```
+
+
+
+# Sampling, and Simulations
+
+Sampling and simulations are closely related to probability, so this is as good a place as any to talk about R's capabilities in this regard.   Computing power makes simulations an attractive option for conducting analysis.  Simulations and sampling are also a handy way to create toy data sets to submit to online help sites like [StackOverflow](http://stackoverflow.com/).  
+
+## sampling ##
+
+Sampling using *sample()* is the most immediate and perhaps intuitive application of probability in R. You basically draw a simple random permutation from a specified collection of elements.  Think of it in terms of tossing coins or rollin dice.  Here, for example, you are essentially tossing 8 coins (or one coin 8 times).
+
+```{r eval=FALSE, echo=TRUE}
+sample(c("H","T"), size = 8, replace = TRUE)  
+sample(1:6, size = 2, replace = TRUE, prob=.6) # toss 2 (loaded) die
+```
+Note the following options:
+
+-   *replace=TRUE* to over ride the default sample without replacement
+
+-   *prob=* to sample elements with different probabilities, e.g. over
+    sample based on some factor
+
+-    the *set.seed()* function allow you to make a reproducible set of random numbers.
+
+## sampling from a probability distribution
+
+Moving up to the next level of control, you can draw a set of numbers from a probability  distribution using the *rxxxx()* family of functions.
+
+```{r eval=FALSE, echo=TRUE}
+rnorm(6) #  6 std nrml distribution values
+rnorm(10, mean = 50, sd = 19) # set parameters
+runif(n = 10, min = 0, max = 1) #uniform distribution
+rpois(n = 10, lambda = 15) # Poisson distribution
+ # toss coin 8 times using binomial distribution 
+rbinom(n = 8, size = 1, p = 0.5)
+rbinom(8,1,.5) # args correct order
+ # 18 trials, sample size 10, prob success =.2 
+rbinom(18, 10, 0.2)
+```
+When you're sampling from probability distributions other than the standard normal, you have to specify the parameters that define that distribution.  For the binomial distribution, you specify the the number of replicates (*n*), the size or the number of trials in each replicate (*size*), and the probability of the outcome under study in any trial (*prob*). So, to specify 10 replicates of 20 trials, each with a 40% chance of success might return the following vector of the number of successes in each replicate, you might write:
+
+```{r eval=FALSE, echo=TRUE}
+rbinom(n=10, size=20, prob=.4)
+ [1]  8  7  6  6  5  5 10  5  8 11
+```
+might return 
+ 
+## bootstrapping ##
+
+Bootstrapping is type of sampling where the underlying probability distribution is either unknown or intractable. You can think of it as a form of re-sampling for when there is no simple answer.  You use observed data to calculate (say) rates, and then apply those rates to a simulated population created using one of R's probability distribution functions, like (say) *rbinom()*.  
+    
+We'll demonstrate the process with a function that calculates a risk ratio estimate. The steps involve:
+
+1.  Create a simulated exposed sample $n_1$ by of 5000 replicate bernoulli trials with a probability parameter defined by the observed risk of x1/n1. 
+
+2.  Divide $n_1$ by the total sample size to get 5000 simulated risk estimates for the exposed group.
+
+3.  Repeat the process for the unexposed group $n_2$ to get a rate for the unexposed group.
+
+4.  Calculate the mean and 0.25 tails for the simulated populations.
+
+
+
+### the relative risk bootstrap function
+
+rr.boot <- function(x, conf.level = 0.95, replicates = 5000){ ##prepare input 
+x1 <- x[1,1]; n1 <- sum(x[1,]) 
+x0 <- x[2,1]; n0 <- sum(x[2,]) 
+##calculate 
+p1 <- x1/n1 ##risk among exposed 
+p0 <- x0/n0 ##risk among unexposed 
+RR <- p1/p0 
+r1 <- rbinom(replicates, n1, p1)/n1 
+x0.boot <- x0.boot2 <- rbinom(replicates, n0, p0)
+x0.boot[x0.boot2==0] <- x0.boot2 + 1 
+n0.denom <- rep(n0, replicates) 
+n0.denom[x0.boot2==0] <- n0.denom + 1 
+r0 <- x0.boot/n0.denom 
+rrboot <- r1/r0 
+rrbar <- mean(rrboot) 
+alpha <- 1 - conf.level 
+ci <- quantile(rrboot, c(alpha/2, 1-alpha/2)) 
+##collect 
+list(x = x, risks = c(p1 = p1, p0 = p0), risk.ratio = RR, 
+rrboot.mean = rrbar, conf.int = unname(ci), conf.level = 
+conf.level, replicates = replicates) }
+
+rr.boot(tab7.4)
+
+
+# Plotting Probability Curves
+
+
+
+You may, on some occasion, want to plot a curve or probability distribution.  Here are a couple of approaches to plotting a standard normal curve but, they can be used for other probability distributions.  The first comes from [Tomas Aragon](http://medepi.com/), the second from [John Fox](http://socserv.mcmaster.ca/jfox/Courses/UCLA/index.html). 
+
+
+
+##  using the sequence operator 
+
+This approach uses the normal probability formula...
+
+$latex f(x) = \frac{1}{\sqrt{2\pi \sigma^2}} \left(\exp \frac{-\left(x-\mu\right)^2}{2\sigma^2}  \right)$
+
+... over a sequence of values.
+
+```{r eval=FALSE, echo=TRUE}
+mu <- 0; sigma <- 1 
+x <- seq(-4, 4, .01) 
+fx <- (1/sqrt(2*pi*sigma^2))*exp(-(x-mu)^2/(2*sigma^2))
+plot(x, fx, type = "l", lwd = 2)  
+# options type="l"  produces line,  lwd=2 doubles line width
+```
+## another approach
+
+Here, we use the *dnorm()* function and add a few bells and whistles.
+
+```{r eval=FALSE, echo=TRUE}
+oldpar <- par(mar = c(5, 6, 4, 2) + 0.1)  # room on left
+z <- seq(-4, 4, length=1000) ; p <- dnorm(z)
+plot(z, p, type="l", lwd=2, 
+     main=expression("The Standard Normal Density Function"
+    ~~ phi(z)), ylab=expression(phi(z) == frac(1, sqrt(2*pi)) *
+     ~~ e^- ~~ frac(z^2, 2)))
+abline(h=0, col="gray") ; abline(v=0, col="gray")
+z0 <- z[z >= 1.96]    # define region to fill
+z0 <- c(z0[1], z0) ;  p0 <- p[z >= 1.96]
+p0 <- c(0, p0)
+polygon(z0, p0, col="gray")
+coords <- locator(2)    # locate head and tail of arrow using your mouse...
+arrows(coords$x[1], coords$y[1], coords$x[2], coords$y[2], 
+     code=1, length=0.125)
+text(coords$x[2], coords$y[2], pos=3, # text above tail arrow
+expression(integral(phi(z)*dz, 1.96, infinity) == .025))
+```

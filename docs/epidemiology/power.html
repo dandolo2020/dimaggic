@@ -1,0 +1,1564 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.28">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>power – CUIRE</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-49e51e44f424ea8c7044b429bdbbbfe2.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-9767d147d9da4196aea41de9d5c46390.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="../styles.css">
+</head>
+
+<body class="nav-sidebar docked nav-fixed quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../index.html">
+    <span class="navbar-title">CUIRE</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../index.html"> <i class="bi bi-house-door-fill" role="img">
+</i> 
+<span class="menu-text"> </span></a>
+  </li>  
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-bayes" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Bayes</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-bayes">    
+        <li>
+    <a class="dropdown-item" href="../bayes/bayes1/bayes1.html">
+ <span class="dropdown-text">Intro to Bayes</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../bayes/bayes2/bayes2.html">
+ <span class="dropdown-text">MCMC</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../bayes/bayes3/bayes3.html">
+ <span class="dropdown-text">Bayes Regression</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../bayes/bayes4/bayes4.html">
+ <span class="dropdown-text">Bayes Meta-Analysis</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../bayes/bayes5/bayes5.html">
+ <span class="dropdown-text">More Bayes</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-epidemiology" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Epidemiology</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-epidemiology">    
+        <li>
+    <a class="dropdown-item" href="../epidemiology/introEpi.html">
+ <span class="dropdown-text">Introduction to Epidemiology</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../epidemiology/injuryDisaster.html">
+ <span class="dropdown-text">Injuries and Disasters</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../epidemiology/power.html">
+ <span class="dropdown-text">Power Tools for Epidemiologists</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../epidemiology/prob.html">
+ <span class="dropdown-text">Probability and Simulations</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="../rCourse.html"> 
+<span class="menu-text">Intro to R Course</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../epidemiology/power.html">Power Tools for Epidemiologists</a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../epidemiology/introEpi.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduction to Epidemiology</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../epidemiology/injuryDisaster.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Injuries and Disasters</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../epidemiology/power.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">Power Tools for Epidemiologists</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../epidemiology/prob.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Probability and Simulations</span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#power-tools-for-epidemiologists" id="toc-power-tools-for-epidemiologists" class="nav-link active" data-scroll-target="#power-tools-for-epidemiologists">Power Tools for Epidemiologists</a></li>
+  <li><a href="#basis-of-sample-size-calculations" id="toc-basis-of-sample-size-calculations" class="nav-link" data-scroll-target="#basis-of-sample-size-calculations">Basis of Sample Size Calculations</a></li>
+  <li><a href="#continuously-distributed-variables-lehrs-equation" id="toc-continuously-distributed-variables-lehrs-equation" class="nav-link" data-scroll-target="#continuously-distributed-variables-lehrs-equation">Continuously Distributed Variables (Lehr’s Equation)</a>
+  <ul class="collapse">
+  <li><a href="#difference-between-two-means" id="toc-difference-between-two-means" class="nav-link" data-scroll-target="#difference-between-two-means">Difference Between Two Means</a></li>
+  <li><a href="#detectible-difference-between-two-means" id="toc-detectible-difference-between-two-means" class="nav-link" data-scroll-target="#detectible-difference-between-two-means">Detectible Difference Between Two Means</a></li>
+  <li><a href="#percentage-change-in-means" id="toc-percentage-change-in-means" class="nav-link" data-scroll-target="#percentage-change-in-means">Percentage Change in Means</a></li>
+  </ul></li>
+  <li><a href="#poisson-distributed-or-count-data" id="toc-poisson-distributed-or-count-data" class="nav-link" data-scroll-target="#poisson-distributed-or-count-data">Poisson Distributed or Count Data</a>
+  <ul class="collapse">
+  <li><a href="#upper-bound-for-count-data-when-no-events-have-occurred-rule-of-3" id="toc-upper-bound-for-count-data-when-no-events-have-occurred-rule-of-3" class="nav-link" data-scroll-target="#upper-bound-for-count-data-when-no-events-have-occurred-rule-of-3">Upper Bound for Count Data when No Events Have Occurred (Rule Of 3)</a></li>
+  </ul></li>
+  <li><a href="#relative-risks-and-odds-ratios" id="toc-relative-risks-and-odds-ratios" class="nav-link" data-scroll-target="#relative-risks-and-odds-ratios">Relative Risks and Odds Ratios</a>
+  <ul class="collapse">
+  <li><a href="#log-based-formulas" id="toc-log-based-formulas" class="nav-link" data-scroll-target="#log-based-formulas">Log-Based Formulas</a></li>
+  </ul></li>
+  <li><a href="#binomial-data-or-proportions" id="toc-binomial-data-or-proportions" class="nav-link" data-scroll-target="#binomial-data-or-proportions">Binomial Data or Proportions</a>
+  <ul class="collapse">
+  <li><a href="#the-rule-of-50" id="toc-the-rule-of-50" class="nav-link" data-scroll-target="#the-rule-of-50">The Rule of 50</a></li>
+  </ul></li>
+  <li><a href="#rules-of-thumb-from-gerald-van-belle" id="toc-rules-of-thumb-from-gerald-van-belle" class="nav-link" data-scroll-target="#rules-of-thumb-from-gerald-van-belle">Rules of Thumb from Gerald van Belle</a></li>
+  <li><a href="#bayesian-approaches" id="toc-bayesian-approaches" class="nav-link" data-scroll-target="#bayesian-approaches">Bayesian Approaches</a>
+  <ul class="collapse">
+  <li><a href="#a-bayesian-twist-to-lehrs-equation" id="toc-a-bayesian-twist-to-lehrs-equation" class="nav-link" data-scroll-target="#a-bayesian-twist-to-lehrs-equation">A (Bayesian) Twist to Lehr’s Equation</a></li>
+  <li><a href="#adaptive-bayesian-designs" id="toc-adaptive-bayesian-designs" class="nav-link" data-scroll-target="#adaptive-bayesian-designs">Adaptive Bayesian Designs</a></li>
+  <li><a href="#bayesian-sample-sizes" id="toc-bayesian-sample-sizes" class="nav-link" data-scroll-target="#bayesian-sample-sizes">Bayesian Sample Sizes</a></li>
+  </ul></li>
+  <li><a href="#notes-on-power-and-sample-size-from-gelman-and-hill" id="toc-notes-on-power-and-sample-size-from-gelman-and-hill" class="nav-link" data-scroll-target="#notes-on-power-and-sample-size-from-gelman-and-hill">Notes on Power and Sample Size from Gelman and Hill</a>
+  <ul class="collapse">
+  <li><a href="#single-binomial-sample-based-on-a-standard-error" id="toc-single-binomial-sample-based-on-a-standard-error" class="nav-link" data-scroll-target="#single-binomial-sample-based-on-a-standard-error">Single Binomial Sample Based on a Standard Error</a></li>
+  <li><a href="#single-binomial-sample-based-on-power" id="toc-single-binomial-sample-based-on-power" class="nav-link" data-scroll-target="#single-binomial-sample-based-on-power">Single Binomial Sample Based on Power</a>
+  <ul class="collapse">
+  <li><a href="#the-rule-of-2.8" id="toc-the-rule-of-2.8" class="nav-link" data-scroll-target="#the-rule-of-2.8">The Rule Of 2.8</a></li>
+  <li><a href="#the-rule-of-2" id="toc-the-rule-of-2" class="nav-link" data-scroll-target="#the-rule-of-2">The Rule Of 2</a></li>
+  </ul></li>
+  <li><a href="#binomial-comparisons" id="toc-binomial-comparisons" class="nav-link" data-scroll-target="#binomial-comparisons">Binomial Comparisons</a></li>
+  <li><a href="#continuous-outcomes" id="toc-continuous-outcomes" class="nav-link" data-scroll-target="#continuous-outcomes">Continuous Outcomes</a></li>
+  <li><a href="#example-zinc-supplementation-and-hiv-childrens-growth" id="toc-example-zinc-supplementation-and-hiv-childrens-growth" class="nav-link" data-scroll-target="#example-zinc-supplementation-and-hiv-childrens-growth">Example: Zinc Supplementation and Hiv+ Children’s Growth</a>
+  <ul class="collapse">
+  <li><a href="#simple-comparison-of-means" id="toc-simple-comparison-of-means" class="nav-link" data-scroll-target="#simple-comparison-of-means">Simple Comparison of Means</a></li>
+  <li><a href="#estimating-standard-deviations-from-previous-studies" id="toc-estimating-standard-deviations-from-previous-studies" class="nav-link" data-scroll-target="#estimating-standard-deviations-from-previous-studies">Estimating Standard Deviations from Previous Studies</a></li>
+  </ul></li>
+  <li><a href="#sample-size-calculations-in-regressions-with-control-variables" id="toc-sample-size-calculations-in-regressions-with-control-variables" class="nav-link" data-scroll-target="#sample-size-calculations-in-regressions-with-control-variables">Sample Size Calculations in Regressions With Control Variables</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block"></header>
+
+
+
+
+<section id="power-tools-for-epidemiologists" class="level1">
+<h1>Power Tools for Epidemiologists</h1>
+<p><a href="#basis-of-sample-size-calculations">Basis of Sample Size Calculations</a><br>
+<a href="#continuously-distributed-variables-lehrs-equation">Continuously Distributed Variables (Lehr’s Equation)</a>)<br>
+<a href="#poisson-distributed-or-count-data">Poisson Distributed or Count Data</a><br>
+<a href="#relative-risks-and-odds-ratios">Relative Risks and Odds Ratios</a><br>
+<a href="#binomial-data-or-proportions">Binomial Data or Proportions</a><br>
+<a href="#rules-of-thumb-from-gerald-van-belle">Rules of Thumb from Gerald van Belle</a><br>
+<a href="#bayesian-approaches">Bayesian Approaches</a><br>
+<a href="#notes-on-power-and-sample-size-from-gelman-and-hill">Notes on Power and Sample Size from Gelman and Hill</a></p>
+<p>Clinical epidemiologists are often called on for power and sample size <a href="http://www.youtube.com/watch?v=PbODigCZqL8">advice</a> and calculations. Some straightforward approaches and reasonable approximations are usually adequate to inform all but the most complex proposals. The following notes are take from Gerald van Belle’s (wonderful) <a href="http://www.vanbelle.org/default.htm">“Statistical Rules of Thumb”</a> for all the rules based on Lehr’s equation, from Chapter 20 of Andrew Gelman and Jennifer Hill’s (equally wonderful) <a href="http://www.amazon.com/Analysis-Regression-Multilevel-Hierarchical-Models/dp/052168689X">“Data Analysis Using Regression and Multilevel/Hierarchical Models”</a> for the material at the end, and from online slides and notes by <a href="http://www.biostat.umn.edu/~ph7440/pubh7440/slideIceBUGS-MDA.pdf">Brad Carlin</a> and <a href="http://biostat.mc.vanderbilt.edu/wiki/pub/Main/JoAnnAlvarez/BayesianAdaptivePres.pdf">JoAnn Alvarez</a> for some of the the Bayesian material.</p>
+</section>
+<section id="basis-of-sample-size-calculations" class="level1">
+<h1>Basis of Sample Size Calculations</h1>
+<p>There are two key ingredients to sample size calculations: the difference between the two groups, and the variability of the measurements.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a></p>
+<p>This graphic (taken from van Belle) illustrates some important basic concepts:</p>
+<p><img src="../epidemiology/curves.png" class="img-fluid"></p>
+<p>Each curve represents the difference between two groups on some continuous measurement (<span class="math inline">\(\Delta = y_0 - y_1\)</span>). The null hypothesis, that there is no difference between the two groups, is represented by the curve on the left (<span class="math inline">\(\mu_{\Delta} = 0\)</span>). The alternative hypothesis, that there is some difference between the two groups, is represented by the curve on the right (<span class="math inline">\(\mu_{\Delta} = \delta\)</span>). Each distribution is also characterized by its variance (<span class="math inline">\(\sigma^2\)</span>) which is usually assumed to be the same (or similar enough…) for both distributions. <em>The relationship between the standard error of the differences in means and the standard deviation</em>, <span class="math inline">\(se_{\Delta} = \sigma * \sqrt{\frac{2}{n}}\)</span> <em>allows us to set up calculations for the sample size, <span class="math inline">\(n\)</span>.</em> The term <span class="math inline">\(\sigma \sqrt{\frac{2}{n}}\)</span> derives from the s.e. for the difference between two means with equal variances. <a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a></p>
+<p>You can also see the (conditional) probabilities about test results and true underlying differences that make up the classical components of sample size calculations:</p>
+<ul>
+<li>type I error or <span class="math inline">\(\alpha\)</span> = Pr[+ result | - difference], ie. false positive
+<ul>
+<li>the black-shaded 0.05/2 tails on the null hypothesis</li>
+</ul></li>
+<li>type II error or <span class="math inline">\(\beta\)</span> = Pr[- result | + difference], i.e.&nbsp;false negative
+<ul>
+<li>the hatched 0.2 left-handed tail on the alternative hypothesis</li>
+</ul></li>
+<li>power or <span class="math inline">\(1 - \beta\)</span> = Pr[+ result | + difference], i.e.&nbsp;true positive
+<ul>
+<li>the area to the right of <span class="math inline">\(\beta\)</span> on the alternative hypothesis</li>
+</ul></li>
+</ul>
+<p>Finally, you can also see that you can increase the power of a study without increasing the sample size by (1) measuring your outcome more precisely, which decreases the variance or “shrinks” the two curves towards their respective means and increases the area under the curve to the right of the critical value, or (2) studying a greater effect size, in this case the difference between <span class="math inline">\(\mu_{\Delta} = 0\)</span> and <span class="math inline">\(\mu_{\Delta} = \delta\)</span>), which separates the curves from each other and similarly increases the area under the curve to the right of the critical value.</p>
+</section>
+<section id="continuously-distributed-variables-lehrs-equation" class="level1">
+<h1>Continuously Distributed Variables (Lehr’s Equation)</h1>
+<section id="difference-between-two-means" class="level2">
+<h2 class="anchored" data-anchor-id="difference-between-two-means">Difference Between Two Means</h2>
+<p>Returning to the graphic above, the <em>critical value</em>, is the point where the upper value of <span class="math inline">\(\alpha\)</span> on the null curve and the value for <span class="math inline">\(\beta\)</span> on the alternative curve meet. This defines the point at which you accept or reject your null hypothesis, and sets up the sample size equation as:</p>
+<p><span class="math display">\[
+0 + z_{1-\alpha/2} * \sigma \sqrt{\frac{2}{n}} = \delta - z_{1-\beta} * \sigma \sqrt{\frac{2}{n}}
+\]</span></p>
+<p>Solving for <span class="math inline">\(n\)</span> allows us to calculate sample sizes. <a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a></p>
+<p><span class="math display">\[
+n_{group}=\frac{2(z_{1-\alpha/2} + z_{1-\beta})^2}{(\frac{\mu_1 - \mu_2}{\sigma})^2}
+\]</span></p>
+<p>Substituting the usual values of 1.96 for <span class="math inline">\(\alpha\)</span> and 0.84 for <span class="math inline">\(\beta\)</span>, and recognizing the denominator as the square of the standardized difference (<span class="math inline">\(\Delta ^2\)</span>), yields the rule of thumb called <a href="http://onlinelibrary.wiley.com/store/10.1002/sim.4780110811/asset/4780110811_ftp.pdf?v=1&amp;t=ha1bvnfb&amp;s=8f3a4ac82bab04217348f5c1bfd6b4072c0cde38">“Lehr’s Equation”</a> or the “Rule of 16”:</p>
+<p><span class="math display">\[
+n_{group}=\frac{2(1.96 + 0.84)^2}{(\Delta)^2} \\
+n_{group}=\frac{16}{(\Delta)^2}
+\]</span></p>
+<p>Say, for example, you want to demonstrate a 10 point difference in IQ between two groups, one of which is exposed to a potential toxin, the other of which is not. Using a mean population IQ of 100, and a standard deviation of 20:</p>
+<p><span class="math display">\[
+n_{group}=\frac{16}{(100-90/20)^2} \\
+n_{group}=\frac{16}{(.5)^2} = 64
+\]</span></p>
+<p>or a total sample size of 128.</p>
+<p>We can code this up as a function in R:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode numberSource r numberLines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a>nMeans<span class="ot">&lt;-</span><span class="cf">function</span>(x0, x1, sd){</span>
+<span id="cb1-2"><a href="#cb1-2"></a>    d<span class="ot">&lt;-</span>(x1<span class="sc">-</span>x0)<span class="sc">/</span>sd           </span>
+<span id="cb1-3"><a href="#cb1-3"></a>    n<span class="ot">&lt;-</span><span class="dv">16</span><span class="sc">/</span>d<span class="sc">^</span><span class="dv">2</span></span>
+<span id="cb1-4"><a href="#cb1-4"></a>    n</span>
+<span id="cb1-5"><a href="#cb1-5"></a>    }</span>
+<span id="cb1-6"><a href="#cb1-6"></a><span class="fu">nMeans</span>(<span class="dv">100</span>,<span class="dv">90</span>,<span class="dv">20</span>)   </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>This allows us to quickly check various scenarios. For the example above we may believe that the actual mean difference between the two groups may be anywhere between 2 and 10 points:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode numberSource r numberLines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a>unexp<span class="ot">&lt;-</span><span class="dv">100</span></span>
+<span id="cb2-2"><a href="#cb2-2"></a>exp<span class="ot">&lt;-</span><span class="fu">seq</span>(<span class="dv">88</span>,<span class="dv">98</span>,<span class="dv">2</span>)</span>
+<span id="cb2-3"><a href="#cb2-3"></a><span class="fu">nMeans</span>(unexp, exp, <span class="dv">20</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Or that the actual standard deviation may be somewhere between 10 and 20 IQ points:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode numberSource r numberLines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a>dev<span class="ot">&lt;-</span><span class="fu">seq</span>(<span class="dv">10</span>,<span class="dv">20</span>,<span class="dv">2</span>)</span>
+<span id="cb3-2"><a href="#cb3-2"></a><span class="fu">nMeans</span>(<span class="dv">100</span>, <span class="dv">90</span>, dev)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Or some combination of difference and variation:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode numberSource r numberLines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="fu">seq</span>(<span class="dv">10</span>,<span class="dv">20</span>,<span class="dv">2</span>)){</span>
+<span id="cb4-2"><a href="#cb4-2"></a>    size<span class="ot">&lt;-</span><span class="fu">nMeans</span>(unexp,exp, i)</span>
+<span id="cb4-3"><a href="#cb4-3"></a>    <span class="fu">print</span>(size)</span>
+<span id="cb4-4"><a href="#cb4-4"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>For a single sample setting, e.g.&nbsp;comparing an outcome to some known or assumed population value, the numerator is 8 rather than 16.</p>
+</section>
+<section id="detectible-difference-between-two-means" class="level2">
+<h2 class="anchored" data-anchor-id="detectible-difference-between-two-means">Detectible Difference Between Two Means</h2>
+<p>We can re-arrange Lehr’s equation to solve for the detectible <em>standardized</em> difference between two populations:</p>
+<p><span class="math display">\[
+n_{group}=\frac{16}{(\Delta)^2}  \\
+(\Delta)^2 = \frac{16}{n_{group}} \\
+\Delta = \frac{4}{\sqrt{n_{group}}} \\
+\]</span></p>
+<p>For the <em>unstandardized</em> difference</p>
+<p><span class="math display">\[
+\delta = \frac{4 \sigma}{\sqrt{n_{group}}}
+\]</span></p>
+<p>Some R code for this formula:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode numberSource r numberLines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a>nDD<span class="ot">&lt;-</span><span class="cf">function</span>(sd, n){  </span>
+<span id="cb5-2"><a href="#cb5-2"></a>    dd<span class="ot">&lt;-</span><span class="dv">4</span><span class="sc">*</span>sd<span class="sc">/</span>(<span class="fu">sqrt</span>(n))</span>
+<span id="cb5-3"><a href="#cb5-3"></a>    dd</span>
+<span id="cb5-4"><a href="#cb5-4"></a>    }</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>So, for example, we were interested in knowing the difference in mean IQ we could detect with a sample size of 50:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode numberSource r numberLines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a><span class="fu">nDD</span>(<span class="dv">20</span>,<span class="dv">50</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>or about 12 IQ points.</p>
+</section>
+<section id="percentage-change-in-means" class="level2">
+<h2 class="anchored" data-anchor-id="percentage-change-in-means">Percentage Change in Means</h2>
+<p>Clinical researchers may be more comfortable thinking in terms of percentage changes rather than differences in means and variability. For example, someone might be interested in a 20% difference between two groups in data with about 30% variability. Professor van Belle presents a neat approach to these kinds of numbers that uses the coefficient of variation (c.v.) <a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a> and translating percentage change into a ratio of means.</p>
+<p>Variance on the log scale (see chapter 5 in van Belle) is approximately equal to coefficient of variation on the original scale, so Lehr’s formula can be translated into a version that uses c.v.</p>
+<p><span class="math display">\[
+n_{group}=\frac{16(c.v.)^2}{(ln(\mu_0)-ln(\mu_1))^2}
+\]</span></p>
+<p>We can then use the percentage change as the ratio of means, where</p>
+<p><span class="math display">\[
+r.m. = \frac{\mu_0 - \mu_1}{\mu_0} = 1 - \frac{\mu_1}{\mu_0}
+\]</span></p>
+<p>to formulate a rule of thumb:</p>
+<p><span class="math display">\[
+n_{group}=\frac{16(c.v.)^2}{(ln(r.m.))^2}
+\]</span></p>
+<p>In the example above, a 20% change translates to a ratio of means of <span class="math inline">\(1-.20=.80\)</span>. (A 5% change would result in a ratio of means of <span class="math inline">\(1-.05=.95\)</span>; a 35% change <span class="math inline">\(1-.35=.65\)</span>, and so on.) So, the sample size for a study seeking to demonstrate a 20% change in means with data that varies about 30% around the means would be</p>
+<p><span class="math display">\[
+n_{group}=\frac{16(.3)^2}{(ln(.8))^2} = 29
+\]</span></p>
+<p>An R function based on this rule would be:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode numberSource r numberLines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a>nPC<span class="ot">&lt;-</span><span class="cf">function</span>(cv, pc){</span>
+<span id="cb7-2"><a href="#cb7-2"></a>    x<span class="ot">&lt;-</span><span class="dv">16</span><span class="sc">*</span>(cv)<span class="sc">^</span><span class="dv">2</span><span class="sc">/</span>((<span class="fu">log</span>((<span class="dv">1</span><span class="sc">-</span>pc)))<span class="sc">^</span><span class="dv">2</span>)</span>
+<span id="cb7-3"><a href="#cb7-3"></a>    <span class="fu">print</span>(x)</span>
+<span id="cb7-4"><a href="#cb7-4"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Say you were interested in a 15% change from one group to another, but were uncertain about how the data varied. You could look at a range of values for the coefficient of variation:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode numberSource r numberLines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a>a<span class="ot">&lt;-</span><span class="fu">c</span>(.<span class="dv">05</span>,.<span class="dv">10</span>,.<span class="dv">15</span>,.<span class="dv">20</span>,.<span class="dv">30</span>,.<span class="dv">40</span>,.<span class="dv">50</span>,.<span class="dv">75</span>,<span class="dv">1</span>)</span>
+<span id="cb8-2"><a href="#cb8-2"></a><span class="fu">nPC</span>(a,.<span class="dv">15</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>You could use this to graphically display your results:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode numberSource r numberLines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a><span class="fu">plot</span>(a,<span class="fu">nPC</span>(a,.<span class="dv">15</span>),  <span class="at">ylab=</span><span class="st">"Number in Each Group"</span>, </span>
+<span id="cb9-2"><a href="#cb9-2"></a><span class="at">xlab=</span><span class="st">"By Varying Coefficent of Variation"</span>, </span>
+<span id="cb9-3"><a href="#cb9-3"></a><span class="at">main=</span><span class="st">"Sample Size Estimate for a 15% Difference"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p><img src="../epidemiology/rotPC1.jpg" class="img-fluid"></p>
+<p>Or, you could look at how the desired effect size changes sample calculations:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode numberSource r numberLines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1"></a><span class="fu">plot</span>(b, <span class="fu">nPC</span>(.<span class="dv">3</span>,b), <span class="at">ylab=</span><span class="st">"Number in Each Group"</span>, </span>
+<span id="cb10-2"><a href="#cb10-2"></a><span class="at">xlab=</span><span class="st">"By Varying Difference Between Two Groups"</span>, </span>
+<span id="cb10-3"><a href="#cb10-3"></a><span class="at">main=</span><span class="st">"Sample Size Estimate for a Coefficient of Variation of 0.3"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p><img src="../epidemiology/rotPC2.jpg" class="img-fluid"></p>
+<p>If an investigator has no idea about the expected coefficient of variation in the data, a value of 0.35 is a handy substitute for many biological systems.</p>
+</section>
+</section>
+<section id="poisson-distributed-or-count-data" class="level1">
+<h1>Poisson Distributed or Count Data</h1>
+<p>From a statistical standpoint, sample size calculations for Poisson-distributed data are a fairly straightforward extension of Lehr’s equation. The square root of poisson-distributed data is approximately normally distributed,</p>
+<p><span class="math display">\[
+y_i \sim Pois (\lambda) \\
+\sqrt{y_i} \sim Nl(\sqrt{\lambda}, 0.25)
+\]</span></p>
+<p>so we can apply Lehr’s equation by taking the square root:</p>
+<p><span class="math display">\[
+n_{group}=\frac{4}{(\sqrt{\lambda_1}-\sqrt{\lambda_2})^2}
+\]</span></p>
+<p>From a conceptual standpoint, you may need to re-orient yourself a bit. You can find a nice explanation of Poisson-distributed data <a href="http://www.statstodo.com/Poisson_Exp.php">here</a> , or take a look at my <a href="http://www.columbia.edu/~cjd11/charles_dimaggio/DIRE/resources/pdfs/introProb.pdf">introduction to probability distributions</a> on this site. In brief, Poisson-distributed data are characterized by the parameter <span class="math inline">\(\lambda\)</span>, which is the number of events, <span class="math inline">\(n\)</span> divided by the number of units, <span class="math inline">\(k\)</span> that gave rise to those events. It’s the <span class="math inline">\(k\)</span> units that might trip you up. They can be geographic areas like ZIP codes tabulation areas, time periods, regions of a chromosome etc… In healthcare, the units are often person-time of some kind.</p>
+<p>As an example, say the mean count of some health outcome is 36 per person-year of observation and you want to demonstrate a decrease to 30 per person-year in a comparison population. The calculation is <span class="math inline">\(n_{group}=\frac{4}{(\sqrt{30}-\sqrt{36})^2} = 15\)</span> person-years of observation in each group.</p>
+<p>If the mean counts are per unit time <span class="math inline">\(T\)</span> (or volume <span class="math inline">\(V\)</span> for perhaps a lab study), then each mean is <span class="math inline">\(T * \lambda\)</span>, and the sample size formula is <span class="math inline">\(n_{group}=\frac{4}{T * (\sqrt{\lambda_1}-\sqrt{\lambda_2})^2}\)</span></p>
+<p>To account for potentially high background rates of disease, <span class="math inline">\(\lambda *\)</span>, add the background rate to the individual means <span class="math inline">\(n_{group}=\frac{4}{(\sqrt{\lambda_1 + \lambda *}-\sqrt{\lambda_2 + \lambda *})^2}\)</span></p>
+<p>As an example, consider two Poisson sets of data with means <span class="math inline">\(\mu_1=1\)</span> and <span class="math inline">\(\mu_2=2\)</span> per unit of observation. The sample size calculation is <span class="math inline">\(n_{group}=\frac{4}{(\sqrt{2}-\sqrt{1})^2} = 25\)</span> units of observations in each group. If there is a background population rate of 1.5, the calculation becomes <span class="math inline">\(n_{group}=\frac{4}{(\sqrt{3.5}-\sqrt{2.5})^2} = 50\)</span> units of observation.</p>
+<p>We can manipulate this formula to solve for the rate above the background you would need for a statistically significant result (<span class="math inline">\(\Delta_{\lambda}\)</span>) by setting <span class="math inline">\(\lambda_1\)</span> to 0 and <span class="math inline">\(\lambda_2\)</span> to <span class="math inline">\(\Delta_{\lambda}\)</span>. Some algebra results in the formula</p>
+<p><span class="math display">\[
+\Delta_{\lambda} = 4  \sqrt{\lambda *}
+\]</span></p>
+<p>i.e., you need 4 times the square root of the background rate more outcomes to demonstrate a statistically significant difference.</p>
+<p>If, for example, there are usually 50,000 deaths in a population, and you want to demonstrate the effect of some event, you would need to see <span class="math inline">\(4  \sqrt{50000} = 895\)</span> more deaths in that population.</p>
+<p>Here a three R functions that calculate sample sizes for Poisson-distributed count data as described above.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode numberSource r numberLines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a> <span class="co"># count data, x= population mean</span></span>
+<span id="cb11-2"><a href="#cb11-2"></a>nPois<span class="ot">&lt;-</span><span class="cf">function</span>(x0,x1){        </span>
+<span id="cb11-3"><a href="#cb11-3"></a>    n<span class="ot">&lt;-</span><span class="dv">4</span><span class="sc">/</span>(<span class="fu">sqrt</span>(x0)<span class="sc">-</span><span class="fu">sqrt</span>(x1))<span class="sc">^</span><span class="dv">2</span>    </span>
+<span id="cb11-4"><a href="#cb11-4"></a>    n    </span>
+<span id="cb11-5"><a href="#cb11-5"></a>    }</span>
+<span id="cb11-6"><a href="#cb11-6"></a><span class="fu">nPois</span>(<span class="dv">1</span>,<span class="dv">2</span>)</span>
+<span id="cb11-7"><a href="#cb11-7"></a></span>
+<span id="cb11-8"><a href="#cb11-8"></a> <span class="co">#takes background rate x into account</span></span>
+<span id="cb11-9"><a href="#cb11-9"></a>nbrPois<span class="ot">&lt;-</span><span class="cf">function</span>(x,x0,x1){        </span>
+<span id="cb11-10"><a href="#cb11-10"></a>    n<span class="ot">&lt;-</span><span class="dv">4</span><span class="sc">/</span>(<span class="fu">sqrt</span>(x<span class="sc">+</span>x0)<span class="sc">-</span><span class="fu">sqrt</span>(x<span class="sc">+</span>x1))<span class="sc">^</span><span class="dv">2</span>    </span>
+<span id="cb11-11"><a href="#cb11-11"></a>    n    </span>
+<span id="cb11-12"><a href="#cb11-12"></a>    }</span>
+<span id="cb11-13"><a href="#cb11-13"></a><span class="fu">nbrPois</span>(<span class="fl">1.5</span>,<span class="dv">1</span>,<span class="dv">2</span>)</span>
+<span id="cb11-14"><a href="#cb11-14"></a></span>
+<span id="cb11-15"><a href="#cb11-15"></a></span>
+<span id="cb11-16"><a href="#cb11-16"></a> <span class="co"># n beyond background rate needed</span></span>
+<span id="cb11-17"><a href="#cb11-17"></a>nbbrPois<span class="ot">&lt;-</span><span class="cf">function</span>(x){             </span>
+<span id="cb11-18"><a href="#cb11-18"></a>    n<span class="ot">&lt;-</span><span class="dv">4</span><span class="sc">*</span><span class="fu">sqrt</span>(x)</span>
+<span id="cb11-19"><a href="#cb11-19"></a>    n</span>
+<span id="cb11-20"><a href="#cb11-20"></a>    }</span>
+<span id="cb11-21"><a href="#cb11-21"></a><span class="fu">nbbrPois</span>(<span class="dv">50000</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<section id="upper-bound-for-count-data-when-no-events-have-occurred-rule-of-3" class="level2">
+<h2 class="anchored" data-anchor-id="upper-bound-for-count-data-when-no-events-have-occurred-rule-of-3">Upper Bound for Count Data when No Events Have Occurred (Rule Of 3)</h2>
+<p>Here is a another good rule to just memorize. Given no events or outcomes in a series of <span class="math inline">\(n\)</span> trials, the 95% upper bound of the rate of occurrence is</p>
+<p><span class="math display">\[
+\frac{3}{n}
+\]</span></p>
+<p>Say there have been no adverse events or outcomes in 20 trials or procedures. There is still a <span class="math inline">\(3/20=0.15\)</span> or 15% chance of an adverse event our outcome.</p>
+<p>This rule derives from the Poisson distribution, where the sum of independent Poison variables is also Poisson, so that <span class="math inline">\(n\)</span> trials of a <span class="math inline">\(Pois(\lambda)\)</span> process is <span class="math inline">\(Pois(n \lambda)\)</span>. The probability of <em>at least</em> one non-zero trial is 1 minus the probability that all the trials are zero,</p>
+<p><span class="math display">\[
+Pr[some_{1}] = Pr[1-\forall_{0}]
+\]</span></p>
+<p>Setting this probability to statistical significance, results in</p>
+<p><span class="math display">\[
+1-0.95 = 0.05 = Pr[\Sigma y_1 = 0] = e^{n \lambda} \\
+n \lambda = -ln(0.05) = 2.996  \\
+\lambda \approx 3/n
+\]</span></p>
+</section>
+</section>
+<section id="relative-risks-and-odds-ratios" class="level1">
+<h1>Relative Risks and Odds Ratios</h1>
+<p>We can extend the application of the Poisson distribution to count data, for sample size calculations on relative risk estimates. The following formula calculates the sample size necessary to detect a relative risk:</p>
+<p><span class="math display">\[
+n_{group} = \frac{4}{\frac{c}{c+d} (\sqrt{RR}-1)^2}
+\]</span></p>
+<p>where <span class="math inline">\(\frac{c}{c+d}\)</span> is the probability of disease in the unexposed drawn from the classic epidemiologic 2x2 Punnett square. This rule of thumb is considered reasonably accurate for diseases with prevalences under 20%, which (fortunately for society in general) account for most outcomes in which epidemiologists are interested.</p>
+<p>As an example, we would need 747 observations in each group to detect a relative risk of at least 3 in a study of a disease with a prevalence of 1% in the unexposed population.</p>
+<p><span class="math display">\[
+n_{group} = \frac{4}{0.01 (\sqrt{3}-1)^2}  = 746.4
+\]</span></p>
+<p>An interesting aspect of this formula is that increasing the prevalence of a disease decreases the required sample size. This can perhaps be accomplished by increasing the period of observation.</p>
+<p>We can rearrange the formula to calculate the number of outcomes <span class="math inline">\(c\)</span> needed to detect a relative risk:</p>
+<p><span class="math display">\[
+c = n_{group} * \frac{c}{c+d} =  \frac{4}{(\sqrt{RR}-1)^2}
+\]</span></p>
+<p>So, to detect a relative risk of at least 3, we need <span class="math inline">\(4/ (\sqrt{3}-1)^2 \approx 8\)</span> outcomes in the unexposed group, and <span class="math inline">\(3 * 8 = 24\)</span> outcomes in the exposed group. Note that this is really just the flip side of the previous formula, since rates of 1/100 in the unexposed and 3/100 in the unexposed require 747 people in each group. It is the number of outcomes that is crucial, not necessarily the number of exposed and unexposed.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="sourceCode numberSource r numberLines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1"></a>nRR<span class="ot">&lt;-</span><span class="cf">function</span>(rr, p0){</span>
+<span id="cb12-2"><a href="#cb12-2"></a>n<span class="ot">&lt;-</span><span class="dv">4</span><span class="sc">/</span>(p0<span class="sc">*</span>((<span class="fu">sqrt</span>(rr)<span class="sc">-</span><span class="dv">1</span>)<span class="sc">^</span><span class="dv">2</span>))</span>
+<span id="cb12-3"><a href="#cb12-3"></a>n   </span>
+<span id="cb12-4"><a href="#cb12-4"></a>}</span>
+<span id="cb12-5"><a href="#cb12-5"></a></span>
+<span id="cb12-6"><a href="#cb12-6"></a><span class="fu">nRR</span>(<span class="dv">3</span>, .<span class="dv">01</span>)</span>
+<span id="cb12-7"><a href="#cb12-7"></a></span>
+<span id="cb12-8"><a href="#cb12-8"></a></span>
+<span id="cb12-9"><a href="#cb12-9"></a></span>
+<span id="cb12-10"><a href="#cb12-10"></a>nRRoutcomes<span class="ot">&lt;-</span><span class="cf">function</span>(rr){</span>
+<span id="cb12-11"><a href="#cb12-11"></a>m<span class="ot">&lt;-</span><span class="dv">4</span><span class="sc">/</span>((<span class="fu">sqrt</span>(rr)<span class="sc">-</span><span class="dv">1</span>)<span class="sc">^</span><span class="dv">2</span>)</span>
+<span id="cb12-12"><a href="#cb12-12"></a>m   </span>
+<span id="cb12-13"><a href="#cb12-13"></a>}</span>
+<span id="cb12-14"><a href="#cb12-14"></a></span>
+<span id="cb12-15"><a href="#cb12-15"></a><span class="fu">nRRoutcomes</span>(<span class="dv">3</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<section id="log-based-formulas" class="level2">
+<h2 class="anchored" data-anchor-id="log-based-formulas">Log-Based Formulas</h2>
+<p>Another approach <a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a> to calculating sample sizes for outcomes like relative risks and odds ratios involves logarithms. In this approach the sample size for a relative risk is:</p>
+<p><span class="math display">\[
+n_{group} = \frac{8(RR+1)/RR}{\frac{c}{c+d} (ln(RR))^2}
+\]</span></p>
+<p>and that to achieve a specified odds ratio is:</p>
+<p><span class="math display">\[
+n_{group} = \frac{8 \sigma^2_{ln(OR)}}{(ln(OR))^2}
+\]</span></p>
+<p>where, for an outcome with prevalence <span class="math inline">\(p_0\)</span> in the unexposed and <span class="math inline">\(p_1\)</span> in the exposed, <span class="math inline">\(\sigma^2_{ln(OR)} = \frac{1}{p_0} + \frac{1}{1-p_0} +\frac{1}{p_1} +\frac{1}{1-p_1}\)</span> and the ln(OR) is <span class="math inline">\(ln(\frac{(p_1)(1-p_0)}{(1-p_1) (p_0)})\)</span></p>
+<p>So, for the example above for a disease with an unexposed prevalence of 1%, the sample size for a relative risk of 3 is <span class="math inline">\(n_{group} = \frac{8(4)/3}{0.01 (ln(3))^2} \approx 884\)</span></p>
+<p>And for an odds ratio of 3, it is <span class="math inline">\(n_{group} = 8 * (\frac{1}{.01} + \frac{1}{.99} +\frac{1}{.03} +\frac{1}{.97}) /  ln(\frac{(.03)(.99)}{.97) (.01)})^2 \approx 865\)</span></p>
+<p>These calculations, though simple, can be tedious, and a couple of R functions are most welcome.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="sourceCode numberSource r numberLines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1"></a>nRRlog<span class="ot">&lt;-</span><span class="cf">function</span>(rr, p<span class="fl">.0</span>){</span>
+<span id="cb13-2"><a href="#cb13-2"></a>n<span class="ot">=</span>((<span class="dv">8</span><span class="sc">*</span>(rr<span class="sc">+</span><span class="dv">1</span>))<span class="sc">/</span>rr)<span class="sc">/</span>(p<span class="fl">.0</span><span class="sc">*</span>(<span class="fu">log</span>(rr)<span class="sc">^</span><span class="dv">2</span>))</span>
+<span id="cb13-3"><a href="#cb13-3"></a>n   </span>
+<span id="cb13-4"><a href="#cb13-4"></a>}</span>
+<span id="cb13-5"><a href="#cb13-5"></a><span class="fu">nRRlog</span>(<span class="dv">3</span>, .<span class="dv">01</span>)</span>
+<span id="cb13-6"><a href="#cb13-6"></a></span>
+<span id="cb13-7"><a href="#cb13-7"></a>p<span class="fl">.0</span><span class="ot">=</span>.<span class="dv">01</span></span>
+<span id="cb13-8"><a href="#cb13-8"></a>p<span class="fl">.1</span><span class="ot">&lt;-</span>.<span class="dv">03</span></span>
+<span id="cb13-9"><a href="#cb13-9"></a>nORlog<span class="ot">&lt;-</span><span class="cf">function</span>(p<span class="fl">.0</span>, p<span class="fl">.1</span>){</span>
+<span id="cb13-10"><a href="#cb13-10"></a>n<span class="ot">=</span>(<span class="dv">8</span><span class="sc">*</span>(<span class="dv">1</span><span class="sc">/</span>p<span class="fl">.0</span> <span class="sc">+</span> <span class="dv">1</span><span class="sc">/</span>(<span class="dv">1</span><span class="sc">-</span>p<span class="fl">.0</span>) <span class="sc">+</span> <span class="dv">1</span><span class="sc">/</span>p<span class="fl">.1</span> <span class="sc">+</span> <span class="dv">1</span><span class="sc">/</span>(<span class="dv">1</span><span class="sc">-</span>p<span class="fl">.1</span>)))<span class="sc">/</span>(<span class="fu">log</span>((p<span class="fl">.1</span><span class="sc">*</span>(<span class="dv">1</span><span class="sc">-</span>p<span class="fl">.0</span>))<span class="sc">/</span>((<span class="dv">1</span><span class="sc">-</span>p<span class="fl">.1</span>)<span class="sc">*</span>p<span class="fl">.0</span>))<span class="sc">^</span><span class="dv">2</span>)  </span>
+<span id="cb13-11"><a href="#cb13-11"></a>n</span>
+<span id="cb13-12"><a href="#cb13-12"></a>}</span>
+<span id="cb13-13"><a href="#cb13-13"></a><span class="fu">nORlog</span>(.<span class="dv">01</span>, .<span class="dv">03</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>The results of the log-based formulae are more conservative than the Poisson-based formula. This brings up a very important point. Sample size calculations are not prescriptive. They are ballpark estimates, and the ballpark is large. Use them cautiously and as a guide, not as a requirement.</p>
+</section>
+</section>
+<section id="binomial-data-or-proportions" class="level1">
+<h1>Binomial Data or Proportions</h1>
+<p>We adapt Lehr’s equation to binomial data by first averaging the two proportions for the populations under study (<span class="math inline">\(\bar{p} = (p_0 + p_1)/2\)</span>):</p>
+<p><span class="math display">\[
+n_{group}=\frac{16 \bar{p} \bar{q}}{(p_0 - p_1)^2}
+\]</span></p>
+<p>As an example, say you are interested in a study where 30% of an untreated population experiences an outcome and you want to demonstrate that treatment decreases that to 10%. <span class="math inline">\(\bar{p} = (.3 + .1)/2 = .2\)</span> and <span class="math inline">\(\bar{q} = 1-.2 = .8\)</span>, and <span class="math inline">\(n_{group}=\frac{16 * .2 * .8}{(.3 - .1)^2} = 64\)</span></p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="sourceCode numberSource r numberLines code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1"></a>nBin<span class="ot">&lt;-</span><span class="cf">function</span>(p0,p1){</span>
+<span id="cb14-2"><a href="#cb14-2"></a>    p<span class="ot">&lt;-</span>(p0<span class="sc">+</span>p1)<span class="sc">/</span><span class="dv">2</span></span>
+<span id="cb14-3"><a href="#cb14-3"></a>    n<span class="ot">&lt;-</span><span class="dv">16</span><span class="sc">*</span>p<span class="sc">*</span>(<span class="dv">1</span><span class="sc">-</span>p)<span class="sc">/</span>(p0<span class="sc">-</span>p1)<span class="sc">^</span><span class="dv">2</span></span>
+<span id="cb14-4"><a href="#cb14-4"></a>    n   </span>
+<span id="cb14-5"><a href="#cb14-5"></a>    } </span>
+<span id="cb14-6"><a href="#cb14-6"></a><span class="fu">nBin</span>(.<span class="dv">3</span>,.<span class="dv">1</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>As an extension to this rule, you might base initial calculations on the most conservative (maximum) variance estimate with <span class="math inline">\(p_0=.5\)</span>, so that <span class="math inline">\(\bar{p} = (.5 + .5)/2 = .5\)</span>, and the numerator of the sample size calculation becomes <span class="math inline">\(16 * .5 *.5 = 4\)</span>:</p>
+<p><span class="math display">\[
+n_{group}=\frac{4}{(p_0 - p_1)^2}
+\]</span></p>
+<p>In our example, the most conservative estimate is <span class="math inline">\(n_{group}=\frac{4}{(.3 - .1)^2} = 100\)</span></p>
+<p>This conservative approximation is only valid for those cases where the sample size in each group is between 10 and 100. Otherwise, it is best to stick to the more general formula.</p>
+<section id="the-rule-of-50" class="level2">
+<h2 class="anchored" data-anchor-id="the-rule-of-50">The Rule of 50</h2>
+<p>I found Professor van Belle’s “Rule of 50” <a href="http://www.childrensmercy.org/stats/size/quick.asp">online</a> but not in his book.<a href="#fn6" class="footnote-ref" id="fnref6" role="doc-noteref"><sup>6</sup></a> It states that for rare, discrete outcomes, <em>you need at least 50 events in a control group, and an equal number in a treatment group, to detect a halving of risk</em>.</p>
+<p>Say, for example, the risk of MI is about 8% over 5 years. To demonstrate that a drug reduces that risk to 4%, you will need enough patients to have 50 MI’s in each arm of the study, which works out to 50 / 0.08 = 625 patients in each group, or 1,250 subjects in total. This formula is conservative. The actual calculations for this experiment return a value of 553 patients in each group.</p>
+<p>The rule derives from the sample size calculation for a binomial sample</p>
+<p><span class="math display">\[
+n_{group} = \frac{(z_{1- \alpha / 2} \sqrt{\bar{pq}(1+\frac{1}{k})} + z_{1- \beta} \sqrt{\frac{p_1 q_1}{p_2 q_2}})^2}{\Delta ^2}
+\]</span></p>
+<p>If the event is rare, then <span class="math inline">\(p_1 \approx p_2\)</span> and is very small, so <span class="math inline">\(q_1 \approx q_2 \approx 1\)</span>:</p>
+<p><span class="math display">\[
+n_{group} = \frac{(z_{1- \alpha / 2} \sqrt{\bar{p}(1+\frac{1}{k})} + z_{1- \beta} \sqrt{\frac{p_1}{p_2}})^2}{\Delta ^2}
+\]</span></p>
+<p>For a 50% decline from group 1 to group 2 <span class="math inline">\(p_2 = .5p_1\)</span> and <span class="math inline">\(\bar{p} = .75p_1\)</span>. For equal sample sizes (k=1), and the standard alpha an beta, the formula simplifies to:</p>
+<p><span class="math display">\[
+n_{group} = \frac{(1.96 \sqrt{1.5p_1} + 0.84 \sqrt{1.5p_1})^2}{(0.5p_1) ^2}
+\]</span></p>
+<p>Solving for <span class="math inline">\(n_{group}p_1\)</span> result in 47, which for simplicity is rounded up to 50.</p>
+</section>
+</section>
+<section id="rules-of-thumb-from-gerald-van-belle" class="level1">
+<h1>Rules of Thumb from Gerald van Belle</h1>
+<ul>
+<li>You can safely <em>ignore the finite population correction</em> in binomial surveys of large populations</li>
+<li>A <em>quick estimate of the standard deviation</em> is <span class="math inline">\(s = \frac{Range}{\sqrt{n}}\)</span></li>
+<li>Don’t formulate a study solely in terms of effect size. (This even though Lehr’s formula is based on <span class="math inline">\(\Delta\)</span> which is essentially an effect size)</li>
+<li><em>Confidence intervals can overlap</em> as much as 29% and still be statistically significantly different
+<ul>
+<li>E.g. <span class="math inline">\(\mu_1 = 10\)</span> vs.&nbsp;<span class="math inline">\(\mu_2 = 22\)</span> with <span class="math inline">\(\sigma = 4\)</span> results in a 95% CI of 2,18 for <span class="math inline">\(\mu_1\)</span> and 14,30 for <span class="math inline">\(\mu_2\)</span>. A lot of overlap, but the 95% CI for the difference is <span class="math inline">\(22-10 \pm 1.96 * \sqrt{4^2 + 4^2}\)</span> or 0.9, 33.1, which is still statistically significant</li>
+</ul></li>
+<li><em>Optimize unequal sample sizes</em>. In case-control studies you may be limited by the number of cases (<span class="math inline">\(n_1\)</span>) in your sample. You can optimize your precision by increasing the number of controls (<span class="math inline">\(n_0\)</span>), so that <span class="math inline">\(n_0 = kn_1\)</span> , where <span class="math inline">\(k=\frac{n_{group}}{2n_1-n_{group}}\)</span>, and <span class="math inline">\(n_{group}\)</span> is the result of your sample size calculation.
+<ul>
+<li>E.g. Say sample size calculations for a case-control study return 16 observations in each group, but you only have 12 cases. You can increase your controls to <span class="math inline">\(k=16/8=2 * 12 = 24\)</span> observations to achieve the same precision.</li>
+<li>Little is to be gained, though, beyond 4 or 5 controls per case</li>
+<li>This rule derives from the variance for the difference in proportions for two groups, <span class="math inline">\(\frac{1}{n_0} + \frac{1}{n_1} = \frac{1}{n_0} + \frac{1}{kn_0}\)</span>, and solving for k.</li>
+<li>An extension of the rule demonstrates that a study can tolerate an imbalance in sample sizes of up to about 20%.</li>
+</ul></li>
+<li>When the costs for one population are greater than the other, you can optimize costs with unequal sample sizes, but the <em>overall costs will not vary very much</em>.
+<ul>
+<li>E.g. If the costs in one group are 3.5 time greater than the other, increasing the sample size in the other group will result in only a 13% overall cost savings</li>
+<li>This rule again derives from the the variance for the difference in proportions for two groups, <span class="math inline">\(\frac{1}{n_0} + \frac{1}{n_1}\)</span>, and the linear optimization of the total cost, <span class="math inline">\(C = c_0 n_0 + c_1 n_1\)</span>, which results in <span class="math inline">\(\frac{n_1}{n_0} = \sqrt{\frac{c_0}{c_1}}\)</span></li>
+</ul></li>
+<li>If you are planning complex multivariable analyses that are expected to increase precision, simpler formulas will return more conservative estimates.</li>
+<li>In a logistic regression, aim for about <em>10 outcomes for every parameter</em> in the model <a href="#fn7" class="footnote-ref" id="fnref7" role="doc-noteref"><sup>7</sup></a></li>
+</ul>
+</section>
+<section id="bayesian-approaches" class="level1">
+<h1>Bayesian Approaches</h1>
+<section id="a-bayesian-twist-to-lehrs-equation" class="level2">
+<h2 class="anchored" data-anchor-id="a-bayesian-twist-to-lehrs-equation">A (Bayesian) Twist to Lehr’s Equation</h2>
+<p>The results of power calculations are a guide rather than requirement and should be run over a range or possible values for both the effect size and the standard deviation. We can take this to the next logical step and run the calculations over a distribution of values for the effect size and standard deviation. Allowing a parameter to vary in this way is, in essence, Bayesian (or at least Bayesian like) in that it allows us to incorporate uncertainty about the parameters themselves. <a href="#fn8" class="footnote-ref" id="fnref8" role="doc-noteref"><sup>8</sup></a></p>
+<p>Let’s return to our first example of demonstrating a 10 point difference in IQ between two groups, one of which is exposed to a potential toxin, the other of which is not, using a mean population IQ of 100, and a standard deviation of 20. Our estimate using Lehr’s formula was 64 observations in each group.</p>
+<p>Say, though, that we are uncertain (as we probably should be) about our estimate for the standard deviation. We might believe that the mean estimate of 20 varies normally with a standard deviation of its own of 1. Similarly, we believe that the difference between the two groups is 10 points, but that too may vary normally around that mean by about 1 point. To explore the effect of this uncertainty we’ll first redefine the basic Lehr’s formula function in terms of a difference and a standard deviation.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15"><pre class="sourceCode numberSource r numberLines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1"></a>nMeans.vary<span class="ot">&lt;-</span><span class="cf">function</span>(diff, sd){   </span>
+<span id="cb15-2"><a href="#cb15-2"></a>    d<span class="ot">&lt;-</span>diff<span class="sc">/</span>sd              </span>
+<span id="cb15-3"><a href="#cb15-3"></a>    n<span class="ot">&lt;-</span><span class="dv">16</span><span class="sc">/</span>d<span class="sc">^</span><span class="dv">2</span></span>
+<span id="cb15-4"><a href="#cb15-4"></a>    n</span>
+<span id="cb15-5"><a href="#cb15-5"></a>    }</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>We’ll use R’s ability to randomly sample from a distribution, and, because negative standard deviations make no sense, we’ll use the truncated normal distribution function to constrain simulated values for the difference between the two groups and the standard deviation to be positive.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb16"><pre class="sourceCode numberSource r numberLines code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1"></a><span class="fu">install.packages</span>(<span class="st">"truncnorm"</span>)</span>
+<span id="cb16-2"><a href="#cb16-2"></a><span class="fu">library</span>(truncnorm)</span>
+<span id="cb16-3"><a href="#cb16-3"></a></span>
+<span id="cb16-4"><a href="#cb16-4"></a>sd.r<span class="ot">&lt;-</span><span class="fu">rtruncnorm</span>(<span class="at">n=</span><span class="dv">1000</span>, <span class="at">a=</span><span class="dv">0</span>, <span class="at">mean=</span><span class="dv">20</span>, <span class="at">sd=</span><span class="dv">1</span>)</span>
+<span id="cb16-5"><a href="#cb16-5"></a>diff.r<span class="ot">&lt;-</span><span class="fu">rtruncnorm</span>(<span class="at">n=</span><span class="dv">1000</span>, <span class="at">a=</span><span class="dv">0</span>, <span class="at">mean=</span><span class="dv">10</span>, <span class="at">sd=</span><span class="dv">1</span>)</span>
+<span id="cb16-6"><a href="#cb16-6"></a></span>
+<span id="cb16-7"><a href="#cb16-7"></a>n1<span class="ot">&lt;-</span><span class="fu">nMeans.vary</span>(diff.r,sd.r)</span>
+<span id="cb16-8"><a href="#cb16-8"></a><span class="fu">summary</span>(n1)</span>
+<span id="cb16-9"><a href="#cb16-9"></a><span class="fu">plot</span>(<span class="fu">density</span>(n1))   </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>We see from this simulation that we can achieve the same power under the same conditions with a few as 30 or as many as 160 observations in each group.</p>
+<p>We can, alternatively, look at how power varies for the point estimate of 64 observations in each group. The following formula <a href="#fn9" class="footnote-ref" id="fnref9" role="doc-noteref"><sup>9</sup></a> solves for power given a sample size <span class="math inline">\(n\)</span>, a difference between two groups of <span class="math inline">\(\theta\)</span> and a standard deviation of <span class="math inline">\(\sigma\)</span>:</p>
+<p><span class="math display">\[
+Power = \phi (\sqrt{\frac{n \theta ^2}{2 \sigma ^2}}-1.96)
+\]</span></p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb17"><pre class="sourceCode numberSource r numberLines code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1"></a></span>
+<span id="cb17-2"><a href="#cb17-2"></a>p1<span class="ot">&lt;-</span><span class="fu">sqrt</span>(<span class="dv">64</span><span class="sc">/</span><span class="dv">2</span>) <span class="sc">*</span> diff.r<span class="sc">/</span>sd.r <span class="sc">-</span><span class="fl">1.96</span></span>
+<span id="cb17-3"><a href="#cb17-3"></a></span>
+<span id="cb17-4"><a href="#cb17-4"></a><span class="fu">summary</span>(<span class="fu">pnorm</span>(p1))</span>
+<span id="cb17-5"><a href="#cb17-5"></a><span class="fu">plot</span>(<span class="fu">density</span>(<span class="fu">pnorm</span>(p1)))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>And we see that the power of study with 64 observations in each group can be as low as 42% or has high as 98%.</p>
+<p>Bayesian approaches to power and sample-size calculations allow a framework to use accumulating or historical data to optimize sample sizes and (perhaps) the time and expense of conducting trials. Statistical advantages of Bayesian approaches to study design, power and sample size calculations are that you can make direct probability statements about results, and can combine similar (“exchangeable”) studies about a drug or outcome. Bayes is also naturally suited to hierarchical modeling of nested and repeated measures to account for complex sources of uncertainty. A Bayesian approach may also be more ethical because it might decrease the number of patients exposed to potentially harmful trials, speed up the process of evaluating potentially efficacious therapies, and make better use of resources.</p>
+<p>In power and sample size calculations, we essentially make an initial “guess” about the the detectible difference or standard deviation that go into a sample-size calculation. All we have really done up to now is take the additional step of describing those initial “guesses” as distributions. We cross the Bayesian Rubicon when we adopt an outlook that involves combining “guesses” like expert opinion or previous data in the form of probability distributions, with the sampling distribution or likelihood of current data to calculate an updated posterior distribution. This approach allows us to “peek” at the accumulating evidence and perhaps stop a trial sooner without affecting our ability to analyze the data later.</p>
+</section>
+<section id="adaptive-bayesian-designs" class="level2">
+<h2 class="anchored" data-anchor-id="adaptive-bayesian-designs">Adaptive Bayesian Designs</h2>
+<p>As an example, let’s start with a traditional approach to a drug efficacy study. Say we want to demonstrate that a drug decreases the usual 25% prevalence of some disease down to 10%, for an efficacy of about 40% (.1/.25). We could use Lehr’s formula for binomial data to return a result of a sample size of 103.</p>
+<p><span class="math display">\[
+n_{group}=\frac{16 \bar{p} \bar{q}}{(p_0 - p_1)^2}
+\]</span></p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb18"><pre class="sourceCode numberSource r numberLines code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1"></a>nBin<span class="ot">&lt;-</span><span class="cf">function</span>(p0,p1){</span>
+<span id="cb18-2"><a href="#cb18-2"></a>    p<span class="ot">&lt;-</span>(p0<span class="sc">+</span>p1)<span class="sc">/</span><span class="dv">2</span></span>
+<span id="cb18-3"><a href="#cb18-3"></a>    n<span class="ot">&lt;-</span><span class="dv">16</span><span class="sc">*</span>p<span class="sc">*</span>(<span class="dv">1</span><span class="sc">-</span>p)<span class="sc">/</span>(p0<span class="sc">-</span>p1)<span class="sc">^</span><span class="dv">2</span></span>
+<span id="cb18-4"><a href="#cb18-4"></a>    n   </span>
+<span id="cb18-5"><a href="#cb18-5"></a>    } </span>
+<span id="cb18-6"><a href="#cb18-6"></a><span class="fu">nBin</span>(.<span class="dv">25</span>,.<span class="dv">1</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>What if this is a phase 1 or pilot study and we can only reasonably enroll 20 patients? We can reframe the question. What is the probability that (say) 15 of the twenty will respond? (Perhaps that kind of efficacy will demonstrate the need for a larger study.) Again, we believe the drug to be effective 40% of the time. We also believe that this efficacy ranges from about 20% to 60% with a standard deviation of 10%. We can use this information to define a Beta distribution which we can use as a prior distribution for a binomial simulation to answer this question. (You can find a description and presentation of this kind of conjugate Bayesian analyses <a href="http://www.columbia.edu/~cjd11/charles_dimaggio/DIRE/styled-4/styled-11/code-4/">here</a>)</p>
+<p>This small function takes a mean and variance and returns the parameters for a Beta distribution:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb19"><pre class="sourceCode numberSource r numberLines code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1"></a>estBetaParams <span class="ot">&lt;-</span> <span class="cf">function</span>(mu, var) {</span>
+<span id="cb19-2"><a href="#cb19-2"></a>  alpha <span class="ot">&lt;-</span> ((<span class="dv">1</span> <span class="sc">-</span> mu) <span class="sc">/</span> var <span class="sc">-</span> <span class="dv">1</span> <span class="sc">/</span> mu) <span class="sc">*</span> mu <span class="sc">^</span> <span class="dv">2</span></span>
+<span id="cb19-3"><a href="#cb19-3"></a>  beta <span class="ot">&lt;-</span> alpha <span class="sc">*</span> (<span class="dv">1</span> <span class="sc">/</span> mu <span class="sc">-</span> <span class="dv">1</span>)</span>
+<span id="cb19-4"><a href="#cb19-4"></a>  <span class="fu">return</span>(<span class="at">params =</span> <span class="fu">list</span>(<span class="at">alpha =</span> alpha, <span class="at">beta =</span> beta))</span>
+<span id="cb19-5"><a href="#cb19-5"></a>}</span>
+<span id="cb19-6"><a href="#cb19-6"></a></span>
+<span id="cb19-7"><a href="#cb19-7"></a><span class="fu">estBetaParams</span>(.<span class="dv">4</span>,(.<span class="dv">1</span>)<span class="sc">^</span><span class="dv">2</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>We can now use the Beta distribution to set up a binomial simulation to answer our question:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb20"><pre class="sourceCode numberSource r numberLines code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1"></a>N<span class="ot">=</span><span class="dv">1000</span></span>
+<span id="cb20-2"><a href="#cb20-2"></a>theta<span class="ot">&lt;-</span><span class="fu">rbeta</span>(N,<span class="fl">9.2</span>,<span class="fl">13.8</span>)</span>
+<span id="cb20-3"><a href="#cb20-3"></a>x<span class="ot">&lt;-</span><span class="fu">rbinom</span>(N,<span class="dv">20</span>, theta)</span>
+<span id="cb20-4"><a href="#cb20-4"></a>y<span class="ot">&lt;-</span><span class="dv">0</span></span>
+<span id="cb20-5"><a href="#cb20-5"></a>accept<span class="ot">&lt;-</span><span class="fu">ifelse</span>(x<span class="sc">&gt;</span><span class="fl">14.5</span>, y<span class="sc">+</span><span class="dv">1</span>, y<span class="sc">+</span><span class="dv">0</span>)</span>
+<span id="cb20-6"><a href="#cb20-6"></a>prob<span class="ot">&lt;-</span><span class="fu">sum</span>(accept)<span class="sc">/</span>N</span>
+<span id="cb20-7"><a href="#cb20-7"></a>prob</span>
+<span id="cb20-8"><a href="#cb20-8"></a><span class="fu">library</span>(coda)</span>
+<span id="cb20-9"><a href="#cb20-9"></a><span class="fu">densityplot</span>(accept)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Note that the power is simply the proportion of simulations that meet or exceed the criteria of being greater than or equal to 15. In this case, there is about a 2% probability that a study of 20 patients will show efficacy in 15 people.</p>
+<p>OK. Now let’s say we do what we should always do, and look in the literature. Say we find a study of 20 patients, very similar to the one we planned, that did in fact demonstrate efficacy in 15 of 20 patients. We can incorporate this new information by “updating” our Beta prior through a convenient conjugate relationship that exists between <span class="math inline">\(Beta\)</span> priors and <span class="math inline">\(Binomial\)</span> likelihoods. (again, look <a href="http://www.columbia.edu/~cjd11/charles_dimaggio/DIRE/styled-4/styled-11/code-4/">here</a> for details…) where,</p>
+<p>if the prior is</p>
+<p><span class="math display">\[
+\theta \sim Beta(a,b)
+\]</span></p>
+<p>and the likelihood is</p>
+<p><span class="math display">\[
+X| \theta \sim Bin (N, \theta)
+\]</span></p>
+<p>then the posterior is</p>
+<p><span class="math display">\[
+\theta | X \sim Beta (X+a, N-X+b)
+\]</span></p>
+<p>Our new prior for <span class="math inline">\(\theta\)</span> in our planned study is <span class="math inline">\(Beta(15+9.2, 20-15+13.8)\)</span>. It combines the Binomial <span class="math inline">\({20 \choose 15} p^{15}q^{20-15}\)</span> likelihood of this external data with the <span class="math inline">\(Beta(9.2, 13.8)\)</span>,</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb21"><pre class="sourceCode numberSource r numberLines code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1"></a>N<span class="ot">=</span><span class="dv">1000</span></span>
+<span id="cb21-2"><a href="#cb21-2"></a>theta<span class="ot">&lt;-</span><span class="fu">rbeta</span>(N,<span class="fl">24.2</span>,<span class="fl">18.8</span>)</span>
+<span id="cb21-3"><a href="#cb21-3"></a>x<span class="ot">&lt;-</span><span class="fu">rbinom</span>(N,<span class="dv">20</span>, theta)</span>
+<span id="cb21-4"><a href="#cb21-4"></a>y<span class="ot">&lt;-</span><span class="dv">0</span></span>
+<span id="cb21-5"><a href="#cb21-5"></a>accept<span class="ot">&lt;-</span><span class="fu">ifelse</span>(x<span class="sc">&gt;</span><span class="fl">14.5</span>, y<span class="sc">+</span><span class="dv">1</span>, y<span class="sc">+</span><span class="dv">0</span>)</span>
+<span id="cb21-6"><a href="#cb21-6"></a>prob<span class="ot">&lt;-</span><span class="fu">sum</span>(accept)<span class="sc">/</span>N</span>
+<span id="cb21-7"><a href="#cb21-7"></a>prob</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>The probability of demonstrating our target efficacy has gone up considerably (though clearly not as high as we might want).</p>
+<p>Let’s take this hypothetical situation one step further. Say based on our simulations we decided to go forward with a study of 20 patients. We find that 14 of the 20 patients respond to the treatment. At that point, we decide that if we see 25 successes out of 40 additional patients we will continue drug development. How likely is that to be? It is, again, a matter of updating the prior and running the simulation. Our updated prior for <span class="math inline">\(\theta\)</span> is <span class="math inline">\(Beta(14+24.2,20-14+18.8)\)</span>. And the probability of 25 or more successes in an additional 40 trials is about 38%.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb22"><pre class="sourceCode numberSource r numberLines code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1"></a>N<span class="ot">=</span><span class="dv">1000</span></span>
+<span id="cb22-2"><a href="#cb22-2"></a>theta<span class="ot">&lt;-</span><span class="fu">rbeta</span>(N,<span class="fl">38.2</span>,<span class="fl">24.8</span>)</span>
+<span id="cb22-3"><a href="#cb22-3"></a>x<span class="ot">&lt;-</span><span class="fu">rbinom</span>(N,<span class="dv">40</span>, theta)</span>
+<span id="cb22-4"><a href="#cb22-4"></a>y<span class="ot">&lt;-</span><span class="dv">0</span></span>
+<span id="cb22-5"><a href="#cb22-5"></a>accept<span class="ot">&lt;-</span><span class="fu">ifelse</span>(x<span class="sc">&gt;</span><span class="dv">25</span>, y<span class="sc">+</span><span class="dv">1</span>, y<span class="sc">+</span><span class="dv">0</span>)</span>
+<span id="cb22-6"><a href="#cb22-6"></a>prob<span class="ot">&lt;-</span><span class="fu">sum</span>(accept)<span class="sc">/</span>N</span>
+<span id="cb22-7"><a href="#cb22-7"></a>prob</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>The point estimates from these simulations will necessarily vary from run to run. We can write a simple function, loop over it <a href="#fn10" class="footnote-ref" id="fnref10" role="doc-noteref"><sup>10</sup></a> , and summarize the multiple runs.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb23"><pre class="sourceCode numberSource r numberLines code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1"></a>beta.pwr<span class="ot">&lt;-</span><span class="cf">function</span>(<span class="at">N=</span><span class="dv">1000</span>, a, b, n, target){</span>
+<span id="cb23-2"><a href="#cb23-2"></a>    theta<span class="ot">&lt;-</span><span class="fu">rbeta</span>(N,a,b)</span>
+<span id="cb23-3"><a href="#cb23-3"></a>    x<span class="ot">&lt;-</span><span class="fu">rbinom</span>(N,n, theta)</span>
+<span id="cb23-4"><a href="#cb23-4"></a>    y<span class="ot">&lt;-</span><span class="dv">0</span></span>
+<span id="cb23-5"><a href="#cb23-5"></a>    accept<span class="ot">&lt;-</span><span class="fu">ifelse</span>(x<span class="sc">&gt;</span>target, y<span class="sc">+</span><span class="dv">1</span>, y<span class="sc">+</span><span class="dv">0</span>)</span>
+<span id="cb23-6"><a href="#cb23-6"></a>    prob<span class="ot">&lt;-</span><span class="fu">sum</span>(accept)<span class="sc">/</span>N</span>
+<span id="cb23-7"><a href="#cb23-7"></a>    prob    </span>
+<span id="cb23-8"><a href="#cb23-8"></a>}</span>
+<span id="cb23-9"><a href="#cb23-9"></a></span>
+<span id="cb23-10"><a href="#cb23-10"></a>n.reps<span class="ot">&lt;-</span><span class="dv">1000</span></span>
+<span id="cb23-11"><a href="#cb23-11"></a>my.probs<span class="ot">&lt;-</span><span class="fu">rep</span>(<span class="cn">NA</span>,n.reps)</span>
+<span id="cb23-12"><a href="#cb23-12"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>n.reps){</span>
+<span id="cb23-13"><a href="#cb23-13"></a>    my.probs[i]<span class="ot">=</span><span class="fu">beta.pwr</span>(<span class="at">a=</span><span class="fl">38.2</span>, <span class="at">b=</span><span class="fl">24.8</span>, <span class="at">n=</span><span class="dv">40</span>, <span class="at">target=</span><span class="dv">25</span>)</span>
+<span id="cb23-14"><a href="#cb23-14"></a>}</span>
+<span id="cb23-15"><a href="#cb23-15"></a></span>
+<span id="cb23-16"><a href="#cb23-16"></a><span class="fu">summary</span>(my.probs)</span>
+<span id="cb23-17"><a href="#cb23-17"></a><span class="fu">densityplot</span>(my.probs)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>We see that our initial 38% estimate is reasonable, though we could have returned values as low as 34% or has high as 44%.</p>
+<p>This kind of iterative decision-making process based on updating or learning from accumulating evidence is the building block of so-called “adaptive” or Bayesian study designs. They are adaptive in that they can change based on observed data. Bayesian in that the decision to change is based on predictive probabilities. The kinds of changes that might occur include early stopping, re-estimation of sample sizes, or applying weights to the randomization process.</p>
+<p>Adaptive approaches are suited to settings where patients can be enrolled and their responses can be ascertained relatively quickly, the cost of enrolling and following patients is high, and there is considerable uncertainty about the effect size.</p>
+<p>While attractive in many respects, this approach is not without challenges. It requires additional and sometimes complex initial planning, considerable flexibility in changing a study on the fly, and regulatory approval. Additionally, and perhaps most worrisome, adaptive designs may introduce bias and increased type I error due to multiple analyses, from knowing results, or through patient selection. (see <a href="http://www.fda.gov/downloads/Drugs/.../Guidances/ucm201790.pdf">this document</a>)</p>
+</section>
+<section id="bayesian-sample-sizes" class="level2">
+<h2 class="anchored" data-anchor-id="bayesian-sample-sizes">Bayesian Sample Sizes</h2>
+<p>You may be asking yourself, “Where are the sample size calculations?” A simple adjustment gets us back to sample sizes. Rather than run the calculation for a set sample size of 40, simply replace with a vector of values. Let’s take our most recent calculation.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb24"><pre class="sourceCode numberSource r numberLines code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1"></a>Nrep<span class="ot">&lt;-</span><span class="dv">1000</span></span>
+<span id="cb24-2"><a href="#cb24-2"></a>s<span class="ot">&lt;-</span><span class="dv">40</span><span class="sc">:</span><span class="dv">100</span></span>
+<span id="cb24-3"><a href="#cb24-3"></a>theta<span class="ot">&lt;-</span><span class="fu">rbeta</span>(Nrep,<span class="fl">38.2</span>,<span class="fl">24.8</span>)</span>
+<span id="cb24-4"><a href="#cb24-4"></a>y<span class="ot">&lt;-</span><span class="dv">0</span></span>
+<span id="cb24-5"><a href="#cb24-5"></a></span>
+<span id="cb24-6"><a href="#cb24-6"></a>results<span class="ot">&lt;-</span><span class="fu">matrix</span>(<span class="dv">0</span>, <span class="at">nrow=</span><span class="fu">length</span>(s), <span class="at">ncol=</span><span class="dv">1</span>)</span>
+<span id="cb24-7"><a href="#cb24-7"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(s)){</span>
+<span id="cb24-8"><a href="#cb24-8"></a>x<span class="ot">&lt;-</span><span class="fu">rbinom</span>(Nrep,s[i], theta) </span>
+<span id="cb24-9"><a href="#cb24-9"></a>accept<span class="ot">&lt;-</span><span class="fu">ifelse</span>(x<span class="sc">&gt;</span><span class="dv">25</span>, y<span class="sc">+</span><span class="dv">1</span>, y<span class="sc">+</span><span class="dv">0</span>)</span>
+<span id="cb24-10"><a href="#cb24-10"></a>prob[i]<span class="ot">&lt;-</span><span class="fu">sum</span>(accept)<span class="sc">/</span>Nrep</span>
+<span id="cb24-11"><a href="#cb24-11"></a>results[i,]<span class="ot">&lt;-</span>prob[i]</span>
+<span id="cb24-12"><a href="#cb24-12"></a>}</span>
+<span id="cb24-13"><a href="#cb24-13"></a></span>
+<span id="cb24-14"><a href="#cb24-14"></a>tab<span class="ot">&lt;-</span><span class="fu">cbind</span>(s, results)</span>
+<span id="cb24-15"><a href="#cb24-15"></a></span>
+<span id="cb24-16"><a href="#cb24-16"></a>tab</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>We see that we hit the usual 80% threshold with a sample of about 49.</p>
+<p>Note, that these calculations apply equal weighting to the previous study or evidence, and the new or planned study. This may be reasonable, or it may not. There are other possibilities.</p>
+<p>We can <em>downweight</em> the previous study data with weight <span class="math inline">\(0 \le w \le 1\)</span> to reflect less confidence in the prior than in the likelihood, <span class="math inline">\(Beta(a*w, b*w)\)</span>. Essentially each old patient is worth a fraction <span class="math inline">\(w\)</span> of a new patient. Say we are not very confident of the evidence from the literature. We can downweight it by 50% by taking the <span class="math inline">\(Beta(24.2,18.8)\)</span> prior and multiplying through by .5 (<span class="math inline">\(Beta(24.2*.5,18.8*.5)\)</span>) before updating with the evidence from the trial for a <span class="math inline">\(Beta(14+12.2, 20-14+14.4)\)</span></p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb25"><pre class="sourceCode numberSource r numberLines code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1"></a>Nrep<span class="ot">&lt;-</span><span class="dv">1000</span></span>
+<span id="cb25-2"><a href="#cb25-2"></a>s<span class="ot">&lt;-</span><span class="dv">40</span><span class="sc">:</span><span class="dv">100</span></span>
+<span id="cb25-3"><a href="#cb25-3"></a>theta<span class="ot">&lt;-</span><span class="fu">rbeta</span>(Nrep,<span class="fl">26.2</span>,<span class="fl">20.4</span>)</span>
+<span id="cb25-4"><a href="#cb25-4"></a>y<span class="ot">&lt;-</span><span class="dv">0</span></span>
+<span id="cb25-5"><a href="#cb25-5"></a></span>
+<span id="cb25-6"><a href="#cb25-6"></a>results<span class="ot">&lt;-</span><span class="fu">matrix</span>(<span class="dv">0</span>, <span class="at">nrow=</span><span class="fu">length</span>(s), <span class="at">ncol=</span><span class="dv">1</span>)</span>
+<span id="cb25-7"><a href="#cb25-7"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(s)){</span>
+<span id="cb25-8"><a href="#cb25-8"></a>x<span class="ot">&lt;-</span><span class="fu">rbinom</span>(Nrep,s[i], theta) </span>
+<span id="cb25-9"><a href="#cb25-9"></a>accept<span class="ot">&lt;-</span><span class="fu">ifelse</span>(x<span class="sc">&gt;</span><span class="dv">25</span>, y<span class="sc">+</span><span class="dv">1</span>, y<span class="sc">+</span><span class="dv">0</span>)</span>
+<span id="cb25-10"><a href="#cb25-10"></a>prob[i]<span class="ot">&lt;-</span><span class="fu">sum</span>(accept)<span class="sc">/</span>Nrep</span>
+<span id="cb25-11"><a href="#cb25-11"></a>results[i,]<span class="ot">&lt;-</span>prob[i]</span>
+<span id="cb25-12"><a href="#cb25-12"></a>}</span>
+<span id="cb25-13"><a href="#cb25-13"></a></span>
+<span id="cb25-14"><a href="#cb25-14"></a>tab<span class="ot">&lt;-</span><span class="fu">cbind</span>(s, results)</span>
+<span id="cb25-15"><a href="#cb25-15"></a></span>
+<span id="cb25-16"><a href="#cb25-16"></a>tab</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>We see that now we don’t hit 80% power until a sample size of about 54.</p>
+<p>Alternatively, we can <em>shift</em> or manipulate the prior by increasing or decreasing the number of successes that went into the beta-binomial conjugate calculation while keeping the overall sample size stable. Let’s take the <span class="math inline">\(Beta(14+24.2,20-14+18.8)\)</span> prior and shift 7 of the successes to failures as <span class="math inline">\(Beta(7+24.2,20-7+18.8)\)</span></p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb26"><pre class="sourceCode numberSource r numberLines code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1"></a>Nrep<span class="ot">&lt;-</span><span class="dv">1000</span></span>
+<span id="cb26-2"><a href="#cb26-2"></a>s<span class="ot">&lt;-</span><span class="dv">40</span><span class="sc">:</span><span class="dv">100</span></span>
+<span id="cb26-3"><a href="#cb26-3"></a>theta<span class="ot">&lt;-</span><span class="fu">rbeta</span>(Nrep,<span class="fl">31.2</span>,<span class="fl">31.8</span>)</span>
+<span id="cb26-4"><a href="#cb26-4"></a>y<span class="ot">&lt;-</span><span class="dv">0</span></span>
+<span id="cb26-5"><a href="#cb26-5"></a></span>
+<span id="cb26-6"><a href="#cb26-6"></a>results<span class="ot">&lt;-</span><span class="fu">matrix</span>(<span class="dv">0</span>, <span class="at">nrow=</span><span class="fu">length</span>(s), <span class="at">ncol=</span><span class="dv">1</span>)</span>
+<span id="cb26-7"><a href="#cb26-7"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(s)){</span>
+<span id="cb26-8"><a href="#cb26-8"></a>x<span class="ot">&lt;-</span><span class="fu">rbinom</span>(Nrep,s[i], theta) </span>
+<span id="cb26-9"><a href="#cb26-9"></a>accept<span class="ot">&lt;-</span><span class="fu">ifelse</span>(x<span class="sc">&gt;</span><span class="dv">25</span>, y<span class="sc">+</span><span class="dv">1</span>, y<span class="sc">+</span><span class="dv">0</span>)</span>
+<span id="cb26-10"><a href="#cb26-10"></a>prob[i]<span class="ot">&lt;-</span><span class="fu">sum</span>(accept)<span class="sc">/</span>Nrep</span>
+<span id="cb26-11"><a href="#cb26-11"></a>results[i,]<span class="ot">&lt;-</span>prob[i]</span>
+<span id="cb26-12"><a href="#cb26-12"></a>}</span>
+<span id="cb26-13"><a href="#cb26-13"></a></span>
+<span id="cb26-14"><a href="#cb26-14"></a>tab<span class="ot">&lt;-</span><span class="fu">cbind</span>(s, results)</span>
+<span id="cb26-15"><a href="#cb26-15"></a></span>
+<span id="cb26-16"><a href="#cb26-16"></a>tab</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Now, we would have to increase the sample size to 61 to achieve the same power.</p>
+</section>
+</section>
+<section id="notes-on-power-and-sample-size-from-gelman-and-hill" class="level1">
+<h1>Notes on Power and Sample Size from Gelman and Hill</h1>
+<p>Andrew Gelman and Jennifer Hill have a somewhat different perspective on sample size and statistical power. Their approach proceeds from specifying goals for standard errors or power. I find it quite informative and include the notes here to give you an additional outlook and interpretation of statistical power and sample size calculations.</p>
+<section id="single-binomial-sample-based-on-a-standard-error" class="level2">
+<h2 class="anchored" data-anchor-id="single-binomial-sample-based-on-a-standard-error">Single Binomial Sample Based on a Standard Error</h2>
+<p>You can calculate how many observations you need for a single binomial outcome we begin (again) with the formula for the standard error for a proportion:</p>
+<p><span class="math display">\[
+s.e.=\sqrt{pq/n}
+\]</span></p>
+<p>For example, say you suspect a prevalence of 60% in some population, and you want to measure it with an accuracy of 5%. You substitute and rearrange the values as follows:</p>
+<p><span class="math display">\[
+    .05=\sqrt{(.6)(.4)/n} \\
+    .05=\sqrt{.24/n} \\
+    .05=.49/\sqrt{n} \\
+    .49=.05/\sqrt{n} \\
+    .49/.05=9.8=\sqrt{n} \\
+    n \ge 96
+\]</span></p>
+<p>Which gives us a quick R function for a single-sample binomial outcome:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb27"><pre class="sourceCode numberSource r numberLines code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1"></a>nBinSS<span class="ot">&lt;-</span><span class="cf">function</span>(p,se){</span>
+<span id="cb27-2"><a href="#cb27-2"></a>    n<span class="ot">&lt;-</span>p<span class="sc">*</span>(<span class="dv">1</span><span class="sc">-</span>p)<span class="sc">/</span>(se)<span class="sc">^</span><span class="dv">2</span></span>
+<span id="cb27-3"><a href="#cb27-3"></a>    n   </span>
+<span id="cb27-4"><a href="#cb27-4"></a>    } </span>
+<span id="cb27-5"><a href="#cb27-5"></a><span class="fu">nBinSS</span>(.<span class="dv">6</span>, .<span class="dv">05</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>To obtain the most conservative sample size, you set the probability to 50%, or <span class="math inline">\(p=.5\)</span>, so that</p>
+<p><span class="math display">\[
+    .05=\sqrt{(.5)(.5)/n} \\
+    .05=\sqrt{.25/n} \\
+    .05=.5/\sqrt{n} \\
+    .5=.05/\sqrt{n} \\
+    .5/.05=10=\sqrt{n} \\
+    n \ge 100
+\]</span></p>
+</section>
+<section id="single-binomial-sample-based-on-power" class="level2">
+<h2 class="anchored" data-anchor-id="single-binomial-sample-based-on-power">Single Binomial Sample Based on Power</h2>
+<p>More often in epidemiology, we come at sample size calculations from the perspective of statistical power. Power is the probability of statistical significance. It is the chance that 95% of your CI’s (where <span class="math inline">\(CI=\hat{p} \pm 1.96 \cdot s.e.\)</span>) will cover or be greater than some sample <em>estimate</em> given your <em>assumptions</em> about the underlying population value. Note that we are now dealing with both an <em>assumption</em> about the (supposedly) true underlying population value <span class="math inline">\(p\)</span>, and a sample <em>estimate</em> <span class="math inline">\(\hat{p}\)</span>. The estimate (<span class="math inline">\(\hat{p}\)</span>) is found on the left side of the <span class="math inline">\(\pm\)</span> sign in the CI formula. The assumption (<span class="math inline">\(p\)</span>) is found in the s.e. calculation on the right side of the <span class="math inline">\(\pm\)</span> sign in the CI formula.</p>
+<p>Say you believe the underlying population proportion of some outcome (<span class="math inline">\(p\)</span>) is 0.6, and you want to demonstrate that outcome (<span class="math inline">\(\hat{p}\)</span>) in at least 0.5 in your sample. We will, again, use the conservative s.e. estimate of <span class="math inline">\(\sqrt{(.5)(.5)/n}\)</span>, and we calculate <span class="math inline">\(\hat{p} \pm 1.96 \cdot s.e.\)</span>:</p>
+<p><span class="math display">\[
+.5 \pm 1.96 \cdot \sqrt{(.5)(.5)/n} \\
+.5 \pm 1.96 \cdot 0.5/ \sqrt{n}
+\]</span></p>
+<p>We want to solve for <span class="math inline">\(n\)</span>, so that <span class="math inline">\(1.96 \cdot 0.5/ \sqrt{n}\)</span> is <span class="math inline">\(\ge\)</span> a <span class="math inline">\(\hat{p}\)</span> of .5$.</p>
+<p>To specify the usual power or probability that 80% of the CI’s will be above the comparison point of 0.5, we need to use the standard normal 80% value of 0.84 to scale the underlying assumption value for <span class="math inline">\(p\)</span> of 0.6 and make it equal to the comparison or estimate point of 0.5 which is already scaled by 1.96:</p>
+<p><span class="math display">\[
+0.6 - 0.84 \cdot s.e. = 0.5 + 1.96 \cdot s.e.
+\]</span></p>
+<p>so that</p>
+<p><span class="math display">\[
+.6 - .84(0.5/ \sqrt{n})  = .5 + 1.96 \cdot 0.5/ \sqrt{n} \\
+\]</span></p>
+<p>which reduces to</p>
+<p><span class="math display">\[
+    (1.96 +8.4)(0.5/ \sqrt{n})  = .1\\
+     (2.8)(0.5/ \sqrt{n})  = .1\\
+    (0.5/ \sqrt{n})  = .1/(2.8)=.036\\
+    \sqrt{n}  = 0.5/.036\\
+    n  = 196\\
+\]</span></p>
+<p>We see the required sample size for 80% power is considerably higher than the previous estimate.</p>
+<section id="the-rule-of-2.8" class="level3">
+<h3 class="anchored" data-anchor-id="the-rule-of-2.8">The Rule Of 2.8</h3>
+<p>As a rule of thumb, for 80% power and a 95% level of statistical significance, the true, underlying or null value is 2.8 s.e.’s away from the comparison value. This is because 2.8 is 1.96 from the 95% limit to which you add 0.84 to reach the 80th percentile of the normal distribution.</p>
+<p><span class="math display">\[
+    \Delta = 2.8 s.e. \\
+    \Delta = 2.8 \cdot \sqrt{pq/n} \\
+     n = (2.8 \cdot \sqrt{pq}/ \Delta)^2
+\]</span></p>
+<p>Where <span class="math inline">\(\Delta\)</span> is the difference between the population value and the comparison point.</p>
+<p>Here is a quick function for this calculation demonstrated with the values from the example above.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb28"><pre class="sourceCode numberSource r numberLines code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1"></a>pwr2<span class="fl">.8</span><span class="ot">&lt;-</span><span class="cf">function</span>(p,q,d){</span>
+<span id="cb28-2"><a href="#cb28-2"></a>    <span class="fu">print</span>((<span class="fl">2.8</span> <span class="sc">*</span> ((<span class="fu">sqrt</span>(p<span class="sc">*</span>q)<span class="sc">/</span>d)))<span class="sc">^</span><span class="dv">2</span>)</span>
+<span id="cb28-3"><a href="#cb28-3"></a>}</span>
+<span id="cb28-4"><a href="#cb28-4"></a></span>
+<span id="cb28-5"><a href="#cb28-5"></a><span class="fu">pwr2.8</span>(.<span class="dv">5</span>,.<span class="dv">5</span>,.<span class="dv">1</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="the-rule-of-2" class="level3">
+<h3 class="anchored" data-anchor-id="the-rule-of-2">The Rule Of 2</h3>
+<p>We can incorporate the most conservative estimate for a standard error (<span class="math inline">\(sqrt{(.5)(.5)/n}\)</span>) into the calculation and simplify it even further:</p>
+<p><span class="math display">\[
+n = (2.8 \cdot .5/ \Delta)^2 \\
+n = (1.4 \Delta)^2 \\
+n= 1.4^2 / \Delta^2 \\
+n= 1.96 / \Delta^2 \\
+n= 2 / \Delta^2 \\
+\]</span></p>
+<pre><code>
+
+```{.r .numberLines}
+pwr2&lt;-function(d){
+    print(2/(d^2))
+}
+
+pwr2(.1)</code></pre>
+<p>We will, of course, not know what the underlying or true population value is, so these calculations (and all power calculations) are only as good as our assumptions. You should look at various scenarios and see how sensitive your calculations are to your assumptions. For example, say the true underlying value in our example were actually 0.06:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb30"><pre class="sourceCode numberSource r numberLines code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1"></a><span class="fu">pwr2.8</span>(.<span class="dv">5</span>,.<span class="dv">5</span>,.<span class="dv">06</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>This results in a required sample size of 544, clearly a considerable difference.</p>
+</section>
+</section>
+<section id="binomial-comparisons" class="level2">
+<h2 class="anchored" data-anchor-id="binomial-comparisons">Binomial Comparisons</h2>
+<p>We can extend the discussion above to the difference between two proportions. Again, we begin with the standard error. The s.e. for the difference between 2 proportions is:</p>
+<p><span class="math display">\[
+\sqrt{p_1 q_1 / n_1 + p_2 q_2 / n_2}
+\]</span></p>
+<p>substituting for a conservative s.e.</p>
+<p><span class="math display">\[
+s.e._{diff}= \sqrt{.5 / n_1 + .5 / n_2} = \\
+1 / \sqrt{n_1 + n_2}
+\]</span></p>
+<p>assuming <span class="math inline">\(n_1=n_2\)</span>, the standard error for the difference between two proportions is</p>
+<p><span class="math display">\[
+s.e._{diff}= 1/ \sqrt{n}
+\]</span></p>
+<p>so a conservative sample size (equally divided) for the difference between 2 proportions is</p>
+<p><span class="math display">\[
+     n = (2.8 / \Delta)^2
+\]</span></p>
+<p>For example, say we believe some survey outcome is 10% more popular among conservatives than among liberals. Assuming equal sample sizes, how many folks to we have to survey for 80% power? The s.e. of <span class="math inline">\(\hat{p_1} - \hat{p_2}\)</span> is <span class="math inline">\(1/ \sqrt{n}\)</span>. So, for 10% to be 2.8 s.e.’s from zero, <span class="math inline">\(n \ge (2.8/0.10)^2 = 784\)</span> or 392 persons in each group.</p>
+<p>The result from the function based on Lehr’s equation is</p>
+<p>For unequally divided sample (0.x in one group, 0.y in the other), we can calculate</p>
+<p><span class="math display">\[
+     n = (2.8 \cdot (1+ \frac{0.x}{0.y}) / \Delta)^2
+\]</span></p>
+<p>divided between the 2 groups.</p>
+</section>
+<section id="continuous-outcomes" class="level2">
+<h2 class="anchored" data-anchor-id="continuous-outcomes">Continuous Outcomes</h2>
+<p>The calculations for continuous outcomes proceed much as do the binomial calculations. As in the binomial case, we proceed from a standard error calculation. But, to calculate a s.e. for a continuous outcome, we have to specify the population standard deviation (<span class="math inline">\(\sigma\)</span>).</p>
+<p>So, if we are trying to estimate a <em>single mean</em> (<span class="math inline">\(\bar{y}\)</span>) from a sample (<span class="math inline">\(n\)</span>) to achieve a certain s.e., the calculation is:</p>
+<p><span class="math display">\[
+se = \sigma / \sqrt{n} \\
+n = (\sigma / se)^2
+\]</span></p>
+<p>If we are, instead, basing our calculation on 80% power to <em>distinguish</em> one value (<span class="math inline">\(\theta\)</span>) from another value (<span class="math inline">\(\theta_0\)</span>), the calculation is:</p>
+<p><span class="math display">\[
+n = (2.8 * \sigma / (\theta -\theta_0))^2
+\]</span></p>
+<p>If we are looking to <em>compare two means</em>, then,</p>
+<p><span class="math display">\[
+se_{\bar{y_1}-\bar{y_2}} = \sqrt{\sigma^2/n_1 + \sigma^2/n_2} \\
+n = 2(\sigma^2_1 + \sigma^2_2) / (s.e)^2
+\]</span></p>
+<p>assuming <span class="math inline">\(\sigma^2_1 = \sigma^2_2\)</span>, then</p>
+<p><span class="math display">\[
+n = (2 \sigma / s.e.)^2
+\]</span></p>
+<p>and, for 80% power this simplifies to</p>
+<p><span class="math display">\[
+n = (5.6 \sigma / s.e.)^2
+\]</span></p>
+<p>where 5.6 arises from doubling 2.8.</p>
+</section>
+<section id="example-zinc-supplementation-and-hiv-childrens-growth" class="level2">
+<h2 class="anchored" data-anchor-id="example-zinc-supplementation-and-hiv-childrens-growth">Example: Zinc Supplementation and Hiv+ Children’s Growth</h2>
+<p>Gelman and Hill present an example of sample size calculations for a study investigating the effectiveness of dietary zinc supplementats to improve HIV + children’s growth. <a href="#fn11" class="footnote-ref" id="fnref11" role="doc-noteref"><sup>11</sup></a></p>
+<section id="simple-comparison-of-means" class="level3">
+<h3 class="anchored" data-anchor-id="simple-comparison-of-means">Simple Comparison of Means</h3>
+<p>If we believe, based on the literature and evidence, that zinc supplements can increase growth by about 0.5 <span class="math inline">\(\sigma\)</span> ’s, then the estimated effect size is <span class="math inline">\(\Delta = 0.5 \sigma\)</span>, and</p>
+<p><span class="math display">\[
+n = (5.6 \sigma / \Delta)^2 \\
+= (5.6 \sigma /  0.5 \sigma)^2 \\
+= (5.6/.5)^2  \\
+= 126
+\]</span></p>
+<p>or a sample size of 63 in each group. <a href="#fn12" class="footnote-ref" id="fnref12" role="doc-noteref"><sup>12</sup></a></p>
+</section>
+<section id="estimating-standard-deviations-from-previous-studies" class="level3">
+<h3 class="anchored" data-anchor-id="estimating-standard-deviations-from-previous-studies">Estimating Standard Deviations from Previous Studies</h3>
+<p>Our estimate of the effect size (<span class="math inline">\(\Delta\)</span>) and standard deviation (<span class="math inline">\(\sigma\)</span>) will have an important impact on our sample size calculations. Gelman and Hill present a nice approach to obtaining estimated effect sizes and standard deviations from the published literature. The example, again, is based on the effect of dietary zinc supplements in South African children. This time the outcome is the effect of zinc on diarrhea. Four previous studies report results on this effect.</p>
+<p>The first study, by Rosado, et al, was set in Mexico in 1997:</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Treatment</th>
+<th>Sample Size</th>
+<th>Avg # episodes/yr (s.e)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>placebo</td>
+<td>56</td>
+<td>1.1 (0.2)</td>
+</tr>
+<tr class="even">
+<td>iron</td>
+<td>54</td>
+<td>1.4 (0.2)</td>
+</tr>
+<tr class="odd">
+<td>zinc</td>
+<td>54</td>
+<td>0.7 (0.1)</td>
+</tr>
+<tr class="even">
+<td>zinc+iron</td>
+<td>55</td>
+<td>0.8 (0.1)</td>
+</tr>
+</tbody>
+</table>
+<p>The effect estimate (<span class="math inline">\(\Delta\)</span>) for this study is calculated from this table as the weighted difference of the two arms of the study:</p>
+<p><span class="math display">\[
+\Delta = \\
+\frac{1}{2}(1.1 + 1.4) - \frac{1}{2}(0.7 + 0.8)  \\
+= 0.5
+\]</span></p>
+<p>Or a difference of 0.5 episodes of diarrhea per year.</p>
+<p>The standard error for <span class="math inline">\(\Delta\)</span> is also based on the table and calculated as:</p>
+<p><span class="math display">\[
+se_{\bar{y_1}-\bar{y_2}} = \sqrt{\sigma^2/n_1 + \sigma^2/n_2} \\
+= \sqrt{s.e^2_1 + s.e^2_2} \\
+= \sqrt{\frac{1}{4}(0.2^2 + 0.2^2) + \frac{1}{4}(0.1^2 + 0.1^2)} \\
+= 0.15
+\]</span></p>
+<p>Or, that zinc reduced diarrhea in this population an average of about 0.3 to 0.7 episodes per year.</p>
+<p>We next use the sample sizes from the table and our calculated s.e. to deduce <span class="math inline">\(\sigma\)</span>’s for each group using the formula <span class="math inline">\(s.e. = \sigma / \sqrt{n}\)</span></p>
+<p><span class="math display">\[
+\sigma_{placebo} = 0.2 * \sqrt{56} = 1.5 \\
+\sigma_{iron} = 0.2 * \sqrt{54} = 1.5 \\
+\sigma_{zinc} = 0.1 * \sqrt{54} = 0.7 \\
+\sigma_{iron+zinc} = 0.1 * \sqrt{55} = 0.7 \\
+\]</span></p>
+<p>So, assuming our calculated effect size of <span class="math inline">\(\Delta = 0.5\)</span> and standard deviations of 1.5 and 0.7 for the two groups, the the estimated absolute difference of a future study with n/2 children in each group would have a standard error of <span class="math inline">\(\sqrt{1.5^2/(n/2) + 0.7^2/(n/2)} = 2.2/ \sqrt{n}\)</span>. For the effect size to be at least 2.8 sd’s away from zero, n would have to be <span class="math inline">\(n=(2.8 * 2.2/0.5)^2=152\)</span> persons in each of the two groups.</p>
+<p>Another study we could use was conducted by Lira et al, in Brazil in 1997, only this time the results are presented on a ratio scale with errors presented results in terms of confidence intervals:</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Treatment</th>
+<th>Sample Size</th>
+<th>% Days Diarrhea</th>
+<th style="text-align: left;">Prevalence Ratio (95% CI)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>placebo</td>
+<td>66</td>
+<td>5%</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="even">
+<td>zinc</td>
+<td>71</td>
+<td>3%</td>
+<td style="text-align: left;">0.68 (0.49, 0.95)</td>
+</tr>
+</tbody>
+</table>
+<p>We convert the CI’s for the prevalence ratios (0.49, 0.95) to the log scale (-0.71, -.05) and divide by 4 to get an estimated standard error of 0.16 on the log scale.</p>
+<p><span class="math display">\[
+se_{Tx} = ((-.05)-(-.71))/4 = .16
+\]</span></p>
+<p>The reported point estimate for the effect is 0.68, or about a 32% decrease in days with diarrhea which is in the same direction as and consistent with the effect estimate from the Rosado study. Exponentiating the s.e. of 0.16 back to the natural scale (1.2) our calculation for the sample size based on this study, then, is</p>
+<p><span class="math display">\[
+(2.8*(1.2/.32))^22
+\]</span></p>
+<p>or 110 children in each arm of the study.</p>
+<p>To illustrate the impact of the effect estimate on these calculations, we can look at another study, this time by conducted by Ruel et al, in Guatemala in 1997. It presents results in terms of absolute differences in the number of outcomes, and their associated confidence intervals. Note first, though, that the outcomes are much higher than those in the Rosado study. Eight episodes per 100 days here would translate to about 30 episodes per year, compared to 1 episode per year in the Rosado study. Clearly a different group of children and setting.</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Treatment</th>
+<th>Sample Size</th>
+<th>Avg. # episodes/100 d (95% CI)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>placebo</td>
+<td>44</td>
+<td>8.1 (5.8, 10.2)</td>
+</tr>
+<tr class="even">
+<td>zinc</td>
+<td>45</td>
+<td>6.3 (4.2, 8.9)</td>
+</tr>
+</tbody>
+</table>
+<p>We divide the CI’s by 4 to deduce the s.e.’s:</p>
+<p><span class="math display">\[
+se_{placebo} = (10.2-5.8)/4 = 1.1
+se_{zinc} = (8.9-4.2)/4 = 1.2
+\]</span></p>
+<p>The treatment effect size is also considerably larger with <span class="math inline">\(\Delta = 8.1-6.3=1.2\)</span>. The standard error for <span class="math inline">\(\Delta\)</span> is</p>
+<p><span class="math display">\[
+\Delta{se} = \sqrt{1/2 * 1.1^2 + 1/2 * 1.2^2} = 1.6
+\]</span></p>
+<p>Using the same approach as before, now with <span class="math inline">\(\Delta = 1.2\)</span> and standard deviations of 1.1 and 1.2 for the two groups, the estimated absolute difference of a future study with n/2 children in each group would have a standard error of <span class="math inline">\(\sqrt{1.1^2/(n/2) + 1.2^2/(n/2)} = 2.3/ \sqrt{n}\)</span>. For the effect size to be at least 2.8 sd’s away from zero, n would have to be <span class="math inline">\(n=(2.8 * 2.3/1.2)^2=29\)</span> persons in each of the two groups.</p>
+<p>The take home message here is that sample size calculations are speculative, not prescriptive, and should be used to help guide rather than lock in analyses. So from these analyses, you could conclude that a total sample size of 200 to 300 could reasonably be expected to demonstrate a 30% to 50% decline in the frequency of diarrhea.</p>
+</section>
+</section>
+<section id="sample-size-calculations-in-regressions-with-control-variables" class="level2">
+<h2 class="anchored" data-anchor-id="sample-size-calculations-in-regressions-with-control-variables">Sample Size Calculations in Regressions With Control Variables</h2>
+<p>In the setting of regression models the overall standard deviation, <span class="math inline">\(\sigma\)</span>, is replaced by the residual standard deviation, <span class="math inline">\(\sigma{res}\)</span>, which incorporates the additive predictive power of control variables. Adding control variables increases the predictive power of the model, which decreases <span class="math inline">\(\sigma_{res}\)</span> and reduces the target sample size.</p>
+<p>If you’re interested in a sample size calculation for a specific regression coefficient, you can use the rule that standard errors are proportional to <span class="math inline">\(1/\sqrt{n}\)</span> and apply it to the results of a previous or current analysis. For example regression analysis of earnings and height returned a regression coefficient for the effect of gender of 0.7 with a standard error of 1.9 and a non-statistically significant 95% CI of (-3.1, 4.5). How large a sample size would be needed to demonstrate statistical significance? For a point estimate of 0.7 to be statistically significant, it would have to have a minimum standard error of 0.35, which would return a lower bound for a 95% CI of .7-(2*.35)=0. Based on the <span class="math inline">\(1/\sqrt{n}\)</span> proportionality rule, we would have to increase the original sample size by a factor of <span class="math inline">\((1.9/0.35)^2=29\)</span>. The original study surveyed 1,192 people, so we would have to survey <span class="math inline">\(29*1192=35000\)</span> people to demonstrate the statistical significance of this gender interaction effect.</p>
+<p>This result, though, is actually only for 50% power. As noted in the discussion above, to calculate 80% power, we need to use the rule of 2.8. Rather than a standard error or 0.35, we need a standard error of <span class="math inline">\(.7/2.8=0.25\)</span>, so that the actual increase in sample size would be <span class="math inline">\((1.9/0.25)^2 * 1192= 70,000\)</span>. Even then, this calculation is provisional, because we are assuming that the beta coefficient is actually 0.7. Remember, the original analysis informed us this coefficient could be anywhere between -3.1 and 4.5.</p>
+
+
+</section>
+</section>
+
+
+<div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
+
+<ol>
+<li id="fn1"><p>Assuming the usual 80% power and 5% type I error, which we’ll discuss in a moment…<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p><span class="math inline">\(\sqrt{\frac{\sigma^2}{n_1}+\frac{\sigma^2}{n_2}}\)</span> = <span class="math inline">\(\sigma \sqrt{\frac{1}{n_1}+\frac{1}{n_2}}\)</span> = <span class="math inline">\(\sigma \sqrt{\frac{2}{n}}\)</span><a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn3"><p>Alternatively, solving for <span class="math inline">\(\beta\)</span> allows us to calculate power.<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn4"><p>As a reminder, the coefficient of variation for data is the standard deviation as a proportion of the mean (<span class="math inline">\(c.v. = \sigma / \mu\)</span>)<a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn5"><p>van Belle refers to the work of Lachin (2000) and Selvin (1996)<a href="#fnref5" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn6"><p>It is also now no longer online. I believe because Dr.&nbsp;van Belle is no longer at Children’s Mercy in Kansas City It is best, though to use this rule cautiously.<a href="#fnref6" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn7"><p>You will also find this rule of thumb in Rothman, Greenland and Lash’s “Modern Epidemiology”<a href="#fnref7" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn8"><p>(Much of this initial discussion is based on a course by <a href="http://www.statslab.cam.ac.uk/Dept/People/Spiegelhalter/davids.html">David Spiegelhalter</a> and <a href="http://www1.imperial.ac.uk/medicine/people/n.best/">Nicky Best</a> held in Cambridge a few years back.)<a href="#fnref8" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn9"><p>Also from course notes by David Spiegelhalter…<a href="#fnref9" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn10"><p>(In R loops are considered computationally less efficient than vectorized operations like apply(), but in this case I think the loop is clearer and will run quickly on all but the most moribund machines.)<a href="#fnref10" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn11"><p>Based on the observation that zinc and other micronutrients reduce diarrhea and gastrointestinal disease which adversely effect the immune system and are associated with more severe HIV disease.<a href="#fnref11" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn12"><p>The Rule of 16 result for this problem would be <span class="math inline">\(16/.5^2=64\)</span> in each group<a href="#fnref12" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section></div></main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

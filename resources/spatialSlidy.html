@@ -1,0 +1,507 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+ "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="Content-Style-Type" content="text/css" />
+  <meta name="generator" content="pandoc" />
+  <title></title>
+  <style type="text/css">
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; }
+code > span.dt { color: #902000; }
+code > span.dv { color: #40a070; }
+code > span.bn { color: #40a070; }
+code > span.fl { color: #40a070; }
+code > span.ch { color: #4070a0; }
+code > span.st { color: #4070a0; }
+code > span.co { color: #60a0b0; font-style: italic; }
+code > span.ot { color: #007020; }
+code > span.al { color: #ff0000; font-weight: bold; }
+code > span.fu { color: #06287e; }
+code > span.er { color: #ff0000; font-weight: bold; }
+  </style>
+  <link rel="stylesheet" type="text/css" media="screen, projection, print"
+    href="http://www.w3.org/Talks/Tools/Slidy2/styles/slidy.css" />
+  <script src="http://www.w3.org/Talks/Tools/Slidy2/scripts/slidy.js.gz"
+    charset="utf-8" type="text/javascript"></script>
+</head>
+<body>
+<div class="section slide level1" id="a-brief-introduction-to-spatial-analysis-in-r">
+<h1>A Brief Introduction to Spatial Analysis in R</h1>
+</div>
+<div class="section slide level1" id="see-these-more-thorough-overviews">
+<h1>See these more thorough overviews:</h1>
+<ul class="incremental">
+<li><a href="http://www.asdar-book.org/">Roger Bivand</a> - very highly recommended, and the basis for much of my material</li>
+<li><a href="http://www.columbia.edu/~cjd11/charles_dimaggio/DIRE/resources/spatialEpiBook.pdf">notes and tutorial</a></li>
+<li><a href="http://academiccommons.columbia.edu/catalog/ac%3A127786">chapter on spatial mapping of overdose deaths</a></li>
+<li><a href="http://www.columbia.edu/~cjd11/charles_dimaggio/DIRE/resources/R/practicalsBookNoAns.pdf">course exercise</a></li>
+</ul>
+</div>
+<div class="section slide level1" id="lets-wade-right-in">
+<h1>Let’s wade right in…</h1>
+</div>
+<div class="section slide level1" id="first-steps">
+<h1>first steps</h1>
+<ul class="incremental">
+<li>install and load <em>sp</em> and <em>maps</em></li>
+<li>load the <em>meuse</em> data set</li>
+<li>examine the structure of <em>meuse</em>
+<ul class="incremental">
+<li>dataframe, 155 observations, 14 variables</li>
+<li><em>x</em> and <em>y</em> are map coordinates</li>
+</ul></li>
+</ul>
+</div>
+<div class="section slide level1" id="plotting-the-meuse-data">
+<h1>plotting the meuse data</h1>
+<table class="sourceCode r numberLines"><tr class="sourceCode"><td class="lineNumbers"><pre>1
+2
+3
+</pre></td><td class="sourceCode"><pre><code class="sourceCode r"><span class="kw">plot</span>(meuse)
+<span class="kw">plot</span>(meuse$x, meuse$y)
+<span class="kw">plot</span>(meuse$y, meuse$x)</code></pre></td></tr></table>
+</div>
+<div class="section slide level1" id="spatialpointsdataframe-object">
+<h1>SpatialPointsDataFrame object</h1>
+<ul class="incremental">
+<li>spatially-referenced points with attribute data</li>
+<li>sp:coordinates() will convert R dataframe to SpatialPointsDataFrame</li>
+</ul>
+<table class="sourceCode r numberLines"><tr class="sourceCode"><td class="lineNumbers"><pre>1
+2
+3
+</pre></td><td class="sourceCode"><pre><code class="sourceCode r"><span class="kw">coordinates</span>(meuse) &lt;- ~x+y
+<span class="kw">str</span>(meuse)
+<span class="kw">plot</span>(meuse)</code></pre></td></tr></table>
+</div>
+<div class="section slide level1" id="categorize-and-plot-flood-frequencies">
+<h1>categorize and plot flood frequencies</h1>
+<table class="sourceCode r numberLines"><tr class="sourceCode"><td class="lineNumbers"><pre>1
+2
+3
+4
+5
+</pre></td><td class="sourceCode"><pre><code class="sourceCode r">meuse$ffreq &lt;- <span class="kw">as.numeric</span>(meuse$ffreq)
+<span class="kw">plot</span>(meuse, <span class="dt">col =</span> meuse$ffreq, <span class="dt">pch =</span> <span class="dv">19</span>)
+labs &lt;- <span class="kw">c</span>(<span class="st">&quot;annual&quot;</span>, <span class="st">&quot;every 2-5 years&quot;</span>, <span class="st">&quot;&gt; 5 years&quot;</span>)
+cols &lt;- <span class="dv">1</span>:<span class="kw">nlevels</span>(meuse$ffreq)
+<span class="kw">legend</span>(<span class="st">&quot;topleft&quot;</span>, <span class="dt">legend =</span> labs, <span class="dt">col =</span> cols, <span class="dt">pch =</span> <span class="dv">19</span>, <span class="dt">bty =</span> <span class="st">&quot;n&quot;</span>)</code></pre></td></tr></table>
+</div>
+<div class="section slide level1" id="working-with-spatial-objects">
+<h1>working with spatial objects</h1>
+<ul class="incremental">
+<li>Spatial objects are <em>S4</em> objects</li>
+<li>note in str() output, uses the <em>@</em> convention</li>
+<li>e.g. names(meuse@data)</li>
+<li>some special spatial tools, e.g select.spatial() to identify points</li>
+<li>select.spatial(meuse)
+<ul class="incremental">
+<li>click three points to surround (don’t have to completely surround)</li>
+<li>R click to return point data</li>
+</ul></li>
+<li>generic plot() return spatially-referenced results, e.g plot()</li>
+<li>…but special spatial plots are available</li>
+</ul>
+<table class="sourceCode r numberLines"><tr class="sourceCode"><td class="lineNumbers"><pre>1
+2
+</pre></td><td class="sourceCode"><pre><code class="sourceCode r"><span class="kw">spplot</span>(meuse, <span class="st">&quot;zinc&quot;</span>)
+<span class="kw">bubble</span>(meuse, <span class="st">&quot;lead&quot;</span>)</code></pre></td></tr></table>
+</div>
+<div class="section slide level1" id="coordinate-reference-systems">
+<h1>coordinate reference systems</h1>
+<ul class="incremental">
+<li>definitions for the location of a point on the earth</li>
+<li><em>reference ellipsoid</em> - defines shape of the earth</li>
+<li><em>datum</em> - reference point(s) on earth’s surface</li>
+<li>unit of measurment, e.g. meters, miles</li>
+<li>projection - how spherical earth projected onto 2 dimensions
+<ul class="incremental">
+<li>equirectangular</li>
+<li>cylindrical or Mercator’s</li>
+<li>conical</li>
+</ul></li>
+<li>e.g. meuse coordinates referenced to Netherlands RDH topographical convention</li>
+<li>sp:proj4string() uses <em>rgdal</em> library to specify a CRS</li>
+<li>sp:spTransform() will change from one CRS to another
+<ul class="incremental">
+<li>e.g.</li>
+</ul></li>
+</ul>
+<table class="sourceCode r numberLines"><tr class="sourceCode"><td class="lineNumbers"><pre>1
+</pre></td><td class="sourceCode"><pre><code class="sourceCode r"><span class="kw">proj4string</span>(meuse) &lt;- <span class="kw">CRS</span>(<span class="st">&quot;+init=epsg:28992&quot;</span>)</code></pre></td></tr></table>
+</div>
+<div class="section slide level1" id="why-map">
+<h1>Why map?</h1>
+<ul class="incremental">
+<li>Just because you can doesn’t mean you should</li>
+<li>text for a few numbers</li>
+<li>table for many numbers</li>
+<li>plots for relationships</li>
+<li>maps for patterns in space and time…</li>
+</ul>
+</div>
+<div class="section slide level1" id="the-greatest-map">
+<h1>The greatest map?</h1>
+<div class="figure">
+<img src="http://www.columbia.edu/~cjd11/charles_dimaggio/DIRE/resources/Spatial/minardmap.jpg" alt="Minard’s Map of Napolean’s Russian Campaign of 1812" /><p class="caption">Minard’s Map of Napolean’s Russian Campaign of 1812</p>
+</div>
+<ul class="incremental">
+<li>Edward Tufte might say yes</li>
+<li>enormous amount of data laid out in organized, understandable fashion</li>
+<li>multi-media presentations of lines, numbers, pictures, narrative</li>
+<li>no proprietary platform, easily accessible by multiple users</li>
+<li>entirely content, e.g. no drop shadows, bullet indents etc…</li>
+<li>genuinely interactive (people instinctively look for familiar areas, etc…)</li>
+</ul>
+</div>
+<div class="section slide level1" id="minards-map-illustrates-6-principals-6-cs-of-analytic-design-and-mapping-from-tufte">
+<h1>Minard’s Map Illustrates 6 principals (6 C’s) of analytic design and mapping (from Tufte)</h1>
+<ul class="incremental">
+<li><ol class="incremental" style="list-style-type: decimal">
+<li>comparisons, contrasts and differences</li>
+</ol>
+<ul class="incremental">
+<li>pre-post troop levels illustrated at beginning and end (started with 400K, ended with 10K)</li>
+</ul></li>
+<li><ol class="incremental" start="2" style="list-style-type: decimal">
+<li>causality and connections</li>
+</ol>
+<ul class="incremental">
+<li>path of retreating army tied to a temperature scale at bottom</li>
+</ul></li>
+<li><ol class="incremental" start="3" style="list-style-type: decimal">
+<li>complexity and multivariate data</li>
+</ol>
+<ul class="incremental">
+<li>six dimensions of data on the map: size of the army, location in lat and long, direction, temperature, places</li>
+</ul></li>
+<li><ol class="incremental" start="4" style="list-style-type: decimal">
+<li>cleverness, and innovative methods (use ‘whatever it takes’ to explain something)</li>
+</ol>
+<ul class="incremental">
+<li>map is annotated all over with numbers and words</li>
+</ul></li>
+<li><ol class="incremental" start="5" style="list-style-type: decimal">
+<li>credibility, by documenting the source of your data</li>
+</ol>
+<ul class="incremental">
+<li>two paragraphs at top are about sourcing and detail</li>
+</ul></li>
+<li><ol class="incremental" start="6" style="list-style-type: decimal">
+<li>content is king, tell a compelling story, ultimately stand or fall on the quality, integrity and relevance of your content</li>
+</ol>
+<ul class="incremental">
+<li>Minard’s map is essentially an anti-war poster telling a compelling story</li>
+</ul></li>
+</ul>
+</div>
+<div class="section slide level1" id="spatial-analysis">
+<h1>Spatial Analysis</h1>
+<ul class="incremental">
+<li>See online presentation by <a href="http://www.revolutionanalytics.com/news-events/free-webinars/2012/spatial-analysis-in-r/">Dave Unwin</a></li>
+<li>location as an explanatory variable
+<ul class="incremental">
+<li>patterns in space, e.g. clustering</li>
+<li>spatially varying risk</li>
+<li>geographic or local covariates</li>
+</ul></li>
+<li>spatial data have additional structure
+<ul class="incremental">
+<li>morphology - point, line, areal</li>
+<li>geography - lat/long, CRS</li>
+<li>attributes - elevation, population, measurements</li>
+</ul></li>
+</ul>
+</div>
+<div class="section slide level1" id="r-and-spatial-analysis">
+<h1>R and Spatial Analysis</h1>
+<ul class="incremental">
+<li>familiar, unifying analytic environment</li>
+<li>many specialized packages and functions available
+<ul class="incremental">
+<li>ability to translate most any spatial data</li>
+</ul></li>
+<li>rapidly incorporate advances</li>
+<li>growing, almost invariably supportive community</li>
+</ul>
+</div>
+<div class="section slide level1" id="r-spatial-data">
+<h1>R spatial data</h1>
+<ul class="incremental">
+<li>spatial data frame - fundamental spatial R object
+<ul class="incremental">
+<li>translates Cartesian coordinates to geography</li>
+</ul></li>
+<li>3 important attributes
+<ul class="incremental">
+<li>x/y become lat/long</li>
+<li>Coordinate Reference System (CRS) relates lat/long to earth</li>
+<li>“bounding box” to display the data</li>
+</ul></li>
+</ul>
+</div>
+<div class="section slide level1" id="r-spatial-packages">
+<h1>R spatial packages</h1>
+<ul class="incremental">
+<li>“base” packages - sp, maptools, rgdal
+<ul class="incremental">
+<li>useful utilities to read in, transform, display, manipulate spatial data</li>
+</ul></li>
+<li>spatial statistics - gstat, geoR, spBayes</li>
+<li>areal data - spdep, DCluster, ade4, SpatialEpi</li>
+<li>point pattern data - spatial, splancs. spatstat</li>
+</ul>
+</div>
+<div class="section slide level1" id="basic-applications">
+<h1>3 Basic Applications</h1>
+<ul class="incremental">
+<li>areal (or lattice) data
+<ul class="incremental">
+<li>is there spatial variation?</li>
+<li>if so, does pattern of spatial variation help explain why?</li>
+</ul></li>
+<li>point pattern data
+<ul class="incremental">
+<li>are there clusters?</li>
+<li>if so, does pattern help explain why?</li>
+</ul></li>
+<li>spatial interpolation
+<ul class="incremental">
+<li>convert discrete observations to continuous fields</li>
+<li>is the variable actually continuous, e.g. elevation, rain fall, temperature?</li>
+<li>given a sample, what is the value at some non-measured location?</li>
+</ul></li>
+</ul>
+</div>
+<div class="section slide level1" id="areal-data-suicide-mortality-in-32-london-boroughs-1989-1993">
+<h1>Areal Data: Suicide Mortality in 32 London Boroughs 1989-1993</h1>
+<ul class="incremental">
+<li><p>data from Congdon (2007) via Blangiardoa et al (2013)</p></li>
+<li><p>read in data</p></li>
+</ul>
+<table class="sourceCode r numberLines"><tr class="sourceCode"><td class="lineNumbers"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+</pre></td><td class="sourceCode"><pre><code class="sourceCode r"><span class="kw">library</span>(maptools)
+<span class="kw">library</span>(spdep)
+
+london&lt;-<span class="kw">readShapePoly</span>(<span class="st">&quot;http://www.columbia.edu/~cjd11/charles_dimaggio/DIRE/resources/Spatial/LDNSuicides&quot;</span>)
+<span class="kw">plot</span>(london) <span class="co"># NB: no CRS</span>
+<span class="kw">class</span>(london)
+<span class="kw">names</span>(london)
+london$NAME
+
+obs=<span class="kw">c</span>(<span class="dv">75</span>,<span class="dv">145</span>,<span class="dv">99</span>,<span class="dv">168</span>,<span class="dv">152</span>,<span class="dv">173</span>,<span class="dv">152</span>,<span class="dv">169</span>,<span class="dv">130</span>,<span class="dv">117</span>,<span class="dv">124</span>,<span class="dv">119</span>,<span class="dv">134</span>,<span class="dv">90</span>,
+    <span class="dv">98</span>,<span class="dv">89</span>,<span class="dv">128</span>,<span class="dv">145</span>,<span class="dv">130</span>,<span class="dv">69</span>,<span class="dv">246</span>,<span class="dv">166</span>,<span class="dv">95</span>,<span class="dv">135</span>,<span class="dv">98</span>,<span class="dv">97</span>,<span class="dv">202</span>,<span class="dv">75</span>,<span class="dv">100</span>,
+    <span class="dv">100</span>,<span class="dv">153</span>,<span class="dv">194</span>) <span class="co"># observerd number suicides each london borough</span>
+exp=<span class="kw">c</span>(<span class="fl">80.7</span>,<span class="fl">169.8</span>,<span class="fl">123.2</span>,<span class="fl">139.5</span>,<span class="fl">169.1</span>,<span class="fl">107.2</span>,<span class="fl">179.8</span>,<span class="fl">160.4</span>,<span class="fl">147.5</span>,
+    <span class="fl">116.8</span>,<span class="fl">102.8</span>,<span class="fl">91.8</span>,<span class="fl">119.6</span>,<span class="fl">114.8</span>,<span class="fl">131.1</span>,<span class="fl">136.1</span>,<span class="fl">116.6</span>,<span class="fl">98.5</span>,
+    <span class="fl">88.8</span>,<span class="fl">79.8</span>,<span class="fl">144.9</span>,<span class="fl">134.7</span>,<span class="fl">98.9</span>,<span class="fl">118.6</span>,<span class="fl">130.6</span>,<span class="fl">96.1</span>,<span class="fl">127.1</span>,<span class="fl">97.7</span>,
+    <span class="fl">88.5</span>,<span class="fl">121.4</span>,<span class="fl">156.8</span>,<span class="dv">114</span>) <span class="co"># expected number suicides each london borough</span></code></pre></td></tr></table>
+<ul class="incremental">
+<li>create dataframe of borough names, observed, expected
+<ul class="incremental">
+<li>data is in alphabetical order, so have to sort the names from the spatial dataframe</li>
+</ul></li>
+</ul>
+<table class="sourceCode r numberLines"><tr class="sourceCode"><td class="lineNumbers"><pre>1
+2
+</pre></td><td class="sourceCode"><pre><code class="sourceCode r">NAME&lt;- <span class="kw">sort</span>(london$NAME)
+suicide.dat &lt;- <span class="kw">data.frame</span>(<span class="dt">NAME=</span>NAME, <span class="dt">obs=</span>obs, <span class="dt">exp=</span>exp)</code></pre></td></tr></table>
+<ul class="incremental">
+<li>calculate crude and empirical Bayes smoothed SMRS
+<ul class="incremental">
+<li>NB: spdep tool probmap() calculates SMRs using population numbers</li>
+</ul></li>
+</ul>
+<table class="sourceCode r numberLines"><tr class="sourceCode"><td class="lineNumbers"><pre>1
+2
+3
+4
+</pre></td><td class="sourceCode"><pre><code class="sourceCode r">suicide.dat$SMR&lt;-suicide.dat$obs/suicide.dat$exp
+
+<span class="kw">library</span>(DCluster)
+suicide.dat$smooth &lt;- <span class="kw">empbaysmooth</span>(suicide.dat$obs,suicide.dat$exp)$smthrr</code></pre></td></tr></table>
+</div>
+<div class="section slide level1" id="map-the-results">
+<h1>map the results</h1>
+<ul class="incremental">
+<li>reorder data file to match order in the spatial file</li>
+</ul>
+<table class="sourceCode r numberLines"><tr class="sourceCode"><td class="lineNumbers"><pre>1
+2
+3
+</pre></td><td class="sourceCode"><pre><code class="sourceCode r">data.london&lt;-<span class="kw">attr</span>(london,<span class="st">&quot;data&quot;</span>)
+order&lt;-<span class="kw">match</span>(data.london$NAME,suicide.dat$NAME)
+suicide.dat&lt;-suicide.dat[order,]</code></pre></td></tr></table>
+<ul class="incremental">
+<li>establish and apply cut off values to categorize</li>
+<li>merge the smrs to spatial dataframe by name</li>
+<li>spplot to map</li>
+</ul>
+<table class="sourceCode r numberLines"><tr class="sourceCode"><td class="lineNumbers"><pre>1
+2
+3
+4
+5
+6
+</pre></td><td class="sourceCode"><pre><code class="sourceCode r">cuts&lt;- <span class="kw">c</span>(<span class="fl">0.6</span>, <span class="fl">0.9</span>, <span class="fl">1.0</span>, <span class="fl">1.1</span>,  <span class="fl">1.8</span>)
+suicide.dat$SMR.cut&lt;-<span class="kw">cut</span>(suicide.dat$SMR,<span class="dt">breaks=</span>cuts,<span class="dt">include.lowest=</span><span class="ot">TRUE</span>)
+suicide.dat$smooth.cut&lt;-<span class="kw">cut</span>(suicide.dat$smooth,<span class="dt">breaks=</span>cuts,<span class="dt">include.lowest=</span><span class="ot">TRUE</span>)
+<span class="kw">attr</span>(london,<span class="st">&quot;data&quot;</span>)&lt;-<span class="kw">merge</span>(data.london,suicide.dat,<span class="dt">by=</span><span class="st">&quot;NAME&quot;</span>)
+
+<span class="kw">spplot</span>(london, <span class="kw">c</span>(<span class="st">&quot;SMR.cut&quot;</span>, <span class="st">&quot;smooth.cut&quot;</span>),<span class="dt">col.regions=</span><span class="kw">gray</span>(<span class="fl">3.5</span>:<span class="fl">0.5</span>/<span class="dv">4</span>),<span class="dt">main=</span><span class="st">&quot;&quot;</span>)</code></pre></td></tr></table>
+<ul class="incremental">
+<li>NB: Never use crude SMRS
+<ul class="incremental">
+<li>In this example crude SMR’s are very close to smoothed</li>
+<li>But this will generally not be so</li>
+<li>crude SMRs are notoriously unstable and can be misleading…</li>
+</ul></li>
+</ul>
+</div>
+<div class="section slide level1" id="point-process-data-broad-street-pump-cholera-outbreak">
+<h1>Point Process Data: Broad Street Pump Cholera Outbreak</h1>
+<ul class="incremental">
+<li>What if John Snow had R?</li>
+</ul>
+</div>
+<div class="section slide level1" id="load-packages-read-data-with-rgdal-plot">
+<h1>load packages, read data (with rgdal), plot</h1>
+<ul class="incremental">
+<li>data from [Robin T. Wilson] (http://blog.rtwilson.com/john-snows-cholera-data-in-more-formats/)</li>
+<li>GDAL - geospatial data abstraction library
+<ul class="incremental">
+<li>installation something of a bear…</li>
+</ul></li>
+</ul>
+<table class="sourceCode r numberLines"><tr class="sourceCode"><td class="lineNumbers"><pre>1
+2
+3
+4
+5
+6
+7
+8
+</pre></td><td class="sourceCode"><pre><code class="sourceCode r"><span class="kw">library</span>(spatstat)
+<span class="kw">library</span>(rgdal)
+
+cholera&lt;-<span class="kw">readOGR</span>(<span class="st">&quot;http://www.columbia.edu/~cjd11/charles_dimaggio/DIRE/resources/Spatial/Cholera_Deaths/Cholera_Deaths.shp&quot;</span>, <span class="st">&quot;Cholera_Deaths&quot;</span>)
+pumps&lt;-<span class="kw">readOGR</span>(<span class="st">&quot;http://www.columbia.edu/~cjd11/charles_dimaggio/DIRE/resources/Spatial/Cholera_Deaths/Pumps.shp&quot;</span>, <span class="st">&quot;Pumps&quot;</span>)
+
+<span class="kw">plot</span>(cholera, <span class="dt">pch=</span><span class="dv">16</span>)
+<span class="kw">plot</span>(pumps, <span class="dt">add=</span>T, <span class="dt">col=</span><span class="st">&quot;red&quot;</span>, <span class="dt">pch=</span><span class="dv">10</span>, <span class="dt">cex=</span><span class="dv">3</span>)</code></pre></td></tr></table>
+</div>
+<div class="section slide level1" id="plot-with-background-image">
+<h1>plot with background image</h1>
+<table class="sourceCode r numberLines"><tr class="sourceCode"><td class="lineNumbers"><pre>1
+2
+3
+4
+5
+6
+</pre></td><td class="sourceCode"><pre><code class="sourceCode r">bkgrnd&lt;-<span class="kw">readGDAL</span>(<span class="st">&quot;http://www.columbia.edu/~cjd11/charles_dimaggio/DIRE/resources/Spatial/Cholera_Deaths/SnowMap.jpg&quot;</span>)
+
+<span class="kw">plot</span>(cholera, <span class="dt">pch=</span><span class="dv">16</span>)
+<span class="kw">image</span>(bkgrnd,<span class="dt">col =</span> <span class="kw">grey</span>(<span class="dv">1</span>:<span class="dv">99</span>/<span class="dv">100</span>), <span class="dt">add=</span>T)
+<span class="kw">plot</span>(cholera, <span class="dt">pch=</span><span class="dv">16</span>, <span class="dt">add=</span>T, <span class="dt">col=</span><span class="st">&quot;red&quot;</span>)
+<span class="kw">plot</span>(pumps, <span class="dt">add=</span>T, <span class="dt">col=</span><span class="st">&quot;blue&quot;</span>, <span class="dt">pch=</span><span class="dv">10</span>, <span class="dt">cex=</span><span class="dv">3</span>)</code></pre></td></tr></table>
+</div>
+<div class="section slide level1" id="plot-the-point-process-with-spatstat">
+<h1>plot the point process with spatstat</h1>
+<ul class="incremental">
+<li>convert sp to ppp</li>
+<li>summarize and simple plot</li>
+<li>plot density comparing 2 bandwidths
+<ul class="incremental">
+<li>overlay pump sites</li>
+</ul></li>
+<li>perspective plots
+<ul class="incremental">
+<li>theta= option for view</li>
+</ul></li>
+</ul>
+<table class="sourceCode r numberLines"><tr class="sourceCode"><td class="lineNumbers"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+</pre></td><td class="sourceCode"><pre><code class="sourceCode r">cholera.point&lt;-<span class="kw">as.ppp</span>(cholera)
+<span class="kw">summary</span>(cholera.point)
+<span class="kw">plot</span>(cholera.point)
+
+<span class="kw">plot</span>(<span class="kw">density</span>(cholera.point,<span class="dv">20</span>))
+<span class="kw">plot</span>(<span class="kw">density</span>(cholera.point,<span class="dv">30</span>))
+<span class="kw">plot</span>(pumps, <span class="dt">add=</span>T, <span class="dt">col=</span><span class="st">&quot;red&quot;</span>, <span class="dt">pch=</span><span class="dv">10</span>, <span class="dt">cex=</span><span class="dv">3</span>)
+
+
+<span class="kw">persp</span>(<span class="kw">density</span>(cholera.point,<span class="dv">30</span>))
+<span class="kw">persp</span>(<span class="kw">density</span>(cholera.point,<span class="dv">30</span>), <span class="dt">theta=</span><span class="dv">90</span>)
+<span class="kw">persp</span>(<span class="kw">density</span>(cholera.point,<span class="dv">30</span>), <span class="dt">theta=</span><span class="dv">180</span>)</code></pre></td></tr></table>
+</div>
+<div class="section slide level1" id="riplys-k-statistic">
+<h1>Riply’s K statistic</h1>
+<ul class="incremental">
+<li>solid black line is observed K function</li>
+<li>dashed blue is expected</li>
+</ul>
+<table class="sourceCode r numberLines"><tr class="sourceCode"><td class="lineNumbers"><pre>1
+2
+</pre></td><td class="sourceCode"><pre><code class="sourceCode r">cholera.k&lt;-<span class="kw">Kest</span>(cholera.point)
+<span class="kw">plot</span>(cholera.k)</code></pre></td></tr></table>
+</div>
+<div class="section slide level1" id="spatial-interpolation">
+<h1>Spatial Interpolation</h1>
+<ul class="incremental">
+<li>Inverse Distance Weighting (IDW)
+<ul class="incremental">
+<li>use neighboring samples to estimate every location on fine grid</li>
+<li>gstat package - option “e=” controls degree of smoothing</li>
+<li>results in ring contour lines</li>
+<li>close to what surveyor might draw</li>
+<li>but can’t assess error to externally validate</li>
+<li>choice of smoothing exponent essentially arbitrary</li>
+<li>clustered samples affect outcome</li>
+</ul></li>
+<li>variograms
+<ul class="incremental">
+<li>estimate dependence between two points in space</li>
+<li>distance on x-axis, semivariance on y axis</li>
+<li>use to improve interpolations</li>
+</ul></li>
+<li>kriging
+<ul class="incremental">
+<li>interpolation technique</li>
+<li>incorporate variance for error estimates</li>
+</ul></li>
+</ul>
+</div>
+</body>
+</html>
