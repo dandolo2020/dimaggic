@@ -12,6 +12,7 @@ website:
       - sidebar:bayes
       - sidebar:epidemiology
       - rCourse.qmd
+      - spatialEpi.qmd
 
   sidebar:
     - id: bayes
