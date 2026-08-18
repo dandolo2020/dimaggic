@@ -53,12 +53,12 @@ qnorm((1+cl)/2)
 
 ## exact vs. approximate methods
 
-These approximations were developed when computing was costly (or non-existent) to avoid the exhaustive calculations involved in some exact methods. Perhaps the most common approximations involve the normal distribution, and they are usually quite good, though they may result in some weirdness, like have negative counts when a Poisson distributed outcome is forced to be normally symmetric. You could argue that the easy availability of powerful computers and tools like R make approximations unnecessary.  For example, *binom.test()*, returns the exact results for a dichotomous outcome using the binomial formula, $latex \binom{n}{k} p^k q^{n-k}$ 
+These approximations were developed when computing was costly (or non-existent) to avoid the exhaustive calculations involved in some exact methods. Perhaps the most common approximations involve the normal distribution, and they are usually quite good, though they may result in some weirdness, like have negative counts when a Poisson distributed outcome is forced to be normally symmetric. You could argue that the easy availability of powerful computers and tools like R make approximations unnecessary.  For example, *binom.test()*, returns the exact results for a dichotomous outcome using the binomial formula, $\binom{n}{k} p^k q^{n-k}$ 
 
 ```{r eval=FALSE, echo=TRUE}
 binom.test(x=39, n=215, p=.15)
 ```
-Still approximations are quite popular and powerful, and you will find them in many epidemiology calculations.  One common instance is the normal approximation to confidence intervals,  $latex \mu \pm 1.96 \sigma$ , where $latex \mu$ is your point estimate, $latex \sigma$  is the standard error of your measure, and $latex \pm 1.96$ quantile values of a standard normal distribution density curve with area = 95% so that    $latex Pr[z \leq −1.96] = Pr[z \geq 1.96] = 0.025 $
+Still approximations are quite popular and powerful, and you will find them in many epidemiology calculations.  One common instance is the normal approximation to confidence intervals,  $\mu \pm 1.96 \sigma$ , where $\mu$ is your point estimate, $\sigma$  is the standard error of your measure, and $\pm 1.96$ quantile values of a standard normal distribution density curve with area = 95% so that    $Pr[z \leq −1.96] = Pr[z \geq 1.96] = 0.025$
 
 Since the natural scale for a rate or a risk os bounded by zero (you can't have a negative rate) the approximation involves a log transformation, which converts the measure to a symmetric, unbounded more "normal" scale.  (This is the same thinking behind logit transformations of odds ratios.)
 
@@ -86,16 +86,16 @@ list(x = x, risks = c(p1 = p1, p0 = p0),
 
 ## the binomial distribution
 
-The binomial model is probably the most commonly encountered probability distribution in epidemiology, and most epidemiologists should be at least moderately familiar with it. The probability that an event occurs $k$ times in $n$ trials is described by the formula $\binom{n}{k} p^k q^{n-k}$ where $p$ is the probability of the event occurring in a single trial, $q$ is the probability of the event not occurring ($1-p$) and $\binom{n}{k}$ is the binomial expansion "n choose k" the formula for which is $latex \frac{n!}{k!(n-k)!}$
+The binomial model is probably the most commonly encountered probability distribution in epidemiology, and most epidemiologists should be at least moderately familiar with it. The probability that an event occurs $k$ times in $n$ trials is described by the formula $\binom{n}{k} p^k q^{n-k}$ where $p$ is the probability of the event occurring in a single trial, $q$ is the probability of the event not occurring ($1-p$) and $\binom{n}{k}$ is the binomial expansion "n choose k" the formula for which is $\frac{n!}{k!(n-k)!}$
 
 We'll use the concept of an LD50 to demonstrate a binomial model. An LD50 is the dose of a drug that kills 50% of a population, and (clearly) an important pharmacologic property. In his book ["Bayesian Computation with R"](http://bayes.bgsu.edu/bcwr/) Jim Albert applies it to a population with an increased risk of blindness with increasing age.  We want to fit a logistic model in R to estimate the age at which the chance of blindness is 50%. 
 
 -    $y$ is number blind at age $x$ and $n$ is the number tested
 
--   y has form $latex y \sim B(n, F(\beta_0 + \beta_1x)$
+-   y has form $y \sim B(n, F(\beta_0 + \beta_1x)$
 
--   where $latex F(z) = e^z / (1+e^z)$ ,i.e. logit, and
--   LD50 = $latex \frac{-\beta}{\beta_1}$ i.e. point at which argument of the  distribution function is zero
+-   where $F(z) = e^z / (1+e^z)$ ,i.e. logit, and
+-   LD50 = $\frac{-\beta}{\beta_1}$ i.e. point at which argument of the  distribution function is zero
 
 The data are: 
 
@@ -150,11 +150,11 @@ ldl # request the answer (get 43.6 years)
 
 After the normal and binomial distribution, the most important and commonly encountered probability distribution in epidemiology is the Poisson.  The Poisson distribution is often referred to as the "distribution of rare events", and (thankfully) most epidemiologic outcomes are rare.  It is also the distribution for count data, and epidemiologists are nothing if not counters.  
 
-The Poisson, gamma and exponential distributions are related.  Counts on a timeline tend to be Poisson distributed, $latex Pr[k]= e^{-\lambda} * \lambda^{k} /k! $.  The time periods between the counts, tend to be exponentially distributed, with a single parameter, $latex \lambda = rate = \mu = \sigma^{2}$.  The exponential distribution in turn is a instance of a *gamma* distribution.  
+The Poisson, gamma and exponential distributions are related.  Counts on a timeline tend to be Poisson distributed, $Pr[k]= e^{-\lambda} * \lambda^{k} /k!$.  The time periods between the counts, tend to be exponentially distributed, with a single parameter, $\lambda = rate = \mu = \sigma^{2}$.  The exponential distribution in turn is a instance of a *gamma* distribution.  
 
-Gamma distributions are defined as the sum of *k* independent exponentially distributed random variables with two parameters:  a scale parameter,  $latex \theta$ , and a shape parameter, $latex \kappa$. The mean for a gamma distribution is $latex \mu=\theta \kappa$.  The shape parameter $latex \kappa$ is the number of sub-states in the outcome of interest.  In an exponential distribution there is a single transition state and you are counting every observation, so $latex \kappa =1$.  If you were interested in some process where you counted every other observation on a timeline, for example if there is some incubation period, you could model it with a  $latex \thicksim \Gamma(\lambda, 2)$
+Gamma distributions are defined as the sum of *k* independent exponentially distributed random variables with two parameters:  a scale parameter,  $\theta$ , and a shape parameter, $\kappa$. The mean for a gamma distribution is $\mu=\theta \kappa$.  The shape parameter $\kappa$ is the number of sub-states in the outcome of interest.  In an exponential distribution there is a single transition state and you are counting every observation, so $\kappa =1$.  If you were interested in some process where you counted every other observation on a timeline, for example if there is some incubation period, you could model it with a  $\thicksim \Gamma(\lambda, 2)$
 
-Because we do as epidemiologists spend a lot of time counting disease occurrences, you can get a lot of epidemiologic mileage from a Poisson distribution.  R makes working with Poisson distributed data fairly straightforward. Use *dpois()* to return the density function ($latex Pr[X=x] = \frac{x^{−\lambda} \lambda^{x}}{x!}$ , where $latex X =rv$, $x$ is the observed count, and $latex \lambda$ is the expected count) is. Use *ppois()* to return the CDG ($latex Pr[X \leq x] = \sum_{k=0}^ x \frac{k^{−\lambda} \lambda^{k}}{k!}$).
+Because we do as epidemiologists spend a lot of time counting disease occurrences, you can get a lot of epidemiologic mileage from a Poisson distribution.  R makes working with Poisson distributed data fairly straightforward. Use *dpois()* to return the density function ($Pr[X=x] = \frac{x^{−\lambda} \lambda^{x}}{x!}$ , where $X =rv$, $x$ is the observed count, and $\lambda$ is the expected count) is. Use *ppois()* to return the CDG ($Pr[X \leq x] = \sum_{k=0}^ x \frac{k^{−\lambda} \lambda^{k}}{k!}$).
 
 Here is an example (shamelessly taken from [Tomas Aragon](http://medepi.com/), as are many other examples and material I use) of the Poisson distribution in action. Consider meningococcal disease.  The US rate of meningococcal disease is about 1 case per 100,000 population per year.  In San Francisco with a population of 800,000, we would expect 8 cases per year.  What is the probability of observing exactly 6 cases? What is the probability of observing more than 10 cases?
 
@@ -167,13 +167,13 @@ dpois(x = 6, lambda = 8) # 12% chance of 6 cases exactly
 
 ## the Poisson model
 
-To get a better sense of the Poisson model consider horse kicks in the 19th century Prussian cavalry. No really.    Simeon Denis Poisson was a student of Laplace in the 18th century who was interested in the application of probability in law enforcement and justice.  He came up with a special case of the Gaussian distribution when the probability of an outcome is very small and the number of possible trials is very large:  $latex Pr[k]= \frac{\lambda^k}{k!} e^{-\lambda}$ , where $latex \mu = \sigma^2 = \lambda$ .  He would ask questions like, "If we usually see two murders a week, how unusual is it to observe 4?"
+To get a better sense of the Poisson model consider horse kicks in the 19th century Prussian cavalry. No really.    Simeon Denis Poisson was a student of Laplace in the 18th century who was interested in the application of probability in law enforcement and justice.  He came up with a special case of the Gaussian distribution when the probability of an outcome is very small and the number of possible trials is very large:  $Pr[k]= \frac{\lambda^k}{k!} e^{-\lambda}$ , where $\mu = \sigma^2 = \lambda$ .  He would ask questions like, "If we usually see two murders a week, how unusual is it to observe 4?"
 
-Fast forward to Ladislaus Bortkiewicz, a Polish mathematician who in his 1898 book "The Law of Small Numbers"  applied the Poisson distribution to an early and unique injury epidemiology question: horse kick injuries in the Prussian army.  He observed a total of 196 horse kick deaths over 20 years (1875-1895).  The observation period consisted of 14 troops over 20 years for a total of 280 troop-years of data, so the underlying rate was $latex \lambda = 196/280 = 0.7$  He then compared the observed number of deaths in a year to that predicted by Poisson.  For example, the probability of a single death in a year is predicted as:
+Fast forward to Ladislaus Bortkiewicz, a Polish mathematician who in his 1898 book "The Law of Small Numbers"  applied the Poisson distribution to an early and unique injury epidemiology question: horse kick injuries in the Prussian army.  He observed a total of 196 horse kick deaths over 20 years (1875-1895).  The observation period consisted of 14 troops over 20 years for a total of 280 troop-years of data, so the underlying rate was $\lambda = 196/280 = 0.7$  He then compared the observed number of deaths in a year to that predicted by Poisson.  For example, the probability of a single death in a year is predicted as:
 
--   $latex Pr[1]=e^{-.7}*.7^1/1!=0.3476$
+-   $Pr[1]=e^{-.7}*.7^1/1!=0.3476$
 
--   $latex 0.3476*280=97.3$ or approximately 97 deaths
+-   $0.3476*280=97.3$ or approximately 97 deaths
 
 Here are his results for the actual, vs the predicted number of deaths:
 
@@ -212,9 +212,9 @@ cbind(predicted,actual)
 The Poisson distribution can also be used for rates by including a so-called "offset" variable, which divided the outcome data by a population number or (better) person-years (*py*)of observation, which is considered fixed. We can use a normal approximation to calculate a confidence interval, where 
 
 
--   $latex \sigma_{r eval=FALSE, echo=TRUE} = \sqrt{x/py^2}$
+-   $\sigma_{r eval=FALSE, echo=TRUE} = \sqrt{x/py^2}$
 
--   $latex r_{L}; r_{U} = r \pm z × \sigma_{r eval=FALSE, echo=TRUE}$
+-   $r_{L}; r_{U} = r \pm z × \sigma_{r eval=FALSE, echo=TRUE}$
 
 For example say we observe 8 cases of cancer over 85,000 person-years of observation.  Out rate is 9.4 cases / 100,000 p-yrs.  The following code returns a 90% confidence interval:
 
@@ -500,7 +500,7 @@ You may, on some occasion, want to plot a curve or probability distribution.  He
 
 This approach uses the normal probability formula...
 
-$latex f(x) = \frac{1}{\sqrt{2\pi \sigma^2}} \left(\exp \frac{-\left(x-\mu\right)^2}{2\sigma^2}  \right)$
+$f(x) = \frac{1}{\sqrt{2\pi \sigma^2}} \left(\exp \frac{-\left(x-\mu\right)^2}{2\sigma^2}  \right)$
 
 ... over a sequence of values.
 
