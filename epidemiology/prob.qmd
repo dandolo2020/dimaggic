@@ -212,9 +212,9 @@ cbind(predicted,actual)
 The Poisson distribution can also be used for rates by including a so-called "offset" variable, which divided the outcome data by a population number or (better) person-years (*py*)of observation, which is considered fixed. We can use a normal approximation to calculate a confidence interval, where 
 
 
--   $\sigma_{r eval=FALSE, echo=TRUE} = \sqrt{x/py^2}$
+-   $\sigma = \sqrt{x/py^2}$
 
--   $r_{L}; r_{U} = r \pm z × \sigma_{r eval=FALSE, echo=TRUE}$
+-   $r_{L}; r_{U} = r \pm z × \sigma$
 
 For example say we observe 8 cases of cancer over 85,000 person-years of observation.  Out rate is 9.4 cases / 100,000 p-yrs.  The following code returns a 90% confidence interval:
 
@@ -339,16 +339,16 @@ A p value is the probability, given the null hypothesis, of observing a result a
 
 We are interested in whether some observed proportion is compatible with that acceptable limit.
 
-- $H_{0}: \hat{r eval=FALSE, echo=TRUE} = r_{0}$
-- $p = Pr[r \geq \hat{r eval=FALSE, echo=TRUE} | r = r_{0}]$
+- $H_{0}: \hat = r_{0}$
+- $p = Pr[r \geq \hat | r = r_{0}]$
 
 We can use a p value to assess the probability (p) of observing a value of $\hat{r eval=FALSE, echo=TRUE}$ more as or more extreme than expected under the null hypothesis.  The underlying assumption is that more extreme values of $\hat{r eval=FALSE, echo=TRUE}$ unlikely to occur by chance or random error alone, and a low p value indicates that our observed measure is less compatible with the null hypothesis.  Though, as most folks know, p values are sensitive to issues of sample size and need to be interpreted carefully.   
 
 Let's put some numbers on this. Is 8 complications out of 160 hospital admissions (5%) compatible with a goal or reference value of 3% or less? Assuming a binomial distribution, we can use the *binom.test()* to calculate a one-sided p value (because we are only interested in more complications), where
 
 -   n = 160 and k = 8 (binomial)
--   $\hat{r eval=FALSE, echo=TRUE} = 8/160 = 0.05,  r_{0} = 0.03$
--   $p = Pr[r \geq \hat{r eval=FALSE, echo=TRUE}=.05 | r_{0}=.03]$
+-   $\hat = 8/160 = 0.05,  r_{0} = 0.03$
+-   $p = Pr[r \geq \hat=.05 | r_{0}=.03]$
 
 ```{r eval=FALSE, echo=TRUE}
 binom.test(x=8, n=160, p=0.03, alternative = "greater")

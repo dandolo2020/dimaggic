@@ -574,8 +574,8 @@ window.Quarto = {
 <h3 class="anchored" data-anchor-id="normal-approximation-confidence-interval-for-poisson-data">normal approximation confidence interval for Poisson data</h3>
 <p>The Poisson distribution can also be used for rates by including a so-called “offset” variable, which divided the outcome data by a population number or (better) person-years (<em>py</em>)of observation, which is considered fixed. We can use a normal approximation to calculate a confidence interval, where</p>
 <ul>
-<li><p><span class="math inline">\(\sigma_{r eval=FALSE, echo=TRUE} = \sqrt{x/py^2}\)</span></p></li>
-<li><p><span class="math inline">\(r_{L}; r_{U} = r \pm z × \sigma_{r eval=FALSE, echo=TRUE}\)</span></p></li>
+<li><p><span class="math inline">\(\sigma = \sqrt{x/py^2}\)</span></p></li>
+<li><p><span class="math inline">\(r_{L}; r_{U} = r \pm z × \sigma\)</span></p></li>
 </ul>
 <p>For example say we observe 8 cases of cancer over 85,000 person-years of observation. Out rate is 9.4 cases / 100,000 p-yrs. The following code returns a 90% confidence interval:</p>
 <div class="cell">
@@ -690,15 +690,15 @@ window.Quarto = {
 </ul>
 <p>We are interested in whether some observed proportion is compatible with that acceptable limit.</p>
 <ul>
-<li><span class="math inline">\(H_{0}: \hat{r eval=FALSE, echo=TRUE} = r_{0}\)</span></li>
-<li><span class="math inline">\(p = Pr[r \geq \hat{r eval=FALSE, echo=TRUE} | r = r_{0}]\)</span></li>
+<li><span class="math inline">\(H_{0}: \hat = r_{0}\)</span></li>
+<li><span class="math inline">\(p = Pr[r \geq \hat | r = r_{0}]\)</span></li>
 </ul>
 <p>We can use a p value to assess the probability (p) of observing a value of <span class="math inline">\(\hat{r eval=FALSE, echo=TRUE}\)</span> more as or more extreme than expected under the null hypothesis. The underlying assumption is that more extreme values of <span class="math inline">\(\hat{r eval=FALSE, echo=TRUE}\)</span> unlikely to occur by chance or random error alone, and a low p value indicates that our observed measure is less compatible with the null hypothesis. Though, as most folks know, p values are sensitive to issues of sample size and need to be interpreted carefully.</p>
 <p>Let’s put some numbers on this. Is 8 complications out of 160 hospital admissions (5%) compatible with a goal or reference value of 3% or less? Assuming a binomial distribution, we can use the <em>binom.test()</em> to calculate a one-sided p value (because we are only interested in more complications), where</p>
 <ul>
 <li>n = 160 and k = 8 (binomial)</li>
-<li><span class="math inline">\(\hat{r eval=FALSE, echo=TRUE} = 8/160 = 0.05,  r_{0} = 0.03\)</span></li>
-<li><span class="math inline">\(p = Pr[r \geq \hat{r eval=FALSE, echo=TRUE}=.05 | r_{0}=.03]\)</span></li>
+<li><span class="math inline">\(\hat = 8/160 = 0.05,  r_{0} = 0.03\)</span></li>
+<li><span class="math inline">\(p = Pr[r \geq \hat=.05 | r_{0}=.03]\)</span></li>
 </ul>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">binom.test</span>(<span class="at">x=</span><span class="dv">8</span>, <span class="at">n=</span><span class="dv">160</span>, <span class="at">p=</span><span class="fl">0.03</span>, <span class="at">alternative =</span> <span class="st">"greater"</span>)</span>
