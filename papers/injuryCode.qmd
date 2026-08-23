@@ -1,0 +1,32 @@
+---
+title: "Injury Code and Abstracts"
+---
+
+# Injuries
+
+Here are some injury epidemiology papers, abstracts and associated code.
+
+## Links to Selected Injury Papers
+
+This [early paper](https://academiccommons.columbia.edu/doi/10.7916/D82B94R1) describes the epidemiology of pedestrian injuries in children and adolescents (ages <20) in an urban setting, and provides analyses of environmental and pedestrian variables. In a [followup study](https://academiccommons.columbia.edu/doi/10.7916/D8XP7BP2), we investigated the hypothesis that relative to cars, light trucks and vans (including sports utility vehicles) are more likely to result in fatal pediatric pedestrian injury. In more recent work, we looked at[Pediatric emergency department visits for pedestrian and bicyclist injuries in the US](https://link.springer.com/article/10.1186/s40621-017-0128-5)
+
+Other work we've conducted looks at changes in US [mass shooting deaths](/resources/Changes_in_US_mass_shooting_deaths_associated_with.2.pdf) associated with the 1994-2004 federal assault weapons ban, and the role of [alcohol and other drugs](https://www.sciencedirect.com/science/article/abs/pii/S0376871621002581) on emergency department traumatic injury mortality in the United States Code
+
+# Code for Selected Injury Papers
+
+These [step-by-step code and descriptions](/resources/inlaEpidemCode.pdf) of the analyses of New York City pedestrian data that were the basis of the journal article Small-Area Spatiotemporal Analysis of Pedestrian and Bicyclist Injuries in New York City 2001-2010
+
+Here is code for for the [Epidemiology of Emergency Department Discharges for Trauma](/resources/nedsNotesOnline.pdf) in the United States.
+
+Our paper on mass-shooting fatalies in the US referenced above which appeared in the Journal of Trauma and Acute Care Surgery garnered a fair bit of attention. Here is the [code](/resources/jtacsWriteupResource.pdf) for those analyses, the [data](/resources/yearlyDat.csv) we used, and some details about the [weapons](/resources/weaponDetails.txt). 
+
+Here are the [data](/resources/figureDat.Rdat) to recreate figures in the paper [The Epidemiology of Emergency Department Discharges for Trauma in the United States](https://pubmed.ncbi.nlm.nih.gov/28493608/).
+
+Here is code for [Emergency Department Discharges](/resources/childPedsAnalysisOnline.pdf) for Motor-Vehicle Related Pediatric and Adolescent Pedestrian and Cyclist Injuries in the United States, and for [Alcohol and Other Drugs and Trauma](/resources/etohSubstanceInjuryNotesOnline.pdf) referenced above.
+
+Finally, this code for analyzing AHRQ (Agency for Healthcare Research and Quality) [HCUP data Trauma Analysis](/resources/knitHCUPCode.pdf) and the related description for [using MonetDB and plyr to work with large files](/resources/hcupNotesMonet.pdf) is mostly of historic interest at this point, but may be useful as jumping off point for using more up-to-date analytic solutions.
+
+
+
+
+

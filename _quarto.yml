@@ -13,6 +13,7 @@ website:
       - sidebar:epidemiology
       - rCourse.qmd
       - spatialEpi.qmd
+      - sidebar:papers
 
   sidebar:
     - id: bayes
@@ -37,6 +38,15 @@ website:
           - epidemiology/injuryDisaster.qmd
           - epidemiology/power.qmd
           - epidemiology/prob.qmd
+
+    - id: papers
+      title: "Papers and Code"
+      style: "docked"
+      background: light
+      collapse-level: 2
+      contents:
+          - papers/injuryCode.qmd
+          - papers/disasterCode.qmd
 
 format:
   html:
