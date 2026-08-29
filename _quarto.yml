@@ -14,6 +14,7 @@ website:
       - rCourse.qmd
       - spatialEpi.qmd
       - sidebar:papers
+      - about.qmd
 
   sidebar:
     - id: bayes
@@ -47,6 +48,7 @@ website:
       contents:
           - papers/injuryCode.qmd
           - papers/disasterCode.qmd
+          - papers/substancePapers.qmd
 
 format:
   html:

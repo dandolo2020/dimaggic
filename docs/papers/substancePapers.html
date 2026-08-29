@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>R Screencasts – CUIRE</title>
+<title>Substance Use and Misuse – CUIRE</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -75,7 +75,7 @@ ul.task-list li input[type="checkbox"] {
 <link rel="stylesheet" href="../styles.css">
 </head>
 
-<body class="nav-fixed quarto-light">
+<body class="nav-sidebar docked nav-fixed quarto-light">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
@@ -184,30 +184,52 @@ ul.task-list li input[type="checkbox"] {
 </div>
       </div> <!-- /container-fluid -->
     </nav>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../papers/substancePapers.html">Substance Use and Misuse</a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+    </div>
+  </nav>
 </header>
 <!-- content -->
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../papers/injuryCode.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Injury Code and Abstracts</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../papers/disasterCode.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Disaster Code and Abstracts</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../papers/substancePapers.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">Substance Use and Misuse</span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
         <nav id="TOC" role="doc-toc" class="toc-active">
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#introductory-material" id="toc-introductory-material" class="nav-link active" data-scroll-target="#introductory-material">Introductory Material</a></li>
-  <li><a href="#all-about-r-objects" id="toc-all-about-r-objects" class="nav-link" data-scroll-target="#all-about-r-objects">All About R Objects</a></li>
-  <li><a href="#stratified-and-crosstabular-analyses" id="toc-stratified-and-crosstabular-analyses" class="nav-link" data-scroll-target="#stratified-and-crosstabular-analyses">Stratified and Crosstabular Analyses</a>
-  <ul class="collapse">
-  <li><a href="#x2-table-analysis-and-odds-ratios" id="toc-x2-table-analysis-and-odds-ratios" class="nav-link" data-scroll-target="#x2-table-analysis-and-odds-ratios">2x2 Table Analysis and Odds Ratios</a></li>
-  </ul></li>
-  <li><a href="#indexing-and-data-manipulation" id="toc-indexing-and-data-manipulation" class="nav-link" data-scroll-target="#indexing-and-data-manipulation">Indexing and Data Manipulation</a></li>
-  <li><a href="#statistics-and-modeling" id="toc-statistics-and-modeling" class="nav-link" data-scroll-target="#statistics-and-modeling">Statistics and Modeling</a>
-  <ul class="collapse">
-  <li><a href="#linear-regression" id="toc-linear-regression" class="nav-link" data-scroll-target="#linear-regression">Linear Regression</a></li>
-  <li><a href="#logistic-regression" id="toc-logistic-regression" class="nav-link" data-scroll-target="#logistic-regression">Logistic Regression</a></li>
-  <li><a href="#poisson" id="toc-poisson" class="nav-link" data-scroll-target="#poisson">Poisson</a></li>
-  <li><a href="#survival-analysis" id="toc-survival-analysis" class="nav-link" data-scroll-target="#survival-analysis">Survival Analysis</a></li>
-  </ul></li>
+  <li><a href="#substance-use-and-misuse" id="toc-substance-use-and-misuse" class="nav-link active" data-scroll-target="#substance-use-and-misuse">Substance Use and Misuse</a></li>
   </ul>
 </nav>
     </div>
@@ -216,7 +238,7 @@ ul.task-list li input[type="checkbox"] {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">R Screencasts</h1>
+<h1 class="title">Substance Use and Misuse</h1>
 </div>
 
 
@@ -233,79 +255,14 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<section id="introductory-material" class="level1">
-<h1>Introductory Material</h1>
-<p>Why R? </p><div class="quarto-video ratio ratio-16x9"><iframe data-external="1" src="https://www.youtube.com/embed/ABb0m3EA3m4" title="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe></div><p></p>
-<p>Installing R. </p><div class="quarto-video ratio ratio-16x9"><iframe data-external="1" src="https://www.youtube.com/embed/xkPMKGxqons" title="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe></div><p></p>
-<p>Using R as a Calculator. </p><div class="quarto-video ratio ratio-16x9"><iframe data-external="1" src="https://www.youtube.com/embed/bWUstA20gso" title="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe></div><p></p>
-<p>The R Text Editor. </p><div class="quarto-video ratio ratio-16x9"><iframe data-external="1" src="https://www.youtube.com/embed/FXLA2YKofDE" title="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe></div><p></p>
-<p>A Birds-Eye View of R Part 1 </p><div class="quarto-video ratio ratio-16x9"><iframe data-external="1" src="https://www.youtube.com/embed/EF3Zk7rNz98" title="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe></div><p></p>
-<p>A Birds-Eye View of R Part 2 </p><div class="quarto-video ratio ratio-16x9"><iframe data-external="1" src="https://www.youtube.com/embed/0vzJ3TepN2k" title="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe></div><p></p>
-<p>R Help </p><div class="quarto-video ratio ratio-16x9"><iframe data-external="1" src="https://www.youtube.com/embed/393XnZhjn2M" title="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe></div><p></p>
-<p>Saving your files </p><div class="quarto-video ratio ratio-16x9"><iframe data-external="1" src="https://www.youtube.com/embed/1mFMIgJn-Oo" title="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe></div><p></p>
-<p>R packages: How to find, install find help and update packages from the command line. </p><div class="quarto-video ratio ratio-16x9"><iframe data-external="1" src="https://www.youtube.com/embed/ZVGouZyCu4A" title="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe></div><p></p>
-</section>
-<section id="all-about-r-objects" class="level1">
-<h1>All About R Objects</h1>
-<p>This screencast defines 5 R objects: vectors, matrices, arrays, lists and data frames, and describes why they are important for epidemiologists. </p><div class="quarto-video ratio ratio-16x9"><iframe data-external="1" src="https://www.youtube.com/embed/Pl6d75Wbbb4" title="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe></div><p></p>
-<p>A continuation of the description of R objects of interest to epidemiologists and the fucntions used to create them. </p><div class="quarto-video ratio ratio-16x9"><iframe data-external="1" src="https://www.youtube.com/embed/a2YflEFzOx8" title="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe></div><p></p>
-<p>A description of what object modes and classes are, the difference between atomic and recursive objects, and how R can change or coerce data. </p><div class="quarto-video ratio ratio-16x9"><iframe data-external="1" src="https://www.youtube.com/embed/ayH1hvclLFY" title="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe></div><p></p>
-<p>Numeric vectors are the basic building block of R data structures. How to create and index them. </p><div class="quarto-video ratio ratio-16x9"><iframe data-external="1" src="https://www.youtube.com/embed/hrt3EBPcsuI" title="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe></div><p></p>
-<p>The difference between sorting and ordering R vectors, and how to use the order() function to arrange one vector according to the levels of another vector. </p><div class="quarto-video ratio ratio-16x9"><iframe data-external="1" src="https://www.youtube.com/embed/gW-UVSAF4u0" title="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe></div><p></p>
-<p>Logical are created using conditional operators. They are the key to indexing, and indexing is the key to manipulating data in R. This screencast introduces how logical are created, and can be used to index other vectors. </p><div class="quarto-video ratio ratio-16x9"><iframe data-external="1" src="https://www.youtube.com/embed/lwBkIDPoR-I" title="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe></div><p></p>
-<p>This screencast introduces the R matrix, which is essentially a 2-dimensional vector, and forms the basis for tabular epidemiologic analyses in epidemiology. It shows how to create matrices with the matrix() function for summary data and with the table() function for individual-level data, as well as how to index arrays. </p><div class="quarto-video ratio ratio-16x9"><iframe data-external="1" src="https://www.youtube.com/embed/vBG_xgbnkjc" title="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe></div><p></p>
-<p>R arrays are n-dimensional vectors that correspond to stratified tables in epidemiologic analysis. This screencast shows how to create arrays with the array() function for summary data, and with the tables() and xtab() functions for individual-level data. It also introduces how to index arrays. </p><div class="quarto-video ratio ratio-16x9"><iframe data-external="1" src="https://www.youtube.com/embed/hjGMkr8c4xo" title="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe></div><p></p>
-<p>A list can be made up of different kinds of R data types. Many functions return results as lists, and it is the basis for R data frames It can be created using the list() function. </p><div class="quarto-video ratio ratio-16x9"><iframe data-external="1" src="https://www.youtube.com/embed/Dr6ohXgoORg" title="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe></div><p></p>
-<p>Data frames are flexible in how they can be indexed and manipulated. The three main approaches consist of indexing by position, by name and by logical vector. </p><div class="quarto-video ratio ratio-16x9"><iframe data-external="1" src="https://www.youtube.com/embed/gVAUol5S13U" title="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe></div><p></p>
-<p>This screencast presents a short but non-trivial example of using logical indexing to manipulate an R data frame of hospital discharge data. </p><div class="quarto-video ratio ratio-16x9"><iframe data-external="1" src="https://www.youtube.com/embed/3V30B5MC_SY" title="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe></div><p></p>
-<p>This screencast introduces the read.table() function and it’s read.csv() convenience wrapper version as the most effective means of reading data into an R data frame. </p><div class="quarto-video ratio ratio-16x9"><iframe data-external="1" src="https://www.youtube.com/embed/A4MTqUGbjqw" title="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe></div><p></p>
-</section>
-<section id="stratified-and-crosstabular-analyses" class="level1">
-<h1>Stratified and Crosstabular Analyses</h1>
-<p>Using the base R apply() function on matrices and arrays to conduct marginal summary analyses like calculating row and column statistics. </p><div class="quarto-video ratio ratio-16x9"><iframe data-external="1" src="https://www.youtube.com/embed/9GxRwNVLyVk" title="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe></div><p></p>
-<p>Using lapply(), sapply() and mapply() to conduct marginal summary analyses on more complex R objects like lists. </p><div class="quarto-video ratio ratio-16x9"><iframe data-external="1" src="https://www.youtube.com/embed/jtNZ4ITzULY" title="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe></div><p></p>
-<p>Using the base R functions tapply(), by() and aggregate() to group observations and conduct stratified analyses. </p><div class="quarto-video ratio ratio-16x9"><iframe data-external="1" src="https://www.youtube.com/embed/iW3xqmVZw2Q" title="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe></div><p></p>
-<p>Using the base R function table() to count frequencies and cross tabulate counts and proportions of categorical variables. Introduction to the CrossTable() function in the “gmodels” to return frequency and cross tabulations formatted like SAS PROC FREQ. </p><div class="quarto-video ratio ratio-16x9"><iframe data-external="1" src="https://www.youtube.com/embed/L8niRM4Cnvw" title="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe></div><p></p>
-<section id="x2-table-analysis-and-odds-ratios" class="level2">
-<h2 class="anchored" data-anchor-id="x2-table-analysis-and-odds-ratios">2x2 Table Analysis and Odds Ratios</h2>
-<p>An introduction to 2x2 table analysis in R using epitab() from Tomas Aragon’s “epitools” package. </p><div class="quarto-video ratio ratio-16x9"><iframe data-external="1" src="https://www.youtube.com/embed/3pH9o08Ogus" title="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe></div><p></p>
-<p>The Mantel-Haenszel adjusted odds ratio using the cc() and mhor() from Virasakdi Chongsuvivatwong’s “epicalc” package. </p><div class="quarto-video ratio ratio-16x9"><iframe data-external="1" src="https://www.youtube.com/embed/dFwQLiqvK3Q" title="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe></div><p></p>
-</section>
-</section>
-<section id="indexing-and-data-manipulation" class="level1">
-<h1>Indexing and Data Manipulation</h1>
-<p>How to index vectors by position, logical expression and name. Using conditional expressions and logical indexes to identify and select one vector against another. Using logical indexing to categorize a variable into mutually exclusive groups. </p><div class="quarto-video ratio ratio-16x9"><iframe data-external="1" src="https://www.youtube.com/embed/v-RDycYD9pk" title="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe></div><p></p>
-<p>How to index matrices and arrays by position, name and logical expression. </p><div class="quarto-video ratio ratio-16x9"><iframe data-external="1" src="https://www.youtube.com/embed/N0K_I8YtfC8" title="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe></div><p></p>
-<p>How to index lists by position using the double bracket notation, by logical expression, and by name. Using indexing to extract results from functions that return lists. </p><div class="quarto-video ratio ratio-16x9"><iframe data-external="1" src="https://www.youtube.com/embed/kvR-XaVt4_4" title="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe></div><p></p>
-<p>How to index data frame observations (rows) and variables (columns) by position, name and logical expressions to manipulate and recode or replace data elements. </p><div class="quarto-video ratio ratio-16x9"><iframe data-external="1" src="https://www.youtube.com/embed/v9tCiW0wXjU" title="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe></div><p></p>
-<p>Subsetting a data frame using indexing and logical expressions to restrict rows and variables. Introduction to the base R function subset() as an alternative to indexing. </p><div class="quarto-video ratio ratio-16x9"><iframe data-external="1" src="https://www.youtube.com/embed/ECE4ChfBjKQ" title="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe></div><p></p>
-</section>
-<section id="statistics-and-modeling" class="level1">
-<h1>Statistics and Modeling</h1>
-<p>An overview of a few of the many statistical functions that come with base R, including summary(), barplot(), t.test() and wilcox.test(), and how to extract information from the results of statistical function. </p><div class="quarto-video ratio ratio-16x9"><iframe data-external="1" src="https://www.youtube.com/embed/N4C6TdSqWcU" title="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe></div><p></p>
-<section id="linear-regression" class="level2">
-<h2 class="anchored" data-anchor-id="linear-regression">Linear Regression</h2>
-<p>A linear regression example using data from John Fox’s “car” package and the lm() function including simple residual analysis and how to update a model. </p><div class="quarto-video ratio ratio-16x9"><iframe data-external="1" src="https://www.youtube.com/embed/HhE8sB6cfRI" title="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe></div><p></p>
-</section>
-<section id="logistic-regression" class="level2">
-<h2 class="anchored" data-anchor-id="logistic-regression">Logistic Regression</h2>
-<p>A brief review of odds, log odds and the logistic model followed by a logistic regression example using the glm() function. </p><div class="quarto-video ratio ratio-16x9"><iframe data-external="1" src="https://www.youtube.com/embed/YlAtIr1UQOk" title="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe></div><p></p>
-</section>
-<section id="poisson" class="level2">
-<h2 class="anchored" data-anchor-id="poisson">Poisson</h2>
-<p>A review of the Poisson model, offset variables and the predictive interpretation of Poisson regression coefficients. </p><div class="quarto-video ratio ratio-16x9"><iframe data-external="1" src="https://www.youtube.com/embed/FHAHqIq3oJE" title="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe></div><p></p>
-<p>A Poisson regression example using traffic fatality data from Achim Zeileis’s “AER” package. </p><div class="quarto-video ratio ratio-16x9"><iframe data-external="1" src="https://www.youtube.com/embed/cT-hT1Yg8l8" title="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe></div><p></p>
-<p>Approaches to assessing and adjusting for overdispersion in Poisson models. </p><div class="quarto-video ratio ratio-16x9"><iframe data-external="1" src="https://www.youtube.com/embed/QY2ChtYw0p8" title="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe></div><p></p>
-</section>
-<section id="survival-analysis" class="level2">
-<h2 class="anchored" data-anchor-id="survival-analysis">Survival Analysis</h2>
-<p>An overview of the fundamental difference between disease risk and disease rates, and the implication of this difference for modeling time to event data. </p><div class="quarto-video ratio ratio-16x9"><iframe data-external="1" src="https://www.youtube.com/embed/uPXkwgstAII" title="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe></div><p></p>
-<p>A description of the assumptions underlying binomial models and exponential models of disease risk, and the role of Kaplan-Meier and the product limit estimator when those assumptions can not be reasonably met. </p><div class="quarto-video ratio ratio-16x9"><iframe data-external="1" src="https://www.youtube.com/embed/cgVP2XB9AjQ" title="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe></div><p></p>
-<p>A description of the Kaplan-Meier method and illustration of how it can be implemented with basic R code. </p><div class="quarto-video ratio ratio-16x9"><iframe data-external="1" src="https://www.youtube.com/embed/glITGsTyCKg" title="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe></div><p></p>
-<p>An overview of how survival methods can be implemented in R using functions in the “survival” package. </p><div class="quarto-video ratio ratio-16x9"><iframe data-external="1" src="https://www.youtube.com/embed/V-wdGPGzcNg" title="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe></div><p></p>
+<section id="substance-use-and-misuse" class="level1">
+<h1>Substance Use and Misuse</h1>
+<p><a href="http://dx.doi.org/10.7916/D80000V7">Applying Farr’s Law to project the drug overdose mortality epidemic in the United States</a> Salima Darakjy; Joanne Brady; Charles J. DiMaggio; Guohua Li (Inj. Epidemiol. (2014) 1: 31) Unintentional drug overdose has increased markedly in the past two decades and surpassed motor vehicle crashes as the leading cause of injury mortality in many states. The purpose of this study was to understand the trajectory of the drug overdose epidemic in the United States by applying Farr’s Law. Farr’s “law of epidemics” and the Bregman-Langmuir back calculation method were applied to United States drug overdose mortality data for the years 1980 through 2011 to project the annual death rates from drug overdose from 2012 through 2035. From 1980–2011, annual drug overdose mortality increased from 2.7 to 13.2 deaths per 100,000 population. The projected drug overdose mortality would peak in 2016–2017 at 16.1 deaths per 100,000 population and then decline progressively until reaching 1.9 deaths per 100,000 population in 2035. The projected data based on Farr’s Law suggests that drug overdose mortality in the United States will decline in the coming years and return to the 1980 baseline level approximately by the year 2034.</p>
+<p><a href="http://dx.doi.org/10.7916/D8RN37PD">Effectiveness of bystander naloxone administration and overdose education programs: a meta-analysis</a> Rebecca E. Giglio; Guohua Li; Charles J. DiMaggio (Injury Epidemiology. May 2015 2 (1): 2-10. ) The objective of this review was to assess the effectiveness of bystander naloxone administration and overdose education programs by synthesizing quantitative results reported in the research literature. Studies meeting predefined criteria were identified and reviewed, and their results were synthesized through meta-analysis. Odds ratios (ORs) and 95% confidence intervals (CIs) were calculated for overdose recoveries for individuals who received naloxone dispensed by non-medical community members, and the standardized mean difference was calculated for test scores of non-medical volunteers who received training in overdose management versus the scores of untrained volunteers. Pooled data from four studies showed that naloxone administration by bystanders was associated with a significantly increased odds of recovery compared with no naloxone administration (OR = 8.58, 95% CI = 3.90 to 13.25). Data from five studies of overdose education indicated that average scores were significantly higher for trained participants than untrained participants for tests on naloxone administration, overdose recognition, and overdose response (standardized mean difference = 1.35, 95% CI = 0.92 to 1.77). Empirical evidence in the research literature suggests that bystander naloxone administration and overdose education programs are associated with increased odds of recovery and with improved knowledge of overdose recognition and management in non-clinical settings.</p>
+<p><a href="http://hdl.handle.net/10022/AC:P:9339">Spatial analytic approaches to explaining the trends and patterns of drug overdose deaths</a> Charles J. DiMaggio; Angela Bucciarelli; Kenneth J. Tardiff; David Vlahov; Sandro Galea (Geography and Drug Addiction Ed Thomas Y, Richardson D and Cheung I. Springer New York 2009: pp 447-464.) To effectively utilize and interpret spatial analyses, substance use researchers, public health practitioners and policy makers should be familiar with some of the available data analytic techniques, each of which comes with advantages and drawbacks. In this chapter we first discuss three cluster detection tools and their associated software applications. We then present a Bayesian hierarchical approach, briefly reviewing its theoretical underpinnings, commonly used models, and how inferences may be drawn a sample-based posterior distribution. We demonstrate the use of each approach on a set of substance abuse mortality data, comparing the results across the four tools. Our empiric illustration, considers the role of neighborhood-level socioeconomic status (SES) in explaining opiate-related overdose deaths in New York City. We end with a discussion of the implications of the choice of technique and software on interpreting spatial analyses of substance abuse and conclude that the choice of a method will be driven by the question to be answered, data and software availability and the intended audience or context in which the research is being conducted.</p>
+<p><a href="http://dx.doi.org/10.7916/D8NP22K1">Prescription drug monitoring and drug overdose mortality</a> Guohua Li; Joanne E. Brady; Barbara Lang; James F. Giglio; Hannah Wunsch; Charles J. DiMaggio (Public Health Reports. 2014;129:139–47.) Background: Abuse of prescription drugs, particularly opioid analgesics, has become a major source of injury mortality and morbidity in the United States. To prevent the diversion and misuse of controlled substances, many states have implemented prescription drug monitoring programs (PDMPs). This study assessed the impact of state PDMPs on drug overdose mortality. Methods: We analyzed demographic and drug overdose mortality data for state-quarters with and without PDMPs in 50 states and the District of Columbia during 1999–2008, and estimated adjusted risk ratios (aRRs) and 95% confidence intervals (CIs) of drug overdose mortality associated with the implementation of state PDMPs through multivariable negative bionomial regression modeling. ResultsL During the study period, annual national death rates from drug overdose increased by 96%, from 5.7 deaths per 100,000 population in 1999 to 11.2 in 2008. The impact of PDMPs on drug overdose mortality varied greatly across states, ranging from a 35% decrease in Michigan (aRR=0.65; 95% CI=0.54–0.77) to a more than 3-fold increase in Nevada (aRR=3.37; 95% CI=2.48–4.59). Overall, implementation of PDMPs was associated with an 11% increase in drug overdose mortality (aRR=1.11; 95% CI=1.02–1.21). Conclusions: Implementation of PDMPs did not reduce drug overdose mortality in most states through 2008. Program enhancement that facilitates the access and use of prescription drug monitoring data systems by healthcare practitioners is needed.</p>
 
 
-</section>
 </section>
 
 </main> <!-- /main -->
