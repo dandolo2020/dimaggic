@@ -32,9 +32,9 @@ There are  myriad spatial analytic resources online, but I have found the [Texas
 
 Finally, here are a couple of views of my hometown from a spatial epidemiologic perspective.
 
-![Delauny Graph of NYC](/resources/delauny.jpg){width=300px}
+![Delauny Graph of NYC](/resources/delauny2.jpg){width=300px}
 
-![Distance Graph of NYC](/resources/distance.jpg){width=300px}
+![Distance Graph of NYC](/resources/distance2.jpg){width=300px}
 
 The code to recreate them is in the online notes references above.
 
