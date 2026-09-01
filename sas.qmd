@@ -1,0 +1,37 @@
+---
+title: "SAS"
+---
+
+
+A few years back, I taught a course and wrote a book on [SAS for Epidemiologists](https://www.amazon.com/SAS-Epidemiologists-Applications-Charles-DiMaggio/dp/1461448530/ref=sr_1_1?s=books&ie=UTF8&qid=1353685566&sr=1-1&keywords=sas+for+epidemiologists). You can download chapters, and access the data sets, slides and full syntax at the [Springer publishing site](https://link.springer.com/book/10.1007/978-1-4614-4854-9?cm_mmc=event-_-bookAuthor-_-congratulation-_-0&cm_mmc=EVENT-_-BookAuthorEmail-_-). You can also find a zipped file of the code and data [here](https://www.dropbox.com/s/agr9nxytqn79wi3/chData.zip?dl=0)
+
+The book and course are intended to teach folks who already have some introductory background in epidemiology and statistics how to use the SAS statistical computing system to read, clean and manipulate data, and analyze both categorical and continuous data. By the end of the course, you will be able to:
+
+- Read raw data into SAS
+- Manipulate and clean data sets using printing, merging and conditional expressions
+- Apply statistical and graphical procedures for the descriptive analysis of data
+- Conduct unadjusted and stratified categorical analysis and understand the concept of confounding
+- Conduct and interpret ANOVA and be aware of the concept of interaction
+- Understand correlation
+- Conduct and interpret linear regression
+- Understand and apply regression diagnostics.
+
+The course is roughly divided into three parts:
+
+Part I: Working in SAS
+- Introduction
+- Entering, manipulating and working with SAS Data
+- Exploring data with initial statistics and graphs
+
+Part II: Descriptive and Categorical Data Analysis
+- Categorical Data Analysis I
+- Categorical Data Analysis II
+
+Part III: 
+- Approaches to Continuous Data including ANOVA, Correlation and Linear Regression.
+
+
+You can access a full set of slides [here](https://docs.google.com/presentation/d/e/2PACX-1vRfgJAIz91Z77j8_pXXbcBvNY-zqatzXJvdQV2XL8Ecqu19LvHgFoGcthCBWJKxlw/pub?start=false&loop=false&delayms=30000)
+
+
+

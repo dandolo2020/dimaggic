@@ -16,6 +16,7 @@ website:
       - rCourse.qmd
       - spatialEpi.qmd
       - sidebar:papers
+      - sas.qmd
       - about.qmd
 
   sidebar:
