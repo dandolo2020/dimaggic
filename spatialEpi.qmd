@@ -30,7 +30,7 @@ There are  myriad spatial analytic resources online, but I have found the [Texas
 
 ## A Different View of the World
 
-Finally, here are a couple of views of my hometown from a spatial epidemiologic perspective.
+And, finally, here are a couple of views of my hometown from a spatial epidemiologic perspective.
 
 ![Delauny Graph of NYC](/resources/delauny2.jpg){width=300px}
 
