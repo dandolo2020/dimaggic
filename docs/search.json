@@ -542,183 +542,183 @@
     ]
   },
   {
-    "objectID": "resources/spatialSlides.html#see-these-more-thorough-overviews",
-    "href": "resources/spatialSlides.html#see-these-more-thorough-overviews",
+    "objectID": "resources/spatialSlides/spatialSlides.html#see-these-more-thorough-overviews",
+    "href": "resources/spatialSlides/spatialSlides.html#see-these-more-thorough-overviews",
     "title": "A Brief Introduction to Spatial Analysis in R",
     "section": "See these more thorough overviews:",
     "text": "See these more thorough overviews:\n\nRoger Bivand - very highly recommended, and the basis for much of my material\nnotes and tutorial\nchapter on spatial mapping of overdose deaths\ncourse exercise"
   },
   {
-    "objectID": "resources/spatialSlides.html#lets-wade-right-in",
-    "href": "resources/spatialSlides.html#lets-wade-right-in",
+    "objectID": "resources/spatialSlides/spatialSlides.html#lets-wade-right-in",
+    "href": "resources/spatialSlides/spatialSlides.html#lets-wade-right-in",
     "title": "A Brief Introduction to Spatial Analysis in R",
     "section": "Let’s wade right in…",
     "text": "Let’s wade right in…"
   },
   {
-    "objectID": "resources/spatialSlides.html#first-steps",
-    "href": "resources/spatialSlides.html#first-steps",
+    "objectID": "resources/spatialSlides/spatialSlides.html#first-steps",
+    "href": "resources/spatialSlides/spatialSlides.html#first-steps",
     "title": "A Brief Introduction to Spatial Analysis in R",
     "section": "first steps",
     "text": "first steps\n\ninstall and load sp and maps\nload the meuse data set\nexamine the structure of meuse\n\ndataframe, 155 observations, 14 variables\nx and y are map coordinates"
   },
   {
-    "objectID": "resources/spatialSlides.html#plotting-the-meuse-data",
-    "href": "resources/spatialSlides.html#plotting-the-meuse-data",
+    "objectID": "resources/spatialSlides/spatialSlides.html#plotting-the-meuse-data",
+    "href": "resources/spatialSlides/spatialSlides.html#plotting-the-meuse-data",
     "title": "A Brief Introduction to Spatial Analysis in R",
     "section": "plotting the meuse data",
     "text": "plotting the meuse data\nplot(meuse)\nplot(meuse$x, meuse$y)\nplot(meuse$y, meuse$x)"
   },
   {
-    "objectID": "resources/spatialSlides.html#spatialpointsdataframe-object",
-    "href": "resources/spatialSlides.html#spatialpointsdataframe-object",
+    "objectID": "resources/spatialSlides/spatialSlides.html#spatialpointsdataframe-object",
+    "href": "resources/spatialSlides/spatialSlides.html#spatialpointsdataframe-object",
     "title": "A Brief Introduction to Spatial Analysis in R",
     "section": "SpatialPointsDataFrame object",
     "text": "SpatialPointsDataFrame object\n\nspatially-referenced points with attribute data\nsp:coordinates() will convert R dataframe to SpatialPointsDataFrame\n\ncoordinates(meuse) &lt;- ~x+y\nstr(meuse)\nplot(meuse)"
   },
   {
-    "objectID": "resources/spatialSlides.html#categorize-and-plot-flood-frequencies",
-    "href": "resources/spatialSlides.html#categorize-and-plot-flood-frequencies",
+    "objectID": "resources/spatialSlides/spatialSlides.html#categorize-and-plot-flood-frequencies",
+    "href": "resources/spatialSlides/spatialSlides.html#categorize-and-plot-flood-frequencies",
     "title": "A Brief Introduction to Spatial Analysis in R",
     "section": "categorize and plot flood frequencies",
     "text": "categorize and plot flood frequencies\nmeuse$ffreq &lt;- as.numeric(meuse$ffreq)\nplot(meuse, col = meuse$ffreq, pch = 19)\nlabs &lt;- c(\"annual\", \"every 2-5 years\", \"&gt; 5 years\")\ncols &lt;- 1:nlevels(meuse$ffreq)\nlegend(\"topleft\", legend = labs, col = cols, pch = 19, bty = \"n\")"
   },
   {
-    "objectID": "resources/spatialSlides.html#working-with-spatial-objects",
-    "href": "resources/spatialSlides.html#working-with-spatial-objects",
+    "objectID": "resources/spatialSlides/spatialSlides.html#working-with-spatial-objects",
+    "href": "resources/spatialSlides/spatialSlides.html#working-with-spatial-objects",
     "title": "A Brief Introduction to Spatial Analysis in R",
     "section": "working with spatial objects",
     "text": "working with spatial objects\n\nSpatial objects are S4 objects\nnote in str() output, uses the *@* convention\ne.g. names(meuse@data)\nsome special spatial tools, e.g select.spatial() to identify points\nselect.spatial(meuse)\n\nclick three points to surround (don’t have to completely surround)\nR click to return point data\n\ngeneric plot() return spatially-referenced results, e.g plot()\n…but special spatial plots are available\n\nspplot(meuse, \"zinc\")\nbubble(meuse, \"lead\")"
   },
   {
-    "objectID": "resources/spatialSlides.html#coordinate-reference-systems",
-    "href": "resources/spatialSlides.html#coordinate-reference-systems",
+    "objectID": "resources/spatialSlides/spatialSlides.html#coordinate-reference-systems",
+    "href": "resources/spatialSlides/spatialSlides.html#coordinate-reference-systems",
     "title": "A Brief Introduction to Spatial Analysis in R",
     "section": "coordinate reference systems",
     "text": "coordinate reference systems\n\ndefinitions for the location of a point on the earth\nreference ellipsoid - defines shape of the earth\ndatum - reference point(s) on earth’s surface\nunit of measurment, e.g. meters, miles\nprojection - how spherical earth projected onto 2 dimensions\n\nequirectangular\ncylindrical or Mercator’s\nconical"
   },
   {
-    "objectID": "resources/spatialSlides.html#example-crf",
-    "href": "resources/spatialSlides.html#example-crf",
+    "objectID": "resources/spatialSlides/spatialSlides.html#example-crf",
+    "href": "resources/spatialSlides/spatialSlides.html#example-crf",
     "title": "A Brief Introduction to Spatial Analysis in R",
     "section": "Example CRF",
     "text": "Example CRF\n\nmeuse coordinates referenced to Netherlands RDH topographical convention\nsp:proj4string() uses rgdal library to specify a CRS\nsp:spTransform() will change from one CRS to another\n\ne.g. \n\n\nproj4string(meuse) &lt;- CRS(\"+init=epsg:28992\")"
   },
   {
-    "objectID": "resources/spatialSlides.html#why-map",
-    "href": "resources/spatialSlides.html#why-map",
+    "objectID": "resources/spatialSlides/spatialSlides.html#why-map",
+    "href": "resources/spatialSlides/spatialSlides.html#why-map",
     "title": "A Brief Introduction to Spatial Analysis in R",
     "section": "Why map?",
     "text": "Why map?\n\nJust because you can doesn’t mean you should\ntext for a few numbers\ntable for many numbers\nplots for relationships\nmaps for patterns in space and time…"
   },
   {
-    "objectID": "resources/spatialSlides.html#the-greatest-map",
-    "href": "resources/spatialSlides.html#the-greatest-map",
+    "objectID": "resources/spatialSlides/spatialSlides.html#the-greatest-map",
+    "href": "resources/spatialSlides/spatialSlides.html#the-greatest-map",
     "title": "A Brief Introduction to Spatial Analysis in R",
     "section": "The greatest map?",
     "text": "The greatest map?\n\nMinard’s Map of Napolean’s Russian Campaign of 1812"
   },
   {
-    "objectID": "resources/spatialSlides.html#the-greatest-map-1",
-    "href": "resources/spatialSlides.html#the-greatest-map-1",
+    "objectID": "resources/spatialSlides/spatialSlides.html#the-greatest-map-1",
+    "href": "resources/spatialSlides/spatialSlides.html#the-greatest-map-1",
     "title": "A Brief Introduction to Spatial Analysis in R",
     "section": "The greatest map",
     "text": "The greatest map\n\nEdward Tufte might say yes\nenormous amount of data laid out in organized, understandable fashion\nmulti-media presentations of lines, numbers, pictures, narrative\nno proprietary platform, easily accessible by multiple users\nentirely content, e.g. no drop shadows, bullet indents etc…\ngenuinely interactive (people instinctively look for familiar areas, etc…)"
   },
   {
-    "objectID": "resources/spatialSlides.html#minards-map-illustrates-6-principals-6-cs-of-analytic-design-and-mapping-from-tufte",
-    "href": "resources/spatialSlides.html#minards-map-illustrates-6-principals-6-cs-of-analytic-design-and-mapping-from-tufte",
+    "objectID": "resources/spatialSlides/spatialSlides.html#minards-map-illustrates-6-principals-6-cs-of-analytic-design-and-mapping-from-tufte",
+    "href": "resources/spatialSlides/spatialSlides.html#minards-map-illustrates-6-principals-6-cs-of-analytic-design-and-mapping-from-tufte",
     "title": "A Brief Introduction to Spatial Analysis in R",
     "section": "Minard’s Map Illustrates 6 principals (6 C’s) of analytic design and mapping (from Tufte)",
     "text": "Minard’s Map Illustrates 6 principals (6 C’s) of analytic design and mapping (from Tufte)\n\n\ncomparisons, contrasts and differences\n\n\npre-post troop levels illustrated at beginning and end (started with 400K, ended with 10K)\n\n\ncausality and connections\n\n\npath of retreating army tied to a temperature scale at bottom\n\n\ncomplexity and multivariate data\n\n\nsix dimensions of data on the map: size of the army, location in lat and long, direction, temperature, places\n\n\ncleverness, and innovative methods (use ‘whatever it takes’ to explain something)\n\n\nmap is annotated all over with numbers and words\n\n\ncredibility, by documenting the source of your data\n\n\ntwo paragraphs at top are about sourcing and detail\n\n\ncontent is king, tell a compelling story, ultimately stand or fall on the quality, integrity and relevance of your content\n\n\nMinard’s map is essentially an anti-war poster telling a compelling story"
   },
   {
-    "objectID": "resources/spatialSlides.html#spatial-analysis",
-    "href": "resources/spatialSlides.html#spatial-analysis",
+    "objectID": "resources/spatialSlides/spatialSlides.html#spatial-analysis",
+    "href": "resources/spatialSlides/spatialSlides.html#spatial-analysis",
     "title": "A Brief Introduction to Spatial Analysis in R",
     "section": "Spatial Analysis",
     "text": "Spatial Analysis\n\nSee online presentation by Dave Unwin\nlocation as an explanatory variable\n\npatterns in space, e.g. clustering\nspatially varying risk\ngeographic or local covariates\n\nspatial data have additional structure\n\nmorphology - point, line, areal\ngeography - lat/long, CRS\nattributes - elevation, population, measurements"
   },
   {
-    "objectID": "resources/spatialSlides.html#r-and-spatial-analysis",
-    "href": "resources/spatialSlides.html#r-and-spatial-analysis",
+    "objectID": "resources/spatialSlides/spatialSlides.html#r-and-spatial-analysis",
+    "href": "resources/spatialSlides/spatialSlides.html#r-and-spatial-analysis",
     "title": "A Brief Introduction to Spatial Analysis in R",
     "section": "R and Spatial Analysis",
     "text": "R and Spatial Analysis\n\nfamiliar, unifying analytic environment\nmany specialized packages and functions available\n\nability to translate most any spatial data\n\nrapidly incorporate advances\ngrowing, almost invariably supportive community"
   },
   {
-    "objectID": "resources/spatialSlides.html#r-spatial-data",
-    "href": "resources/spatialSlides.html#r-spatial-data",
+    "objectID": "resources/spatialSlides/spatialSlides.html#r-spatial-data",
+    "href": "resources/spatialSlides/spatialSlides.html#r-spatial-data",
     "title": "A Brief Introduction to Spatial Analysis in R",
     "section": "R spatial data",
     "text": "R spatial data\n\nspatial data frame - fundamental spatial R object\n\ntranslates Cartesian coordinates to geography\n\n3 important attributes\n\nx/y become lat/long\nCoordinate Reference System (CRS) relates lat/long to earth\n“bounding box” to display the data"
   },
   {
-    "objectID": "resources/spatialSlides.html#r-spatial-packages",
-    "href": "resources/spatialSlides.html#r-spatial-packages",
+    "objectID": "resources/spatialSlides/spatialSlides.html#r-spatial-packages",
+    "href": "resources/spatialSlides/spatialSlides.html#r-spatial-packages",
     "title": "A Brief Introduction to Spatial Analysis in R",
     "section": "R spatial packages",
     "text": "R spatial packages\n\n“base” packages - sp, maptools, rgdal\n\nuseful utilities to read in, transform, display, manipulate spatial data\n\nspatial statistics - gstat, geoR, spBayes\nareal data - spdep, DCluster, ade4, SpatialEpi\npoint pattern data - spatial, splancs. spatstat"
   },
   {
-    "objectID": "resources/spatialSlides.html#basic-applications",
-    "href": "resources/spatialSlides.html#basic-applications",
+    "objectID": "resources/spatialSlides/spatialSlides.html#basic-applications",
+    "href": "resources/spatialSlides/spatialSlides.html#basic-applications",
     "title": "A Brief Introduction to Spatial Analysis in R",
     "section": "3 Basic Applications",
     "text": "3 Basic Applications\n\nareal (or lattice) data\n\nis there spatial variation?\nif so, does pattern of spatial variation help explain why?\n\npoint pattern data\n\nare there clusters?\nif so, does pattern help explain why?\n\nspatial interpolation\n\nconvert discrete observations to continuous fields\nis the variable actually continuous, e.g. elevation, rain fall, temperature?\ngiven a sample, what is the value at some non-measured location?"
   },
   {
-    "objectID": "resources/spatialSlides.html#areal-data-suicide-mortality-in-32-london-boroughs-1989-1993",
-    "href": "resources/spatialSlides.html#areal-data-suicide-mortality-in-32-london-boroughs-1989-1993",
+    "objectID": "resources/spatialSlides/spatialSlides.html#areal-data-suicide-mortality-in-32-london-boroughs-1989-1993",
+    "href": "resources/spatialSlides/spatialSlides.html#areal-data-suicide-mortality-in-32-london-boroughs-1989-1993",
     "title": "A Brief Introduction to Spatial Analysis in R",
     "section": "Areal Data: Suicide Mortality in 32 London Boroughs 1989-1993",
     "text": "Areal Data: Suicide Mortality in 32 London Boroughs 1989-1993\n\ndata from Congdon (2007) via Blangiardoa et al (2013)\nread in data\n\nlibrary(maptools)\nlibrary(spdep)\n\nlondon&lt;-readShapePoly(\" ~ download ~ /LDNSuicides\")\nplot(london) ## NB: no CRS\nclass(london)\nnames(london)\nlondon$NAME\n\nobs=c(75,145,99,168,152,173,152,169,130,117,124,119,134,90,\n    98,89,128,145,130,69,246,166,95,135,98,97,202,75,100,\n    100,153,194) ## observerd number suicides each london borough\nexp=c(80.7,169.8,123.2,139.5,169.1,107.2,179.8,160.4,147.5,\n    116.8,102.8,91.8,119.6,114.8,131.1,136.1,116.6,98.5,\n    88.8,79.8,144.9,134.7,98.9,118.6,130.6,96.1,127.1,97.7,\n    88.5,121.4,156.8,114) ## expected number suicides each london borough\n\ncreate dataframe of borough names, observed, expected\n\ndata is in alphabetical order, so have to sort the names from the spatial dataframe\n\n\nNAME&lt;- sort(london$NAME)\nsuicide.dat &lt;- data.frame(NAME=NAME, obs=obs, exp=exp)\n\ncalculate crude and empirical Bayes smoothed SMRS\n\nNB: spdep tool probmap() calculates SMRs using population numbers\n\n\nsuicide.dat$SMR&lt;-suicide.dat$obs/suicide.dat$exp\n\nlibrary(DCluster)\nsuicide.dat$smooth &lt;- empbaysmooth(suicide.dat$obs,suicide.dat$exp)$smthrr"
   },
   {
-    "objectID": "resources/spatialSlides.html#map-the-results",
-    "href": "resources/spatialSlides.html#map-the-results",
+    "objectID": "resources/spatialSlides/spatialSlides.html#map-the-results",
+    "href": "resources/spatialSlides/spatialSlides.html#map-the-results",
     "title": "A Brief Introduction to Spatial Analysis in R",
     "section": "map the results",
     "text": "map the results\n\nreorder data file to match order in the spatial file\n\ndata.london&lt;-attr(london,\"data\")\norder&lt;-match(data.london$NAME,suicide.dat$NAME)\nsuicide.dat&lt;-suicide.dat[order,]\n\nestablish and apply cut off values to categorize\nmerge the smrs to spatial dataframe by name\nspplot to map\n\ncuts&lt;- c(0.6, 0.9, 1.0, 1.1,  1.8)\nsuicide.dat$SMR.cut&lt;-cut(suicide.dat$SMR,breaks=cuts,include.lowest=TRUE)\nsuicide.dat$smooth.cut&lt;-cut(suicide.dat$smooth,breaks=cuts,include.lowest=TRUE)\nattr(london,\"data\")&lt;-merge(data.london,suicide.dat,by=\"NAME\")\n\nspplot(london, c(\"SMR.cut\", \"smooth.cut\"),col.regions=gray(3.5:0.5/4),main=\"\")\n\nNB: Never use crude SMRS\n\nIn this example crude SMR’s are very close to smoothed\nBut this will generally not be so\ncrude SMRs are notoriously unstable and can be misleading…"
   },
   {
-    "objectID": "resources/spatialSlides.html#point-process-data-broad-street-pump-cholera-outbreak",
-    "href": "resources/spatialSlides.html#point-process-data-broad-street-pump-cholera-outbreak",
+    "objectID": "resources/spatialSlides/spatialSlides.html#point-process-data-broad-street-pump-cholera-outbreak",
+    "href": "resources/spatialSlides/spatialSlides.html#point-process-data-broad-street-pump-cholera-outbreak",
     "title": "A Brief Introduction to Spatial Analysis in R",
     "section": "Point Process Data: Broad Street Pump Cholera Outbreak",
     "text": "Point Process Data: Broad Street Pump Cholera Outbreak\n\nWhat if John Snow had R?"
   },
   {
-    "objectID": "resources/spatialSlides.html#load-packages-read-data-with-rgdal-plot",
-    "href": "resources/spatialSlides.html#load-packages-read-data-with-rgdal-plot",
+    "objectID": "resources/spatialSlides/spatialSlides.html#load-packages-read-data-with-rgdal-plot",
+    "href": "resources/spatialSlides/spatialSlides.html#load-packages-read-data-with-rgdal-plot",
     "title": "A Brief Introduction to Spatial Analysis in R",
     "section": "load packages, read data (with rgdal), plot",
     "text": "load packages, read data (with rgdal), plot\n\ndata from [Robin T. Wilson] (http://blog.rtwilson.com/john-snows-cholera-data-in-more-formats/)\nGDAL - geospatial data abstraction library\n\ninstallation something of a bear…\n\n\nlibrary(spatstat)\nlibrary(rgdal)\n\ncholera&lt;-readOGR(\" ~ download ~ /Cholera_Deaths.shp\", \"Cholera_Deaths\")\npumps&lt;-readOGR(\" ~ download ~ /Pumps.shp\", \"Pumps\")\n\nplot(cholera, pch=16)\nplot(pumps, add=T, col=\"red\", pch=10, cex=3)"
   },
   {
-    "objectID": "resources/spatialSlides.html#plot-with-background-image",
-    "href": "resources/spatialSlides.html#plot-with-background-image",
+    "objectID": "resources/spatialSlides/spatialSlides.html#plot-with-background-image",
+    "href": "resources/spatialSlides/spatialSlides.html#plot-with-background-image",
     "title": "A Brief Introduction to Spatial Analysis in R",
     "section": "plot with background image",
     "text": "plot with background image\nbkgrnd&lt;-readGDAL(\" ~ download ~ /SnowMap.jpg\")\n\nplot(cholera, pch=16)\nimage(bkgrnd,col = grey(1:99/100), add=T)\nplot(cholera, pch=16, add=T, col=\"red\")\nplot(pumps, add=T, col=\"blue\", pch=10, cex=3)"
   },
   {
-    "objectID": "resources/spatialSlides.html#plot-the-point-process-with-spatstat",
-    "href": "resources/spatialSlides.html#plot-the-point-process-with-spatstat",
+    "objectID": "resources/spatialSlides/spatialSlides.html#plot-the-point-process-with-spatstat",
+    "href": "resources/spatialSlides/spatialSlides.html#plot-the-point-process-with-spatstat",
     "title": "A Brief Introduction to Spatial Analysis in R",
     "section": "plot the point process with spatstat",
     "text": "plot the point process with spatstat\n\nconvert sp to ppp\nsummarize and simple plot\nplot density comparing 2 bandwidths\n\noverlay pump sites\n\nperspective plots\n\ntheta= option for view\n\n\ncholera.point&lt;-as.ppp(cholera)\nsummary(cholera.point)\nplot(cholera.point)\n\nplot(density(cholera.point,20))\nplot(density(cholera.point,30))\nplot(pumps, add=T, col=\"red\", pch=10, cex=3)\n\n\npersp(density(cholera.point,30))\npersp(density(cholera.point,30), theta=90)\npersp(density(cholera.point,30), theta=180)"
   },
   {
-    "objectID": "resources/spatialSlides.html#riplys-k-statistic",
-    "href": "resources/spatialSlides.html#riplys-k-statistic",
+    "objectID": "resources/spatialSlides/spatialSlides.html#riplys-k-statistic",
+    "href": "resources/spatialSlides/spatialSlides.html#riplys-k-statistic",
     "title": "A Brief Introduction to Spatial Analysis in R",
     "section": "Riply’s K statistic",
     "text": "Riply’s K statistic\n\nsolid black line is observed K function\ndashed blue is expected\n\ncholera.k&lt;-Kest(cholera.point)\nplot(cholera.k)"
   },
   {
-    "objectID": "resources/spatialSlides.html#spatial-interpolation",
-    "href": "resources/spatialSlides.html#spatial-interpolation",
+    "objectID": "resources/spatialSlides/spatialSlides.html#spatial-interpolation",
+    "href": "resources/spatialSlides/spatialSlides.html#spatial-interpolation",
     "title": "A Brief Introduction to Spatial Analysis in R",
     "section": "Spatial Interpolation",
     "text": "Spatial Interpolation\n\nInverse Distance Weighting (IDW)\n\nuse neighboring samples to estimate every location on fine grid\ngstat package - option “e=” controls degree of smoothing\nresults in ring contour lines\nclose to what surveyor might draw\nbut can’t assess error to externally validate\nchoice of smoothing exponent essentially arbitrary\nclustered samples affect outcome\n\nvariograms\n\nestimate dependence between two points in space\ndistance on x-axis, semivariance on y axis\nuse to improve interpolations\n\nkriging\n\ninterpolation technique\nincorporate variance for error estimates"
