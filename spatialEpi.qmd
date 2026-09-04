@@ -22,7 +22,7 @@ If you are interested in a [one-stop overview](https://academiccommons.columbia.
 
 ## Spatial Epidemiology Slides
 
-For those of you with even less time to get up to speed, take a look at this set of [HTML slides](/resources/spatialSlides.html) introducing working with spatial data in R.
+For those of you with even less time to get up to speed, take a look at this [short introduction](/resources/spatialSlides.html) to working with spatial data in R.
 
 ## Shout Out to Texas A&M Geoservices
 
